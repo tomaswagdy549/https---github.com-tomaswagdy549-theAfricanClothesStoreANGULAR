@@ -79,9 +79,7 @@
             </form>
             <ul class="navbar-nav ms-2 active" style="padding-left:20px;">
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="['/login']">
-                        <i class="fa-regular fa-user"></i>
-                    </a>
+                        <i style="cursor: pointer;" data-bs-toggle="modal" href="#loginModal"  class="fa-regular fa-user"></i>
                 </li>
             </ul>
             
@@ -90,3 +88,4 @@
         </div>
     </div>
 </nav>
+<app-login></app-login>

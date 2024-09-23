@@ -4,6 +4,7 @@ import { Component, HostListener } from '@angular/core';
   selector: 'app-header',
   standalone: true,
   templateUrl: './header.component.html',
+  imports: [],
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {

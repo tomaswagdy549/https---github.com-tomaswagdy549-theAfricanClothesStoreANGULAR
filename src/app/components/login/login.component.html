@@ -1,1 +1,100 @@
-<h1>hello from login page</h1>
+<div
+  class="modal fade"
+  id="loginModal"
+  aria-hidden="false"
+  aria-labelledby="exampleModalToggleLabel"
+  tabindex="-1"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalToggleLabel">Login</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+          class="container mt-5"
+        >
+          <div class="row">
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                id="email"
+                type="email"
+                class="form-control"
+                formControlName="email"
+                placeholder="Enter your email"
+              />
+              <div
+                *ngIf="f['email'].invalid && f['email'].touched"
+                class="text-danger"
+              >
+                <small *ngIf="f['email'].errors!['required']"
+                  >Email is required.</small
+                >
+                <small *ngIf="f['email'].errors!['email']"
+                  >Please enter a valid email address.</small
+                >
+              </div>
+            </div>
+
+            <!-- Password -->
+            <div class="col-md-6 mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                id="password"
+                type="password"
+                class="form-control"
+                formControlName="password"
+                placeholder="Enter your password"
+              />
+              <div
+                *ngIf="f['password'].invalid && f['password'].touched"
+                class="text-danger"
+              >
+                <small *ngIf="f['password'].errors!['required']"
+                  >Password is required.</small
+                >
+                <small *ngIf="f['password'].errors!['minlength']"
+                  >Password must be at least 6 characters long.</small
+                >
+              </div>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="loginForm.invalid"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-primary"
+          data-bs-target="#registerModal"
+          data-bs-toggle="modal"
+          data-bs-dismiss="modal"
+        >
+          Register
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-register></app-register>
