@@ -1,0 +1,200 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="container mt-5">
+  <div class="row">
+    <!-- First Name -->
+    <div class="col-md-6 mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input
+        id="firstName"
+        type="text"
+        class="form-control"
+        formControlName="firstName"
+        placeholder="Enter your first name"
+      />
+      <div
+        *ngIf="f['firstName'].touched && f['firstName'].invalid"
+        class="text-danger"
+      >
+        <small *ngIf="f['firstName'].errors?.['required']"
+          >First Name is required.</small
+        >
+        <small *ngIf="f['firstName'].errors?.['minlength']"
+          >First Name must be at least 3 characters long.</small
+        >
+      </div>
+    </div>
+
+    <!-- Last Name -->
+    <div class="col-md-6 mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input
+        id="lastName"
+        type="text"
+        class="form-control"
+        formControlName="lastName"
+        placeholder="Enter your last name"
+      />
+      <div
+        *ngIf="f['lastName'].touched && f['lastName'].invalid"
+        class="text-danger"
+      >
+        <small *ngIf="f['lastName'].errors?.['required']"
+          >Last Name is required.</small
+        >
+        <small *ngIf="f['lastName'].errors?.['minlength']"
+          >Last Name must be at least 3 characters long.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Address -->
+    <div class="col-md-12 mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input
+        id="address"
+        type="text"
+        class="form-control"
+        formControlName="address"
+        placeholder="Enter your address"
+      />
+      <div
+        *ngIf="f['address'].touched && f['address'].invalid"
+        class="text-danger"
+      >
+        <small *ngIf="f['address'].errors?.['required']"
+          >Address is required.</small
+        >
+        <small *ngIf="f['address'].errors?.['minlength']"
+          >Address must be at least 5 characters long.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Phone Number -->
+    <div class="col-md-6 mb-3">
+      <label for="phoneNumber" class="form-label">Phone Number</label>
+      <input
+        id="phoneNumber"
+        type="text"
+        class="form-control"
+        formControlName="phoneNumber"
+        placeholder="Enter your phone number"
+      />
+      <div
+        *ngIf="f['phoneNumber'].touched && f['phoneNumber'].invalid"
+        class="text-danger"
+      >
+        <small *ngIf="f['phoneNumber'].errors?.['required']"
+          >Phone Number is required.</small
+        >
+        <small *ngIf="f['phoneNumber'].errors?.['pattern']"
+          >Phone Number can only contain numbers.</small
+        >
+      </div>
+    </div>
+
+    <!-- User Name -->
+    <div class="col-md-6 mb-3">
+      <label for="userName" class="form-label">User Name</label>
+      <input
+        id="userName"
+        type="text"
+        class="form-control"
+        formControlName="userName"
+        placeholder="Enter your username"
+      />
+      <div
+        *ngIf="f['userName'].touched && f['userName'].invalid"
+        class="text-danger"
+      >
+        <small *ngIf="f['userName'].errors?.['required']"
+          >User Name is required.</small
+        >
+        <small *ngIf="f['userName'].errors?.['pattern']"
+          >User Name must be at least 6 characters and contain only letters and
+          numbers.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Email -->
+    <div class="col-md-6 mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        id="email"
+        type="email"
+        class="form-control"
+        formControlName="email"
+        placeholder="Enter your email"
+      />
+      <div *ngIf="f['email'].touched && f['email'].invalid" class="text-danger">
+        <small *ngIf="f['email'].errors?.['required']"
+          >Email is required.</small
+        >
+        <small *ngIf="f['email'].errors?.['email']"
+          >Please enter a valid email address.</small
+        >
+      </div>
+    </div>
+
+    <!-- Password -->
+    <div class="col-md-6 mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        id="password"
+        type="password"
+        class="form-control"
+        formControlName="password"
+        placeholder="Enter your password"
+      />
+      <div
+        *ngIf="f['password'].touched && f['password'].invalid"
+        class="text-danger"
+      >
+        <small *ngIf="f['password'].errors?.['required']"
+          >Password is required.</small
+        >
+        <small *ngIf="f['password'].errors?.['pattern']"
+          >Password must be at least 10 characters long and contain one
+          uppercase, one lowercase, one number, and one special
+          character.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Role -->
+    <div class="col-md-6 mb-3">
+      <label for="role" class="form-label">Role</label>
+      <input
+        id="role"
+        type="text"
+        class="form-control"
+        formControlName="role"
+        placeholder="Enter your role"
+      />
+      <div *ngIf="f['role'].touched && f['role'].invalid" class="text-danger">
+        <small *ngIf="f['role'].errors?.['required']">Role is required.</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="registerForm.invalid"
+      >
+        Submit
+      </button>
+    </div>
+  </div>
+</form>
