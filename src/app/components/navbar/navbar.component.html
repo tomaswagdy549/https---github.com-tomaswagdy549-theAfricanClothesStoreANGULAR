@@ -77,13 +77,16 @@
                 <input class="form-control me-2" type="search" placeholder="Search for product" aria-label="Search">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
-            <ul class="navbar-nav ms-2 active" style="padding-left:20px ;">
+            <ul class="navbar-nav ms-2 active" style="padding-left:20px;">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
-                    <i class="fa-regular fa-user"></i> 
-                  </a>
+                    <a class="nav-link" [routerLink]="['/login']">
+                        <i class="fa-regular fa-user"></i>
+                    </a>
                 </li>
-              </ul>
+            </ul>
+            
+              
+              
         </div>
     </div>
 </nav>
