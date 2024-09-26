@@ -1,0 +1,64 @@
+<!-- Modal -->
+<div class="modal fade" id="ProductInfoModal" tabindex="-1" aria-labelledby="ProductInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ProductInfoModalLabel">{{ product.name }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Carousel for product images -->
+        <div id="productImagesCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="https://via.placeholder.com/800x400?text=Product+Image+1" class="d-block w-100" alt="Product Image 1">
+            </div>
+            <div class="carousel-item">
+              <img src="https://via.placeholder.com/800x400?text=Product+Image+2" class="d-block w-100" alt="Product Image 2">
+            </div>
+            <div class="carousel-item">
+              <img src="https://via.placeholder.com/800x400?text=Product+Image+3" class="d-block w-100" alt="Product Image 3">
+            </div>
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#productImagesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+
+        <!-- Product Details -->
+        <h5>Product Details</h5>
+        <ul class="list-group mb-3">
+          <li class="list-group-item">
+            <strong>Name:</strong> {{ product.name }}
+          </li>
+          <li class="list-group-item">
+            <strong>Price:</strong> ${{ product.price }}
+          </li>
+          <li class="list-group-item">
+            <strong>Quantity:</strong> {{ product.quantity }}
+          </li>
+          <li class="list-group-item">
+            <strong>Available Sizes:</strong>
+            <ul>
+              <li *ngFor="let size of product.availableSizes">{{ size }}</li>
+            </ul>
+          </li>
+          <li class="list-group-item">
+            <strong>Category:</strong> {{ product.category.name }}
+          </li>
+          <li class="list-group-item">
+            <strong>Brand:</strong> {{ product.brand.name || 'No Brand' }}
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

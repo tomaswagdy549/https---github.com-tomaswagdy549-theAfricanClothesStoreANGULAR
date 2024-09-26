@@ -1,101 +1,68 @@
 <!-- Page Content-->
 <section class="pt-4">
   <div class="container px-lg-5">
+    <div
+      data-bs-toggle="modal"
+      data-bs-target="#ProductFilterModal"
+      class="d-flex align-items-center mb-4"
+      style="font-size: 1.5rem; cursor: pointer"
+    >
+      <i class="fa fa-filter me-2" style="font-size: 1.5rem"></i>
+      <span>Filter</span>
+    </div>
     <!-- Page Features-->
     <div class="row gx-lg-5">
-      <div class="col-lg-3 col-xxl-4 mb-5">
-        <div class="card bg-light border-0 h-100">
-          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-            <div
-              class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"
+      <div
+        *ngFor="let product of products"
+        class="col-lg-4 col-md-6 col-12 mb-5"
+      >
+        <div class="card h-100 mx-auto" style="width: 18rem">
+          <img
+            class="card-img-top"
+            src="https://www.naturephotographie.com/wp-content/uploads/2019/02/Rays-of-Light-on-the-Summit.jpg"
+            alt="Card image cap"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">Price : {{ product.price }}</p>
+            <a
+              (click)="sentProduct = product"
+              class="btn btn-outline-dark"
+              data-bs-target="#ProductInfoModal"
+              data-bs-toggle="modal"
+              >Details</a
             >
-              <i class="bi bi-collection"></i>
-            </div>
-            <h2 class="fs-4 fw-bold">Fresh new layout</h2>
-            <p class="mb-0">
-              With Bootstrap 5, we've created a fresh new layout for this
-              template!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-xxl-4 mb-5">
-        <div class="card bg-light border-0 h-100">
-          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-            <div
-              class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"
-            >
-              <i class="bi bi-cloud-download"></i>
-            </div>
-            <h2 class="fs-4 fw-bold">Free to download</h2>
-            <p class="mb-0">
-              As always, Start Bootstrap has a powerful collectin of free
-              templates.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-xxl-4 mb-5">
-        <div class="card bg-light border-0 h-100">
-          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-            <div
-              class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"
-            >
-              <i class="bi bi-card-heading"></i>
-            </div>
-            <h2 class="fs-4 fw-bold">Jumbotron hero header</h2>
-            <p class="mb-0">
-              The heroic part of this template is the jumbotron hero header!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-xxl-4 mb-5">
-        <div class="card bg-light border-0 h-100">
-          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-            <div
-              class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"
-            >
-              <i class="bi bi-bootstrap"></i>
-            </div>
-            <h2 class="fs-4 fw-bold">Feature boxes</h2>
-            <p class="mb-0">
-              We've created some custom feature boxes using Bootstrap icons!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-xxl-4 mb-5">
-        <div class="card bg-light border-0 h-100">
-          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-            <div
-              class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"
-            >
-              <i class="bi bi-code"></i>
-            </div>
-            <h2 class="fs-4 fw-bold">Simple clean code</h2>
-            <p class="mb-0">
-              We keep our dependencies up to date and squash bugs as they come!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-xxl-4 mb-5">
-        <div class="card bg-light border-0 h-100">
-          <div class="card-body text-center p-4 p-lg-5 pt-0 pt-lg-0">
-            <div
-              class="feature bg-primary bg-gradient text-white rounded-3 mb-4 mt-n4"
-            >
-              <i class="bi bi-patch-check"></i>
-            </div>
-            <h2 class="fs-4 fw-bold">A name you trust</h2>
-            <p class="mb-0">
-              Start Bootstrap has been the leader in free Bootstrap templates
-              since 2013!
-            </p>
           </div>
         </div>
       </div>
     </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item">
+          <a
+            class="btn btn-outline-dark"
+            (click)="moveToPage(pageSize, currentPage - 1)"
+            >Previous</a
+          >
+        </li>
+        <li *ngFor="let Page of totalPages; let index; as: i" class="page-item">
+          <a
+            [ngClass]="{ active: currentPage == Page }"
+            class="btn btn-outline-dark"
+            (click)="moveToPage(pageSize, Page)"
+            >{{ Page }}</a
+          >
+        </li>
+        <li class="page-item">
+          <a
+            class="btn btn-outline-dark"
+            (click)="moveToPage(pageSize, currentPage + 1)"
+            >Next</a
+          >
+        </li>
+      </ul>
+    </nav>
   </div>
 </section>
+<app-product-filter (productsFiltered)="show($event)"></app-product-filter>
+<app-product-details [product]="sentProduct"></app-product-details>

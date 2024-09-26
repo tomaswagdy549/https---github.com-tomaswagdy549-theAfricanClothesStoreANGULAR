@@ -1,0 +1,116 @@
+<div class="modal fade" id="ProductFilterModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Product Filter</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <h2 class="my-4">Product Filter</h2>
+          <form [formGroup]="filterForm">
+            <div class="row mb-3">
+              <div class="col">
+                <label for="brandIds" class="form-label">Brand</label>
+                <select
+                  name="brandIds"
+                  formControlName="brandIds"
+                  class="form-select"
+                  id="brandIds"
+                  multiple
+                >
+                  <option value="0">Select a brand</option>
+                  <option *ngFor="let brand of brands" [value]="brand.id">
+                    {{ brand.name }}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col">
+                <label for="categoryIds" class="form-label">Category</label>
+                <select
+                  name="categoryIds"
+                  formControlName="categoryIds"
+                  class="form-select"
+                  id="categoryIds"
+                  multiple
+                >
+                  <option value="0">Select a category</option>
+                  <option
+                    [value]="category.id"
+                    *ngFor="let category of categories"
+                  >
+                    {{ category.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label for="quantity" class="form-label"
+                  >Minimum Quantity</label
+                >
+                <input
+                  type="number"
+                  formControlName="quantity"
+                  class="form-control"
+                  id="quantity"
+                  min="0"
+                />
+              </div>
+
+              <div class="col">
+                <label for="minPrice" class="form-label">Minimum Price</label>
+                <input
+                  type="number"
+                  formControlName="minPrice"
+                  class="form-control"
+                  id="minPrice"
+                  min="0"
+                />
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col">
+                <label for="maxPrice" class="form-label">Maximum Price</label>
+                <input
+                  type="number"
+                  formControlName="maxPrice"
+                  class="form-control"
+                  id="maxPrice"
+                  min="0"
+                />
+              </div>
+
+              <div class="col">
+                <label for="name" class="form-label">Product Name</label>
+                <input
+                  type="text"
+                  formControlName="name"
+                  class="form-control"
+                  id="name"
+                />
+              </div>
+            </div>
+
+            <button
+              type="button"
+              (click)="filterProducts()"
+              class="btn btn-outline-dark"
+              data-bs-dismiss="modal"
+            >
+              Filter
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
