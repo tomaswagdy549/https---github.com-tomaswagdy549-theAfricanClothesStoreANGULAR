@@ -26,7 +26,7 @@
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text">Price : {{ product.price }}</p>
             <a
-              (click)="sentProduct = product"
+              (click)="productDetailsComponent.setInput('product',product)"
               class="btn btn-outline-dark"
               data-bs-target="#ProductInfoModal"
               data-bs-toggle="modal"
@@ -38,7 +38,7 @@
     </div>
     <nav aria-label="Page navigation example">
       <ul class="pagination">
-        <li class="page-item">
+        <li *ngIf="currentPage!=1" class="page-item">
           <a
             class="btn btn-outline-dark"
             (click)="moveToPage(pageSize, currentPage - 1)"
@@ -53,7 +53,7 @@
             >{{ Page }}</a
           >
         </li>
-        <li class="page-item">
+        <li *ngIf="currentPage!=totalPages.length" class="page-item">
           <a
             class="btn btn-outline-dark"
             (click)="moveToPage(pageSize, currentPage + 1)"
@@ -65,4 +65,4 @@
   </div>
 </section>
 <app-product-filter (productsFiltered)="show($event)"></app-product-filter>
-<app-product-details [product]="sentProduct"></app-product-details>
+ <ng-container #container></ng-container>

@@ -10,4 +10,5 @@ export class Product {
     quantity:number=0
     category!:Category
     brand!:Brand 
+    id!:number
 }

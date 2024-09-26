@@ -1,0 +1,7 @@
+.carousel-image {
+    width: 400px;
+    height: 300px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
