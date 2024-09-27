@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { enviroment } from '../../enviroment/enviroment';
-import { GetAllCategoriesDTO } from '../../models/DTOs/getAllModelsDTO/getAllCategoriesDTO/get-all-categories-dto';
+import { GetAllCategoriesDTO } from '../../models/DTOs/responseDTO/getAllCategoriesDTO/get-all-categories-dto'; 
 import { Category } from '../../models/category/category';
 
 @Injectable({

@@ -2,9 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { enviroment } from '../../enviroment/enviroment';
 import { Observable } from 'rxjs';
-import { GetAllProductsDTO } from '../../models/DTOs/getAllModelsDTO/getAllProductsDTO/get-all-products-dto';
+import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto'; 
 import { Product } from '../../models/product/product';
-import { ProductFiltrationStandarsDTO } from '../../models/DTOs/filtrationStandarsDTO/productFiltrationStandarsDTO/product-filtration-standars-dto';
 
 @Injectable({
   providedIn: 'root',

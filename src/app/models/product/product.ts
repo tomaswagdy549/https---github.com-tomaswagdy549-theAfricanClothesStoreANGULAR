@@ -11,4 +11,5 @@ export class Product {
     category!:Category
     brand!:Brand 
     id!:number
+    mainPhotoUrl!:string
 }

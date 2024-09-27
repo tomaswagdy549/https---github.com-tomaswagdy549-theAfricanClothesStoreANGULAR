@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { enviroment } from '../../enviroment/enviroment';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GetAllBrandsDTO } from '../../models/DTOs/getAllModelsDTO/getAllBrandsDTO/get-all-brands-dto';
+import { GetAllBrandsDTO } from '../../models/DTOs/responseDTO/getAllBrandsDTO/get-all-brands-dto';
 import { Brand } from '../../models/brand/brand';
 
 @Injectable({

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { enviroment } from '../../enviroment/enviroment';
-import { GetAllProductPhotosDTO } from '../../models/DTOs/getAllModelsDTO/getAllProductPhotosDTO/get-all-product-photos-dto';
+import { GetAllProductPhotosDTO } from '../../models/DTOs/responseDTO/getAllProductPhotosDTO/get-all-product-photos-dto'; 
 
 @Injectable({
   providedIn: 'root',
