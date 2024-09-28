@@ -34,8 +34,12 @@ export class ClothesComponent implements OnInit {
   @ViewChild('container', { read: ViewContainerRef }) entry:ViewContainerRef;
   productDetailsComponent!:ComponentRef<ProductDetailsComponent>
   constructor(private productsService: ProductsService,private resolver: ViewContainerRef) {
-    this.entry=resolver
+    this.entry=resolver,
+    this.cards.forEach(card => {
+      this.currentImage[card.id] = card.img;
+    });
   }
+
   ngOnInit(): void {
     this.moveToPage(this.pageSize, 1);
   }
@@ -61,4 +65,105 @@ export class ClothesComponent implements OnInit {
       },
     });
   }
+
+
+  cards = [
+    {
+      id: 1,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },
+    {
+      id: 2,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },
+    {
+      id: 3,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },
+
+    {
+      id: 4,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 5,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 6,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 7,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 8,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },
+    {
+      id: 9,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 10,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 11,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    },{
+      id: 12,
+      img: 'assets/images/clothing men.jpg',
+      imgHover: 'assets/images/Bags&Accessors.jpg',
+      text: 'Card 1 description',
+      price: 100
+    }
+    // Add more cards here...
+  ];
+
+  currentImage: { [key: number]: string } = {};
+
+
+
+  changeImage(cardId: number, hoverImg: string) {
+    this.currentImage[cardId] = hoverImg;
+  }
+
+  resetImage(cardId: number, defaultImg: string) {
+    this.currentImage[cardId] = defaultImg;
+  }
+
+
+  
+
+  
+
 }
