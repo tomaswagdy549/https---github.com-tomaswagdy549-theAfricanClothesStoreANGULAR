@@ -7,6 +7,7 @@ import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-
 import { ClothesComponent } from './components/clothes/clothes.component';
 import { ShoesComponent } from './components/shoes/shoes.component';
 import { MenComponent } from './components/men/men.component';
+import { BagsmenComponent } from './components/bagsmen/bagsmen.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -17,5 +18,6 @@ export const routes: Routes = [
   { path: '', component: HeaderComponent },
   {path:'shoes',component:ShoesComponent},
   {path:'men',component:MenComponent},
+  {path:'bagsmen',component:BagsmenComponent},
   { path: '**', redirectTo: '' }
 ];
