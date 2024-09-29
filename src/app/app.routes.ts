@@ -5,6 +5,7 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ReturnRefundPolicyComponent } from './components/return-refund-policy/return-refund-policy.component';
 import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-service.component';
 import { ClothesComponent } from './components/clothes/clothes.component';
+import { ShoesComponent } from './components/shoes/shoes.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'terms-of-service', component: TermsOfServiceComponent },
   { path: 'clothes', component: ClothesComponent },
   { path: '', component: HeaderComponent },
+  {path:'shoes',component:ShoesComponent},
   { path: '**', redirectTo: '' }
 ];
