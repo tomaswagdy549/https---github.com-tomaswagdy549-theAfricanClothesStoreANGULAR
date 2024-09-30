@@ -31,27 +31,32 @@ export class ClothesComponent implements OnInit {
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
-  @ViewChild('container', { read: ViewContainerRef }) entry:ViewContainerRef;
-  productDetailsComponent!:ComponentRef<ProductDetailsComponent>
-  constructor(private productsService: ProductsService,private resolver: ViewContainerRef) {
-    this.entry=resolver
+  @ViewChild('container', { read: ViewContainerRef }) entry: ViewContainerRef;
+  productDetailsComponent!: ComponentRef<ProductDetailsComponent>;
+  constructor(
+    private productsService: ProductsService,
+    private resolver: ViewContainerRef
+  ) {
+    this.entry = resolver;
   }
   ngOnInit(): void {
     this.moveToPage(this.pageSize, 1);
   }
-  show($event: Product[]) {
+  showFilteredProducts($event: Product[]) {
     this.products = $event;
   }
   moveToPage(pageSize: number, Page: number) {
-    this.entry.clear()
+    this.entry.remove();
     this.productsService.getAllProducts(pageSize, Page).subscribe({
       next: (res) => {
         this.products = res.products;
         this.currentPage = res['currentPage'];
         this.totalPages = [];
         this.sentProduct = this.products[0];
-        this.productDetailsComponent = this.entry.createComponent(ProductDetailsComponent)
-        this.productDetailsComponent.setInput('product',this.sentProduct)    
+        this.productDetailsComponent = this.entry.createComponent(
+          ProductDetailsComponent
+        );
+        this.productDetailsComponent.setInput('product', this.sentProduct);
         for (let i = 1; i <= res['totalPages']; i++) {
           this.totalPages.push(i);
         }
