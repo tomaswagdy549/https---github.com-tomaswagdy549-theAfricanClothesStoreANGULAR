@@ -1,3 +1,27 @@
-nav{
-    padding: 1.5%;
-}
+/* Ensure main dropdown opens on hover */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
+  /* Style for nested dropdown to appear on hover for Accessories */
+  .dropdown-submenu {
+    position: relative;
+  }
+  
+  .dropdown-submenu .dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%; /* Make it appear to the right */
+    margin-top: 0;
+  }
+  
+  .dropdown-submenu:hover .dropdown-menu {
+    display: block;
+  }
+  
+  /* Optional: Add a slight transition effect for smoother hover */
+  .dropdown-menu {
+    transition: opacity 0.2s ease-in-out;
+  }
+  

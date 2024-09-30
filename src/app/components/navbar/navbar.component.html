@@ -33,84 +33,46 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/clothes"
-            >Clothing</a
-          >
+          <a class="nav-link active" aria-current="page" href="/clothes">Clothing</a>
         </li>
+        <!-- ----- -->
         <li class="nav-item dropdown">
           <a
-            class="nav-link active dropdown-toggle"
-            href="/clothes"
-            href="#"
+            class="nav-link dropdown-toggle"
+            href="/men"
+            id="navbarDropdown"
             role="button"
-            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             Men's
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="/clothes">Shoes</a></li>
-            <li><a class="dropdown-item" href="/clothes">Bags</a></li>
+          <!-- Main dropdown menu for Men's -->
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item "  aria-current="page" href="/shoes">Shoes</a></li>
+            <li><a class="dropdown-item" href="/bagsmen">Bags</a></li>
+        
+            <!-- Nested dropdown for Accessories aligned to the right -->
             <li class="dropdown-submenu">
-              <a class="dropdown-item dropdown-toggle" href="/clothes"
-                >Accessories</a
-              >
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Socks</a></li>
-                <li><a class="dropdown-item" href="#">Belts</a></li>
+              <a class="dropdown-item" href="#">
+                Accessories
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" href="/clothes/socks">Socks</a></li>
+                <li><a class="dropdown-item" href="/clothes/belts">Belts</a></li>
+                <li><a class="dropdown-item" href="/clothes/watches">Watches</a></li>
+                <li><a class="dropdown-item" href="/clothes/hats">Hats</a></li>
               </ul>
             </li>
           </ul>
         </li>
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link active dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            Women's
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Shoes</a></li>
-            <li><a class="dropdown-item" href="#">Bags & Accessors</a></li>
-          </ul>
-        </li>
+        
+      
 
-        <li class="nav-item dropdown">
-          <a
-            class="nav-link active dropdown-toggle"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            All
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">All Categories</a></li>
-            <li><a class="dropdown-item" href="#">Accessors</a></li>
-            <li><a class="dropdown-item" href="#">Bags & Accessors</a></li>
-            <li><a class="dropdown-item" href="#">Bags & Men's</a></li>
-            <li><a class="dropdown-item" href="#">Clothing Woman</a></li>
-            <li><a class="dropdown-item" href="#">Hoodies</a></li>
-            <li><a class="dropdown-item" href="#">Jacket</a></li>
-            <li><a class="dropdown-item" href="#">Jeans</a></li>
-            <li><a class="dropdown-item" href="#">Pants</a></li>
-            <li><a class="dropdown-item" href="#">Polo T-shirt</a></li>
-            <li><a class="dropdown-item" href="#">Shirt</a></li>
-            <li><a class="dropdown-item" href="#">Shoes</a></li>
-            <li><a class="dropdown-item" href="#">Shoes Women</a></li>
-            <li><a class="dropdown-item" href="#">Short</a></li>
-            <li><a class="dropdown-item" href="#">Socks</a></li>
-            <li><a class="dropdown-item" href="#">Swimwear</a></li>
-            <li><a class="dropdown-item" href="#">T-Shirt</a></li>
-            <li><a class="dropdown-item" href="#">Trouser</a></li>
-            <li><a class="dropdown-item" href="#">Underwear Men's</a></li>
-          </ul>
-        </li>
+
+
+
       </ul>
+
       <form class="d-flex" role="search">
         <input
           class="form-control me-2"
@@ -120,6 +82,7 @@
         />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
+      
       <ul class="navbar-nav ms-2 active" style="padding-left: 20px">
         <li class="nav-item me-3">
           <i
@@ -139,4 +102,3 @@
     </div>
   </div>
 </nav>
-<app-login></app-login>

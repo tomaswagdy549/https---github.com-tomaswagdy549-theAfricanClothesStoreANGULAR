@@ -10,28 +10,7 @@ import { RegisterComponent } from "../register/register.component";
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent implements AfterViewInit {
+export class NavbarComponent {
 
-  ngAfterViewInit(): void {
-    document.addEventListener('DOMContentLoaded', function () {
-   
-      var dropdownSubmenus = document.querySelectorAll('.dropdown-submenu');
 
-      dropdownSubmenus.forEach(function (submenu) {
-        submenu.addEventListener('mouseover', function () {
-          var submenuDropdown = submenu.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            submenuDropdown.classList.add('show');
-          }
-        });
-
-        submenu.addEventListener('mouseout', function () {
-          var submenuDropdown = submenu.querySelector('.dropdown-menu');
-          if (submenuDropdown) {
-            submenuDropdown.classList.remove('show');
-          }
-        });
-      });
-    });
-  }
 }
