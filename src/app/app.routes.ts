@@ -12,6 +12,9 @@ import { AccessorsComponent } from './components/accessors/accessors.component';
 import { SocksComponent } from './components/socks/socks.component';
 import { BeltsComponent } from './components/belts/belts.component';
 import { WomenComponent } from './components/women/women.component';
+import { Component } from '@angular/core';
+import { WomenshoesComponent } from './components/womenshoes/womenshoes.component';
+import { WomenbagsComponent } from './components/womenbags/womenbags.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,5 +30,7 @@ export const routes: Routes = [
   {path:'socks',component:SocksComponent},
   {path:'belts',component:BeltsComponent},
   {path:'women',component:WomenComponent},
+  {path:'womenshoes',component:WomenshoesComponent},
+  {path:'womenbags',component:WomenbagsComponent},
   { path: '**', redirectTo: '' }
 ];
