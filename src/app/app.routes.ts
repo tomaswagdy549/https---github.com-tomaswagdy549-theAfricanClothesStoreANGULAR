@@ -9,6 +9,7 @@ import { ShoesComponent } from './components/shoes/shoes.component';
 import { MenComponent } from './components/men/men.component';
 import { BagsmenComponent } from './components/bagsmen/bagsmen.component';
 import { AccessorsComponent } from './components/accessors/accessors.component';
+import { SocksComponent } from './components/socks/socks.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   {path:'men',component:MenComponent},
   {path:'bagsmen',component:BagsmenComponent},
   {path:'accessors',component:AccessorsComponent},
+  {path:'socks',component:SocksComponent},
   { path: '**', redirectTo: '' }
 ];
