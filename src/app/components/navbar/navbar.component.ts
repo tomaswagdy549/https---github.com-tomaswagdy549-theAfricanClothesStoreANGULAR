@@ -11,6 +11,15 @@ import { RegisterComponent } from "../register/register.component";
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
+  quantity: number = 0; // Default quantity
 
+  increment() {
+    this.quantity++;
+  }
 
+  decrement() {
+    if (this.quantity > 0) {
+      this.quantity--;
+    }
+  }
 }

@@ -11,23 +11,16 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div
-      class="collapse navbar-collapse tocenter"
-      id="navbarSupportedContent"
-      style="padding-right: 200px"
-    >
+
+    <div class="collapse navbar-collapse tocenter" id="navbarSupportedContent" style="padding-right: 200px">
       <a href="/">
         <img
           src="assets/images/logo.png"
           alt="Logo"
-          style="
-            border-radius: 50%;
-            width: 80px;
-            height: 50px;
-            padding-left: 20px;
-          "
+          style="border-radius: 50%; width: 80px; height: 50px; padding-left: 20px;"
         />
       </a>
+
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 200px">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -35,90 +28,119 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/clothes">Clothing</a>
         </li>
-        <!-- ----- -->
+
+        <!-- Dropdown for Men's -->
         <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="/men"
-            id="navbarDropdown"
-            role="button"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle active" href="/men" id="navbarDropdown" role="button" aria-expanded="false">
             Men's
           </a>
-          <!-- Main dropdown menu for Men's -->
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item "  aria-current="page" href="/shoes">Shoes</a></li>
+          <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="/shoes">Shoes</a></li>
             <li><a class="dropdown-item" href="/bagsmen">Bags</a></li>
-        
-            <!-- Nested dropdown for Accessories aligned to the right -->
+            <!-- Nested dropdown for Accessories -->
             <li class="dropdown-submenu">
-              <a class="dropdown-item" href="/accessors">
-                Accessories
-              </a>
+              <a class="dropdown-item" href="/accessors">Accessories</a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/socks">Socks</a></li>
                 <li><a class="dropdown-item" href="/belts">Belts</a></li>
-               
               </ul>
             </li>
           </ul>
         </li>
-        
-      
 
-
+        <!-- Dropdown for Women's -->
         <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="/women"
-            id="navbarDropdown"
-            role="button"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle active" href="/women" id="navbarDropdown" role="button" aria-expanded="false">
             Women's
           </a>
-          <!-- Main dropdown menu for Men's -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item "  aria-current="page" href="/womenbags">Bags</a></li>
+            <li><a class="dropdown-item" href="/womenbags">Bags</a></li>
             <li><a class="dropdown-item" href="/womenshoes">Shoes</a></li>
-        
-           
-           
           </ul>
         </li>
-        
-
-
-
       </ul>
 
+      <!-- Search Form -->
       <form class="d-flex" role="search">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search for product"
-          aria-label="Search"
-        />
+        <input class="form-control me-2" type="search" placeholder="Search for product" aria-label="Search" />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
-      
+
+      <!-- User and Cart Icons -->
       <ul class="navbar-nav ms-2 active" style="padding-left: 20px">
         <li class="nav-item me-3">
-          <i
-            style="cursor: pointer"
-            data-bs-toggle="modal"
-            href="#loginModal"
-            class="fa-regular fa-user fa-2x"
-          ></i>
+          <i style="cursor: pointer" data-bs-toggle="modal" href="#loginModal" class="fa-regular fa-user fa-2x"></i>
         </li>
+
+     
         <li class="nav-item">
           <i
             style="cursor: pointer"
             class="fa-solid fa-cart-shopping fa-2x"
+            data-bs-toggle="modal"
+            data-bs-target="#shoppingCartModal"
           ></i>
+          <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+            +1
+            <span class="visually-hidden">unread messages</span>
+          </span>
         </li>
       </ul>
     </div>
   </div>
 </nav>
+
+<!-- Modal for Shopping Cart -->
+<div class="modal fade" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="shoppingCartModalLabel">Shopping Cart</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      
+<!-- ---------------- -->
+
+
+<div class="container">
+  <div class="row">
+    <!-- Left Column for Image (col-6) -->
+    <div class="col-md-6">
+      <img src="/assets/images/womenshose.jpg" alt="Product Image" class="img-fluid" style="width: 100%; height: auto;" />
+    </div>
+
+    <!-- Right Column for Data (col-6) -->
+    <div class="col-md-6">
+      <h6>Adidas Shoes 
+       </h6>
+       <p> Size : 42</p>
+       <p> color : black</p>
+      <p style="color: red;">
+        <strong>Price : LE 3200</strong>
+      </p>
+      
+      <div class="input-group mb-3" style="max-width: 120px;">
+        <button class="btn btn-outline-secondary" type="button" (click)="decrement()">-</button>
+        <input type="text" class="form-control text-center" [value]="quantity" readonly />
+        <button class="btn btn-outline-secondary" type="button" (click)="increment()">+</button>
+      </div>
+      
+      
+      
+            
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ------------------------ -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
