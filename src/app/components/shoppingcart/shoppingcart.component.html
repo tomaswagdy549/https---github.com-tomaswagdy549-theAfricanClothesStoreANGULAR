@@ -1,1 +1,53 @@
-<p>shoppingcart works!</p>
+<br>
+<div class="container">
+    <div class="row">
+        
+      <!-- Left Column for Image (col-6) -->
+      <div class="col-md-6">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="/assets/images/womenshose.jpg" class="d-block custom-carousel-img" alt="Womens Hose" style="width: 600px;height: 400px;">
+              </div>
+              <div class="carousel-item">
+                <img src="/assets/images/wemonshose.jpg" class="d-block custom-carousel-img" alt="Second Image" style="width: 600px;height: 400px;">
+              </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="visually-hidden">Next</span>
+            </button>
+          </div>
+      </div>
+  
+      <!-- Right Column for Data (col-6) -->
+      <div class="col-md-6">
+        <h6>Adidas Advantage K-ef0211 Tennis Ftwr Black Shoes</h6>
+        <br>
+        <ul>
+          <li style="color: red;"><strong> Price : </strong> LE  3500</li>
+          <li><strong>Color:</strong> Black</li>
+          <li><strong>Size:</strong> 42 , 44 , 47 </li>
+        </ul>
+        <br>
+        <div class="input-group mb-3" style="max-width: 120px;">
+            <button class="btn btn-outline-secondary" type="button" (click)="decrement()">-</button>
+            <input type="text" class="form-control text-center" [value]="quantity" readonly />
+            <button class="btn btn-outline-secondary" type="button" (click)="increment()">+</button>
+        </div>
+        <br>
+        <button class="btn btn-primary">Add to Cart</button>
+        <br>
+        <br>
+        <h6 style="color: red;">HURRY! Exist Limited quantity IN STOCK.</h6>
+      </div>
+    </div>
+</div>
+
+
+
+<br>
