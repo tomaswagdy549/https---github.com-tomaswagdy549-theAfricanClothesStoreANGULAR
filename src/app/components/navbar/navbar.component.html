@@ -11,23 +11,16 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div
-      class="collapse navbar-collapse tocenter"
-      id="navbarSupportedContent"
-      style="padding-right: 200px"
-    >
+
+    <div class="collapse navbar-collapse tocenter" id="navbarSupportedContent" style="padding-right: 200px">
       <a href="/">
         <img
           src="assets/images/logo.png"
           alt="Logo"
-          style="
-            border-radius: 50%;
-            width: 80px;
-            height: 50px;
-            padding-left: 20px;
-          "
+          style="border-radius: 50%; width: 80px; height: 50px; padding-left: 20px;"
         />
       </a>
+
       <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 200px">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
@@ -37,15 +30,10 @@
             >Clothing</a
           >
         </li>
-        <!-- ----- -->
+
+        <!-- Dropdown for Men's -->
         <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="/men"
-            id="navbarDropdown"
-            role="button"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle active" href="/men" id="navbarDropdown" role="button" aria-expanded="false">
             Men's
           </a>
           <!-- Main dropdown menu for Men's -->
@@ -69,16 +57,9 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle"
-            href="/women"
-            id="navbarDropdown"
-            role="button"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle active" href="/women" id="navbarDropdown" role="button" aria-expanded="false">
             Women's
           </a>
-          <!-- Main dropdown menu for Men's -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <a class="dropdown-item" aria-current="page" href="/womenbags"
@@ -90,13 +71,9 @@
         </li>
       </ul>
 
+      <!-- Search Form -->
       <form class="d-flex" role="search">
-        <input
-          class="form-control me-2"
-          type="search"
-          placeholder="Search for product"
-          aria-label="Search"
-        />
+        <input class="form-control me-2" type="search" placeholder="Search for product" aria-label="Search" />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
 
@@ -110,11 +87,19 @@
             class="fa-regular fa-user fa-2x"
           ></i>
         </li>
+
+     
         <li class="nav-item">
           <i
             style="cursor: pointer"
             class="fa-solid fa-cart-shopping fa-2x"
+            data-bs-toggle="modal"
+            data-bs-target="#shoppingCartModal"
           ></i>
+          <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+            +1
+            <span class="visually-hidden">unread messages</span>
+          </span>
         </li>
       </ul>
     </div>

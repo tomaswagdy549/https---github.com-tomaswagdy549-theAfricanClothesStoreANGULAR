@@ -15,6 +15,7 @@ import { WomenComponent } from './components/women/women.component';
 import { Component } from '@angular/core';
 import { WomenshoesComponent } from './components/womenshoes/womenshoes.component';
 import { WomenbagsComponent } from './components/womenbags/womenbags.component';
+import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -32,5 +33,6 @@ export const routes: Routes = [
   {path:'women',component:WomenComponent},
   {path:'womenshoes',component:WomenshoesComponent},
   {path:'womenbags',component:WomenbagsComponent},
+  {path:'shoppingcart',component:ShoppingcartComponent},
   { path: '**', redirectTo: '' }
 ];
