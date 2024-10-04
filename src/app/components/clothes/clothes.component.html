@@ -28,7 +28,7 @@
             <a
               (click)="productDetailsComponent.setInput('product', product)"
               class="btn btn-outline-dark"
-              data-bs-target="#ProductInfoModal"
+              data-bs-target="#productInfoModal"
               data-bs-toggle="modal"
               >Details</a
             >
@@ -37,31 +37,30 @@
       </div>
     </div>
     <nav aria-label="Page navigation example">
-      <ul class="pagination">
-        <li *ngIf="currentPage != 1" class="page-item">
-          <a
-            class="btn btn-outline-dark"
-            (click)="moveToPage(pageSize, currentPage - 1)"
-            >Previous</a
-          >
-        </li>
-        <li *ngFor="let Page of totalPages; let index; as: i" class="page-item">
-          <a
-            [ngClass]="{ active: currentPage == Page }"
-            class="btn btn-outline-dark"
-            (click)="moveToPage(pageSize, Page)"
-            >{{ Page }}</a
-          >
-        </li>
-
-        <!-- <li *ngIf="currentPage != totalPages.length" class="page-item">
-          <a
-            class="btn btn-outline-dark"
-            (click)="moveToPage(pageSize, currentPage + 1)"
-            >Next</a
-          >
-        </li> -->
-      </ul>
+        <ul style="cursor: pointer;" class="pagination">
+          <li *ngIf="currentPage != 1" class="page-item">
+            <a
+              class="page-link"
+              (click)="moveToPage(pageSize, currentPage - 1)"
+              >Previous</a
+            >
+          </li>
+          <li *ngFor="let Page of totalPages; let index; as: i" class="page-item">
+            <a
+              [ngClass]="{ active: currentPage == Page }"
+              class="page-link"
+              (click)="moveToPage(pageSize, Page)"
+              >{{ Page }}</a
+            >
+          </li>
+          <li *ngIf="currentPage != totalPages.length" class="page-item">
+            <a
+              class="page-link"
+              (click)="moveToPage(pageSize, currentPage + 1)"
+              >next</a
+            >
+          </li>
+        </ul>  
     </nav>
   </div>
 </section>

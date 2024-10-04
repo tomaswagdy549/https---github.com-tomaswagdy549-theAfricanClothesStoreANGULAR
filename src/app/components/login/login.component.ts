@@ -35,8 +35,7 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const modalElement = document.querySelector("loginModal")
-      modalElement?.remove()
+      this.login();
   }
   }
   login() {
@@ -46,7 +45,7 @@ export class LoginComponent {
     };
     this.accountService.login(this.loggedUserDto).subscribe({
       next: (response) => {
-        response['message'].slice(29);
+        localStorage.setItem("token",response['token']) 
         document.getElementById("btn-close")?.click()
         this.router.navigateByUrl("/clothes")
       },
