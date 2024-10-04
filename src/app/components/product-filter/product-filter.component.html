@@ -22,9 +22,8 @@
                   formControlName="brandIds"
                   class="form-select"
                   id="brandIds"
-                  multiple
                 >
-                  <option value="0">Select a brand</option>
+                  <option selected>Select a brand</option>
                   <option *ngFor="let brand of brands" [value]="brand.id">
                     {{ brand.name }}
                   </option>
@@ -38,9 +37,8 @@
                   formControlName="categoryIds"
                   class="form-select"
                   id="categoryIds"
-                  multiple
                 >
-                  <option value="0">Select a category</option>
+                  <option selected>Select a category</option>
                   <option
                     [value]="category.id"
                     *ngFor="let category of categories"

@@ -33,7 +33,9 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/clothes">Clothing</a>
+          <a class="nav-link active" aria-current="page" href="/clothes"
+            >Clothing</a
+          >
         </li>
         <!-- ----- -->
         <li class="nav-item dropdown">
@@ -48,25 +50,23 @@
           </a>
           <!-- Main dropdown menu for Men's -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item "  aria-current="page" href="/shoes">Shoes</a></li>
+            <li>
+              <a class="dropdown-item" aria-current="page" href="/shoes"
+                >Shoes</a
+              >
+            </li>
             <li><a class="dropdown-item" href="/bagsmen">Bags</a></li>
-        
+
             <!-- Nested dropdown for Accessories aligned to the right -->
             <li class="dropdown-submenu">
-              <a class="dropdown-item" href="/accessors">
-                Accessories
-              </a>
+              <a class="dropdown-item" href="/accessors"> Accessories </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/socks">Socks</a></li>
                 <li><a class="dropdown-item" href="/belts">Belts</a></li>
-               
               </ul>
             </li>
           </ul>
         </li>
-        
-      
-
 
         <li class="nav-item dropdown">
           <a
@@ -80,17 +80,14 @@
           </a>
           <!-- Main dropdown menu for Men's -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item "  aria-current="page" href="/womenbags">Bags</a></li>
+            <li>
+              <a class="dropdown-item" aria-current="page" href="/womenbags"
+                >Bags</a
+              >
+            </li>
             <li><a class="dropdown-item" href="/womenshoes">Shoes</a></li>
-        
-           
-           
           </ul>
         </li>
-        
-
-
-
       </ul>
 
       <form class="d-flex" role="search">
@@ -102,10 +99,11 @@
         />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
-      
+
       <ul class="navbar-nav ms-2 active" style="padding-left: 20px">
         <li class="nav-item me-3">
           <i
+            *ngIf="!logged"
             style="cursor: pointer"
             data-bs-toggle="modal"
             href="#loginModal"
@@ -122,3 +120,4 @@
     </div>
   </div>
 </nav>
+<app-login></app-login>

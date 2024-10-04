@@ -11,7 +11,7 @@ export class ProductPhotoService {
   constructor(private http: HttpClient) {}
   getPhotoProductByProductId(ProductPhotoById: number): Observable<GetAllProductPhotosDTO> {
     return this.http.get<GetAllProductPhotosDTO>(
-      `${enviroment.baseUrl}/api/productPhoto/getPhotoProductByProductId/${ProductPhotoById}`
+      `${enviroment.baseUrl}/api/productPhoto/${ProductPhotoById}`
     );
   }
 }

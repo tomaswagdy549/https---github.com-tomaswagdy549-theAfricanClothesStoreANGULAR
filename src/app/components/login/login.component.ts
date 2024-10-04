@@ -35,8 +35,9 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.login();
-    }
+      const modalElement = document.querySelector("loginModal")
+      modalElement?.remove()
+  }
   }
   login() {
     this.loggedUserDto = {

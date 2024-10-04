@@ -15,7 +15,14 @@ export class ProductsService {
     pageNumber: number
   ): Observable<GetAllProductsDTO> {
     return this.http.get<GetAllProductsDTO>(
-      `${enviroment.baseUrl}/api/products/getAllProducts?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `${enviroment.baseUrl}/api/products?pageNumber=${pageNumber}&pageSize=${pageSize}`
+    );
+  }
+  getProduct(
+    id: number
+  ): Observable<Product> {
+    return this.http.get<Product>(
+      `${enviroment.baseUrl}/api/products/Id/${id}`,
     );
   }
   filterProducts(
