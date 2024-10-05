@@ -27,8 +27,8 @@ export class ProductsService {
   }
   filterProducts(
     querySearch: string
-  ): Observable<Product[]> {
-    return this.http.get<Product[]>(
+  ): Observable<GetAllProductsDTO> {
+    return this.http.get<GetAllProductsDTO>(
       `${enviroment.baseUrl}/api/products/filterProduct?${querySearch}`,
     );
   }

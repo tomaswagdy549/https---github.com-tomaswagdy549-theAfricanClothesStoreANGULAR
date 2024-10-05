@@ -11,11 +11,11 @@ import { BagsmenComponent } from './components/bagsmen/bagsmen.component';
 import { AccessorsComponent } from './components/accessors/accessors.component';
 import { SocksComponent } from './components/socks/socks.component';
 import { BeltsComponent } from './components/belts/belts.component';
-import { WomenComponent } from './components/women/women.component';
-import { Component } from '@angular/core';
 import { WomenshoesComponent } from './components/womenshoes/womenshoes.component';
 import { WomenbagsComponent } from './components/womenbags/womenbags.component';
 import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
+import { productResolver } from './guards/resolveGuard/product.guard';
+import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,15 +24,15 @@ export const routes: Routes = [
   { path: 'terms-of-service', component: TermsOfServiceComponent },
   { path: 'clothes', component: ClothesComponent },
   { path: '', component: HeaderComponent },
-  {path:'shoes',component:ShoesComponent},
-  {path:'men',component:MenComponent},
-  {path:'bagsmen',component:BagsmenComponent},
-  {path:'accessors',component:AccessorsComponent},
-  {path:'socks',component:SocksComponent},
-  {path:'belts',component:BeltsComponent},
-  {path:'women',component:WomenComponent},
-  {path:'womenshoes',component:WomenshoesComponent},
-  {path:'womenbags',component:WomenbagsComponent},
-  {path:'shoppingcart',component:ShoppingcartComponent},
-  { path: '**', redirectTo: '' }
+  { path: 'shoes', component: ShoesComponent },
+  { path: 'men', component: MenComponent,resolve:{products:productResolver} },
+  { path: 'women', component: MenComponent ,resolve:{products:femaleResolverGuard}},
+  { path: 'bagsmen', component: BagsmenComponent },
+  { path: 'accessors', component: AccessorsComponent },
+  { path: 'socks', component: SocksComponent },
+  { path: 'belts', component: BeltsComponent },
+  { path: 'womenshoes', component: WomenshoesComponent },
+  { path: 'womenbags', component: WomenbagsComponent },
+  { path: 'shoppingcart', component: ShoppingcartComponent },
+  { path: '**', redirectTo: '' },
 ];

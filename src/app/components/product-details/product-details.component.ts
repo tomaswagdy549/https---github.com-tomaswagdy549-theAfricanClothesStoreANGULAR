@@ -59,6 +59,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
         this.signalRService
           .joinGroup(`product${changes['productId'].currentValue}`)
           .then(() => {});
+          console.log(changes)
       }
     this.productId = changes['productId'].currentValue;
     this.ProductsService.getProduct(this.productId).subscribe({

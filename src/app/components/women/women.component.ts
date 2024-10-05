@@ -16,6 +16,7 @@ import {
  import { FormsModule } from '@angular/forms';
  import { ProductFilterComponent } from '../product-filter/product-filter.component';
  import { ProductDetailsComponent } from '../product-details/product-details.component';
+import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
  
 @Component({
   selector: 'app-women',
@@ -46,8 +47,8 @@ export class WomenComponent implements OnInit {
   ngOnInit(): void {
     this.moveToPage(this.pageSize, 1);
   }
-  show($event: Product[]) {
-    this.products = $event;
+  show($event: GetAllProductsDTO) {
+    this.products = $event.products;
   }
   moveToPage(pageSize: number, Page: number) {
     this.entry.clear()
