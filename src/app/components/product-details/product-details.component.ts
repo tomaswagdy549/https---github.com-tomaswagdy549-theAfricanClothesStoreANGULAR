@@ -13,12 +13,12 @@ import { ProductsService } from '../../services/productsService/products.service
 import { CartItem } from '../../models/cartItem/cart-item';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
 import { finalize } from 'rxjs';
-import { LoadingSpinnerComponent } from "../loadingSpinner/loading-spinner/loading-spinner.component";
+import { GlobalDataService } from '../../services/globalService/global-data.service';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, LoadingSpinnerComponent],
+  imports: [CommonModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
@@ -29,11 +29,11 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
   quantity: number = 0;
   requiredQuantity: number = 0;
   productPhotos: ProductPhoto[] = [];
-  callingApi: boolean = false;
   constructor(
     private ProductsService: ProductsService,
     private signalRService: SignalRService,
-    private cartItemService: CartItemService
+    private cartItemService: CartItemService,
+    private globalData: GlobalDataService
   ) {
     console.log('component created');
     this.signalRService.startConnection().then(() => {
@@ -59,7 +59,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
         this.signalRService
           .joinGroup(`product${changes['productId'].currentValue}`)
           .then(() => {});
-          console.log(changes)
+        console.log(changes);
       }
     this.productId = changes['productId'].currentValue;
     this.ProductsService.getProduct(this.productId).subscribe({
@@ -80,17 +80,21 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
       size: this.selectedSize,
       quantity: this.requiredQuantity,
     };
-    this.callingApi = true
-    this.cartItemService.addToCart(cartItem).pipe(finalize(()=>{
-      this.callingApi = false
-    })).subscribe({
-      next: (response) => {
-        console.log(response)
-      },
-      error: (err) => {
-        console.log(err)
-      },
-      
-    });
+    this.globalData.apiCallSubject.next(true);
+    this.cartItemService
+      .addToCart(cartItem)
+      .pipe(
+        finalize(() => {
+          this.globalData.apiCallSubject.next(false);
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 }
