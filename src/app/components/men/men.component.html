@@ -28,7 +28,9 @@
               Price: LE {{ product.price }}
             </p>
             <button
-              (click)="this.productDetailsComponent.setInput('productId', product.id)"
+              (click)="
+                this.productDetailsComponent.setInput('productId', product.id)
+              "
               type="button"
               class="btn btn-secondary"
               data-bs-target="#productInfoModal"
@@ -43,20 +45,29 @@
     <div>
       <div>
         <nav aria-label="Page navigation example">
-          <ul class="pagination">
+          <ul style="cursor: pointer" class="pagination">
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Previous">
+              <a
+                class="page-link"
+                (click)="moveToPage(currentPage - 1)"
+                aria-label="Previous"
+              >
                 <span aria-hidden="true">&laquo;</span>
               </a>
             </li>
             <li
+              [ngClass]="{ active: (i+1) == currentPage }"
               *ngFor="let page of totalPages; let i = index"
               class="page-item"
             >
-              <a class="page-link" href="#">{{ i + 1 }}</a>
+              <a (click)="moveToPage(i+1)" class="page-link">{{ i +1  }}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" href="#" aria-label="Next">
+              <a
+                class="page-link"
+                (click)="moveToPage(currentPage + 1)"
+                aria-label="Next"
+              >
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>

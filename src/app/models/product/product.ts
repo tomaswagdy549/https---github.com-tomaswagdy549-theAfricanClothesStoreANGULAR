@@ -15,4 +15,5 @@ export class Product {
     brand!:Brand 
     id!:number
     mainPhotoUrl!:string
+    gender!:string
 }

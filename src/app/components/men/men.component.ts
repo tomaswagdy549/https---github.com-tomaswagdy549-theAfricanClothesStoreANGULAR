@@ -11,6 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductFilterComponent } from '../product-filter/product-filter.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from '../../services/productsService/products.service';
 
 @Component({
   selector: 'app-men',
@@ -25,8 +26,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './men.component.css',
 })
 export class MenComponent implements OnInit {
-  pageSize: number = 6;
   currentPage: number = 1;
+  searchFilterQuery: string = '';
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
@@ -35,25 +36,43 @@ export class MenComponent implements OnInit {
   productDetailsComponent!: ComponentRef<ProductDetailsComponent>;
   constructor(
     private resolver: ViewContainerRef,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private productService: ProductsService
   ) {
     this.entry = resolver;
   }
 
   ngOnInit(): void {
-    console.log(this.activatedRoute.snapshot.data['products']);
     this.products = this.activatedRoute.snapshot.data['products'].entities;
+    for (let i = 1; i <= this.activatedRoute.snapshot.data['products'].totalPages; i++) {
+      this.totalPages.push(i);
+    }    
+    this.searchFilterQuery = this.products[0].gender;
     this.totalPages = Array.from({
-      length: Math.ceil(this.products.length / this.pageSize),
+      length: Math.ceil(this.products.length / 6),
     });
     this.productDetailsComponent = this.entry.createComponent(
       ProductDetailsComponent
     );
     this.selectedProductId = this.products[0].id;
     this.productDetailsComponent.setInput('productId', this.selectedProductId);
+    
   }
-  moveToPage(pageSize: number, Page: number) {
-    this.entry.clear();
+  moveToPage(currentPage: number) {
+    this.productService
+      .filterProducts(
+        `gender=${this.searchFilterQuery}&pageNumber=${currentPage}`
+      )
+      .subscribe({
+        next: (response) => {
+          this.products = response.entities;
+          this.currentPage = response.currentPage
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
   }
 
   currentImage: { [key: number]: string } = {};

@@ -42,13 +42,13 @@ export class ClothesComponent implements OnInit {
     this.moveToPage(this.pageSize, 1);
   }
   showFilteredProducts($event: GetAllProductsDTO) {
-    this.products = $event.products;
+    this.products = $event.entities;
   }
   moveToPage(pageSize: number, Page: number) {
     this.entry.remove();
     this.productsService.getAllProducts(pageSize, Page).subscribe({
       next: (res) => {
-        this.products = res.products;
+        this.products = res.entities;
         this.currentPage = res['currentPage'];
         this.totalPages = [];
         this.sentProduct = this.products[0];

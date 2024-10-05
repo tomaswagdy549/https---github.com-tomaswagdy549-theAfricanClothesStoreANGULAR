@@ -47,13 +47,13 @@ export class SocksComponent implements OnInit  {
     this.moveToPage(this.pageSize, 1);
   }
   show($event: GetAllProductsDTO) {
-    this.products = $event.products;
+    this.products = $event.entities;
   }
   moveToPage(pageSize: number, Page: number) {
     this.entry.clear()
     this.productsService.getAllProducts(pageSize, Page).subscribe({
       next: (res) => {
-        this.products = res.products;
+        this.products = res.entities;
         this.currentPage = res['currentPage'];
         this.totalPages = [];
         this.sentProduct = this.products[0];
