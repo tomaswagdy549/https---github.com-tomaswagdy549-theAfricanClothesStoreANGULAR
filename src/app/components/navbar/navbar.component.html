@@ -42,13 +42,7 @@
 
         <!-- Dropdown for Men's -->
         <li class="nav-item dropdown">
-          <a
-            class="nav-link dropdown-toggle active"
-            href="/men"
-            id="navbarDropdown"
-            role="button"
-            aria-expanded="false"
-          >
+          <a class="nav-link dropdown-toggle active" href="/men" id="navbarDropdown" role="button" aria-expanded="false">
             Men's
           </a>
           <!-- Main dropdown menu for Men's -->
@@ -77,6 +71,7 @@
             href="/women"
             id="navbarDropdown"
             role="button"
+           
             aria-expanded="false"
           >
             Women's
@@ -105,13 +100,7 @@
 
       <ul class="navbar-nav ms-2 active" style="padding-left: 20px">
         <li class="nav-item me-3">
-          <i
-            *ngIf="!logged"
-            style="cursor: pointer"
-            data-bs-toggle="modal"
-            href="#loginModal"
-            class="fa-regular fa-user fa-2x"
-          ></i>
+          <i style="cursor: pointer" data-bs-toggle="modal" href="#loginModal" class="fa-regular fa-user fa-2x"></i>
           <button
             *ngIf="logged"
             class="btn btn-outline-dark"
@@ -141,3 +130,117 @@
   </div>
 </nav>
 <app-login></app-login>
+
+
+<!-- Modal for Shopping Cart -->
+<div class="modal fade" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="shoppingCartModalLabel">Shopping Cart</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- ---------------- -->
+
+        <div class="container">
+          <div class="row">
+            <!-- Vertical scrollable container -->
+            <div class="scroll-container" style="overflow-y: auto; height: 400px;">
+              <!-- First Card -->
+              <div class="col-md-12 mb-3">
+                <div class="row">
+                  <!-- Image Column -->
+                  <div class="col-md-6">
+                    <a href="/shoppingcart">
+                      <img src="/assets/images/womenshose.jpg" alt="Product Image" class="img-fluid" style="width: 100%;" />
+                    </a>
+                  </div>
+        
+                  <!-- Info Column -->
+                  <div class="col-md-6">
+                    <h6>Adidas Shoes</h6>
+                    <p>Size: 42</p>
+                    <p>Color: Black</p>
+                    <p style="color: red;"><strong>Price: LE 3200</strong></p>
+                    <div class="input-group mb-3" style="max-width: 120px;">
+                      <!-- <button class="btn btn-outline-secondary" type="button" (click)="decrement()">-</button>
+                      <input type="text" class="form-control text-center" [value]="quantity" readonly />
+                      <button class="btn btn-outline-secondary" type="button" (click)="increment()">+</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+              <!-- Second Card -->
+              <div class="col-md-12 mb-3">
+                <div class="row">
+                  <!-- Image Column -->
+                  <div class="col-md-6">
+                    <a href="/shoppingcart">
+                      <img src="/assets/images/womenshose.jpg" alt="Product Image" class="img-fluid" style="width: 100%;" />
+                    </a>
+                  </div>
+        
+                  <!-- Info Column -->
+                  <div class="col-md-6">
+                    <h6>Adidas Shoes</h6>
+                    <p>Size: 42</p>
+                    <p>Color: Black</p>
+                    <p style="color: red;"><strong>Price: LE 3200</strong></p>
+                    <div class="input-group mb-3" style="max-width: 120px;">
+                      <!-- <button class="btn btn-outline-secondary" type="button" (click)="decrement()">-</button>
+                      <input type="text" class="form-control text-center" [value]="quantity" readonly />
+                      <button class="btn btn-outline-secondary" type="button" (click)="increment()">+</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <div class="col-md-12 mb-3">
+                <div class="row">
+                  <!-- Image Column -->
+                  <div class="col-md-6">
+                    <a href="/shoppingcart">
+                      <img src="/assets/images/womenshose.jpg" alt="Product Image" class="img-fluid" style="width: 100%;" />
+                    </a>
+                  </div>
+        
+                  <!-- Info Column -->
+                  <div class="col-md-6">
+                    <h6>Adidas Shoes</h6>
+                    <p>Size: 42</p>
+                    <p>Color: Black</p>
+                    <p style="color: red;"><strong>Price: LE 3200</strong></p>
+                    <div class="input-group mb-3" style="max-width: 120px;">
+                      <!-- <button class="btn btn-outline-secondary" type="button" (click)="decrement()">-</button>
+                      <input type="text" class="form-control text-center" [value]="quantity" readonly />
+                      <button class="btn btn-outline-secondary" type="button" (click)="increment()">+</button> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+              <!-- Add more cards similarly... -->
+            </div>
+          </div>
+        </div>
+        
+        
+
+
+
+
+
+        <!-- ------------------------ -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Checkout</button>
+      </div>
+    </div>
+  </div>
+</div>
