@@ -10,6 +10,8 @@ import { CommonModule } from '@angular/common';
 import { AccountService } from '../../services/accountService/account.service';
 import { LoggedUserDTO } from '../../models/DTOs/requestDTO/loggedUserDTO/logged-user-dto';
 import { Router } from '@angular/router';
+import { GlobalDataService } from '../../services/globalService/global-data.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -21,7 +23,11 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   loggedUserDto!: LoggedUserDTO;
   message!: string;
-  constructor(private accountService: AccountService,private router:Router) {}
+  constructor(
+    private accountService: AccountService,
+    private globalDateService: GlobalDataService,
+    private router: Router
+  ) {}
   loginForm = new FormGroup({
     email: new FormControl<string>('', [Validators.required, Validators.email]),
     password: new FormControl<string>('', [
@@ -36,20 +42,29 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.login();
-  }
+    }
   }
   login() {
     this.loggedUserDto = {
       email: this.loginForm.value.email!,
       password: this.loginForm.value.password!,
     };
-    this.accountService.login(this.loggedUserDto).subscribe({
-      next: (response) => {
-        localStorage.setItem("token",response['token']) 
-        document.getElementById("btn-close")?.click()
-        this.router.navigateByUrl("/clothes")
-      },
-      error: (error) => this.message = error.error['message'],
-    });
+    this.globalDateService.apiCallSubject.next(true);
+    this.accountService
+      .login(this.loggedUserDto)
+      .pipe(
+        finalize(() => {
+          this.globalDateService.apiCallSubject.next(false);
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          localStorage.setItem('token', response['token']);
+          this.accountService.logUser()
+          document.getElementById('btn-close')?.click();
+          this.router.navigateByUrl('/clothes');
+        },
+        error: (error) => (this.message = error.error['message']),
+      });
   }
 }

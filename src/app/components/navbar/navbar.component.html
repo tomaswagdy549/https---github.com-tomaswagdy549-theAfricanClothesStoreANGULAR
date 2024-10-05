@@ -12,12 +12,21 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse tocenter" id="navbarSupportedContent" style="padding-right: 200px">
+    <div
+      class="collapse navbar-collapse tocenter"
+      id="navbarSupportedContent"
+      style="padding-right: 200px"
+    >
       <a href="/">
         <img
           src="assets/images/logo.png"
           alt="Logo"
-          style="border-radius: 50%; width: 80px; height: 50px; padding-left: 20px;"
+          style="
+            border-radius: 50%;
+            width: 80px;
+            height: 50px;
+            padding-left: 20px;
+          "
         />
       </a>
 
@@ -33,7 +42,13 @@
 
         <!-- Dropdown for Men's -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="/men" id="navbarDropdown" role="button" aria-expanded="false">
+          <a
+            class="nav-link dropdown-toggle active"
+            href="/men"
+            id="navbarDropdown"
+            role="button"
+            aria-expanded="false"
+          >
             Men's
           </a>
           <!-- Main dropdown menu for Men's -->
@@ -57,7 +72,13 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle active" href="/women" id="navbarDropdown" role="button" aria-expanded="false">
+          <a
+            class="nav-link dropdown-toggle active"
+            href="/women"
+            id="navbarDropdown"
+            role="button"
+            aria-expanded="false"
+          >
             Women's
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -73,7 +94,12 @@
 
       <!-- Search Form -->
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search for product" aria-label="Search" />
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Search for product"
+          aria-label="Search"
+        />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
 
@@ -86,17 +112,26 @@
             href="#loginModal"
             class="fa-regular fa-user fa-2x"
           ></i>
+          <button
+            *ngIf="logged"
+            class="btn btn-outline-dark"
+            (click)="logOut()"
+          >
+            LogOut
+          </button>
         </li>
 
-     
-        <li class="nav-item">
+        <li *ngIf="logged" class="nav-item">
           <i
+            
             style="cursor: pointer"
             class="fa-solid fa-cart-shopping fa-2x"
             data-bs-toggle="modal"
             data-bs-target="#shoppingCartModal"
           ></i>
-          <span class="position-absolute translate-middle badge rounded-pill bg-danger">
+          <span
+            class="position-absolute translate-middle badge rounded-pill bg-danger"
+          >
             +1
             <span class="visually-hidden">unread messages</span>
           </span>

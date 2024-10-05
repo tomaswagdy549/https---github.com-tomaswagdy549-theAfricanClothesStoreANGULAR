@@ -12,6 +12,9 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
+logOut() {
+throw new Error('Method not implemented.');
+}
   logged: boolean = false;
   constructor(private accountService: AccountService) {
     this.accountService.isLogged.subscribe({

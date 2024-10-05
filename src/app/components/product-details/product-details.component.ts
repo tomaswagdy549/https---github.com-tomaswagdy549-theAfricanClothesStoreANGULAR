@@ -14,6 +14,7 @@ import { CartItem } from '../../models/cartItem/cart-item';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
 import { finalize } from 'rxjs';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
+import { AccountService } from '../../services/accountService/account.service';
 
 @Component({
   selector: 'app-product-details',
@@ -30,10 +31,11 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
   requiredQuantity: number = 0;
   productPhotos: ProductPhoto[] = [];
   constructor(
-    private ProductsService: ProductsService,
+    private productsService: ProductsService,
     private signalRService: SignalRService,
     private cartItemService: CartItemService,
-    private globalData: GlobalDataService
+    private globalDataService: GlobalDataService,
+    private accountService: AccountService,
   ) {
     console.log('component created');
     this.signalRService.startConnection().then(() => {
@@ -62,7 +64,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
         console.log(changes);
       }
     this.productId = changes['productId'].currentValue;
-    this.ProductsService.getProduct(this.productId).subscribe({
+    this.productsService.getProduct(this.productId).subscribe({
       next: (response) => {
         this.product = response;
         this.selectedSize = this.product.productAvailableSizes[0].availabeSize;
@@ -75,17 +77,17 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
   }
   addToCart(productId: number) {
     let cartItem: CartItem = {
-      cartId: '1eab183e-ed20-4682-8261-fe37d6a4aa79',
+      cartId: this.accountService.getCartId(),
       productId: productId,
       size: this.selectedSize,
       quantity: this.requiredQuantity,
     };
-    this.globalData.apiCallSubject.next(true);
+    this.globalDataService.apiCallSubject.next(true);
     this.cartItemService
       .addToCart(cartItem)
       .pipe(
         finalize(() => {
-          this.globalData.apiCallSubject.next(false);
+          this.globalDataService.apiCallSubject.next(false);
         })
       )
       .subscribe({

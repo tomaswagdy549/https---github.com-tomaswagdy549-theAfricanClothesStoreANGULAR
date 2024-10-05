@@ -5,6 +5,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoadingSpinnerComponent } from './components/loadingSpinner/loading-spinner/loading-spinner.component';
 import { enviroment } from './enviroment/enviroment';
+import { AccountService } from './services/accountService/account.service';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -20,7 +21,11 @@ import { enviroment } from './enviroment/enviroment';
 })
 export class AppComponent  {
   title = 'ecommerce';
-  constructor() {}
+  constructor(private accountService:AccountService) {
+    if(localStorage.getItem("token")!=null){
+      this.accountService.isLogged.next(true)
+    }
+  }
 
   ngOnInit(): void {}
 }
