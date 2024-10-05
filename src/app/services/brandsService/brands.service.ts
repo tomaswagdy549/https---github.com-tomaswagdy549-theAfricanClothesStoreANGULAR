@@ -12,10 +12,10 @@ export class BrandsService {
   constructor(private http: HttpClient) {}
   getAllBrands(pageSize: number, pageNumber: number): Observable<GetAllBrandsDTO> {
     return this.http.get<GetAllBrandsDTO>(
-      `${enviroment.baseUrl}/api/brand/getAllBrands?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `${enviroment.baseUrl}/api/brand?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
   getBrandById(brandId:number) : Observable<Brand> {
-    return this.http.get<Brand>(`${enviroment.baseUrl}/api/brand/getBrandById/${brandId}`);
+    return this.http.get<Brand>(`${enviroment.baseUrl}/api/brand/${brandId}`);
   }
 }

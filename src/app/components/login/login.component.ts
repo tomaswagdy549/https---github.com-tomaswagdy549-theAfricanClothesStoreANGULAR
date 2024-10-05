@@ -36,7 +36,7 @@ export class LoginComponent {
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.login();
-    }
+  }
   }
   login() {
     this.loggedUserDto = {
@@ -45,7 +45,7 @@ export class LoginComponent {
     };
     this.accountService.login(this.loggedUserDto).subscribe({
       next: (response) => {
-        response['message'].slice(29);
+        localStorage.setItem("token",response['token']) 
         document.getElementById("btn-close")?.click()
         this.router.navigateByUrl("/clothes")
       },

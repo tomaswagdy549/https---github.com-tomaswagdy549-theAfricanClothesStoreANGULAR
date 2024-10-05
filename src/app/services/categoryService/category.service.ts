@@ -11,9 +11,9 @@ import { Category } from '../../models/category/category';
 export class CategoryService {
   constructor(private http: HttpClient) { }
   getAllCategories(pageSize:number,pageNumber:number) : Observable<GetAllCategoriesDTO> {
-    return this.http.get<GetAllCategoriesDTO>(`${enviroment.baseUrl}/api/category/getAllCategories?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+    return this.http.get<GetAllCategoriesDTO>(`${enviroment.baseUrl}/api/category?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
   getCategoryById(categoryId:number) : Observable<Category> {
-    return this.http.get<Category>(`${enviroment.baseUrl}/api/category/getCategoryById/${categoryId}`);
+    return this.http.get<Category>(`${enviroment.baseUrl}/api/category/${categoryId}`);
   }
 }

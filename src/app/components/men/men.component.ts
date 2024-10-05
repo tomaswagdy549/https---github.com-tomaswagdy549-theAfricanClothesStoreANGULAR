@@ -1,153 +1,81 @@
-import { Component,
-  ComponentFactoryResolver,
+import {
+  Component,
   ComponentRef,
   OnInit,
   ViewChild,
-  ViewContainerRef, } 
-  from '@angular/core';
-  import { ProductsService } from '../../services/productsService/products.service';
-  import { Product } from '../../models/product/product';
-  import { CommonModule } from '@angular/common';
-  import { FormsModule } from '@angular/forms';
-  import { ProductFilterComponent } from '../product-filter/product-filter.component';
-  import { ProductDetailsComponent } from '../product-details/product-details.component';
-  
+  ViewContainerRef,
+} from '@angular/core';
+import { Product } from '../../models/product/product';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ProductFilterComponent } from '../product-filter/product-filter.component';
+import { ProductDetailsComponent } from '../product-details/product-details.component';
+import { ActivatedRoute } from '@angular/router';
+import { ProductsService } from '../../services/productsService/products.service';
+
 @Component({
   selector: 'app-men',
   standalone: true,
-  imports: [   CommonModule,
+  imports: [
+    CommonModule,
     FormsModule,
     ProductFilterComponent,
-    ProductDetailsComponent,],
+    ProductDetailsComponent,
+  ],
   templateUrl: './men.component.html',
-  styleUrl: './men.component.css'
+  styleUrl: './men.component.css',
 })
-export class MenComponent implements OnInit{
-  pageSize: number = 6;
+export class MenComponent implements OnInit {
   currentPage: number = 1;
+  searchFilterQuery: string = '';
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
-  @ViewChild('container', { read: ViewContainerRef }) entry:ViewContainerRef;
-  productDetailsComponent!:ComponentRef<ProductDetailsComponent>
-  constructor(private productsService: ProductsService,private resolver: ViewContainerRef) {
-    this.entry=resolver,
-    this.cards.forEach(card => {
-      this.currentImage[card.id] = card.img;
-    });
+  selectedProductId: number = 0;
+  @ViewChild('container', { read: ViewContainerRef }) entry: ViewContainerRef;
+  productDetailsComponent!: ComponentRef<ProductDetailsComponent>;
+  constructor(
+    private resolver: ViewContainerRef,
+    private activatedRoute: ActivatedRoute,
+    private productService: ProductsService
+  ) {
+    this.entry = resolver;
   }
 
   ngOnInit(): void {
-    this.moveToPage(this.pageSize, 1);
-  }
-  show($event: Product[]) {
-    this.products = $event;
-  }
-  moveToPage(pageSize: number, Page: number) {
-    this.entry.clear()
-    this.productsService.getAllProducts(pageSize, Page).subscribe({
-      next: (res) => {
-        this.products = res.products;
-        this.currentPage = res['currentPage'];
-        this.totalPages = [];
-        this.sentProduct = this.products[0];
-        this.productDetailsComponent = this.entry.createComponent(ProductDetailsComponent)
-        this.productDetailsComponent.setInput('product',this.sentProduct)    
-        for (let i = 1; i <= res['totalPages']; i++) {
-          this.totalPages.push(i);
-        }
-      },
-      error: (err) => {
-        console.log(err);
-      },
+    this.products = this.activatedRoute.snapshot.data['products'].entities;
+    for (let i = 1; i <= this.activatedRoute.snapshot.data['products'].totalPages; i++) {
+      this.totalPages.push(i);
+    }    
+    this.searchFilterQuery = this.products[0].gender;
+    this.totalPages = Array.from({
+      length: Math.ceil(this.products.length / 6),
     });
+    this.productDetailsComponent = this.entry.createComponent(
+      ProductDetailsComponent
+    );
+    this.selectedProductId = this.products[0].id;
+    this.productDetailsComponent.setInput('productId', this.selectedProductId);
+    
   }
-
-
-  cards = [
-    {
-      id: 1,
-      img: 'assets/images/manshose.jpg',
-      imgHover: 'assets/images/manshose2.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },
-    {
-      id: 2,
-      img: 'assets/images/clothing men.jpg',
-      imgHover: 'assets/images/jacket.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },
-    {
-      id: 3,
-      img: 'assets/images/headerimg1.jpg',
-      imgHover: 'assets/images/headerimg2.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },
-
-    {
-      id: 4,
-      img: 'assets/images/hoodies.jpg',
-      imgHover: 'assets/images/jacket.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 5,
-      img: 'assets/images/swimware.jpg',
-      imgHover: 'assets/images/swimwareimage.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 6,
-      img: 'assets/images/headerimg1.jpg',
-      imgHover: 'assets/images/headerimg2.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 7,
-      img: 'assets/images/clothing men.jpg',
-      imgHover: 'assets/images/jacket.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 8,
-      img: 'assets/images/hoodies.jpg',
-      imgHover: 'assets/images/jacket.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },
-    {
-      id: 9,
-      img: 'assets/images/manshose.jpg',
-      imgHover: 'assets/images/manshose2.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 10,
-      img: 'assets/images/swimware.jpg',
-      imgHover: 'assets/images/swimwareimage.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 11,
-      img: 'assets/images/clothing men.jpg',
-      imgHover: 'assets/images/jacket.jpg',
-      text: 'Card 1 description',
-      price: 100
-    },{
-      id: 12,
-      img: 'assets/images/hoodies.jpg',
-      imgHover: 'assets/images/jacket.jpg',
-      text: 'Card 1 description',
-      price: 100
-    }
- 
-  ];
+  moveToPage(currentPage: number) {
+    this.productService
+      .filterProducts(
+        `gender=${this.searchFilterQuery}&pageNumber=${currentPage}`
+      )
+      .subscribe({
+        next: (response) => {
+          this.products = response.entities;
+          this.currentPage = response.currentPage
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+  }
 
   currentImage: { [key: number]: string } = {};
-
 
   changeImage(cardId: number, hoverImg: string) {
     this.currentImage[cardId] = hoverImg;
@@ -156,15 +84,4 @@ export class MenComponent implements OnInit{
   resetImage(cardId: number, defaultImg: string) {
     this.currentImage[cardId] = defaultImg;
   }
-
-
 }
-
-
-
-
-
-
-
-
-

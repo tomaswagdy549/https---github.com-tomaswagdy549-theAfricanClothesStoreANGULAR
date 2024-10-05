@@ -7,12 +7,13 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Product } from '../../models/product/product';
-import { ProductPhotoService } from '../../services/productPhotoService/product-photo.service';
 import { ProductPhoto } from '../../models/productPhoto/product-photo';
-import { CategoryService } from '../../services/categoryService/category.service';
-import { BrandsService } from '../../services/brandsService/brands.service';
 import { SignalRService } from '../../services/signalRService/signal-r.service';
-import { Subscription } from 'rxjs';
+import { ProductsService } from '../../services/productsService/products.service';
+import { CartItem } from '../../models/cartItem/cart-item';
+import { CartItemService } from '../../services/cartItemService/cart-item.service';
+import { finalize } from 'rxjs';
+import { GlobalDataService } from '../../services/globalService/global-data.service';
 
 @Component({
   selector: 'app-product-details',
@@ -22,68 +23,78 @@ import { Subscription } from 'rxjs';
   styleUrl: './product-details.component.css',
 })
 export class ProductDetailsComponent implements OnChanges, OnDestroy {
-  @Input() product!: Product;
+  @Input() productId!: number;
+  product!: Product;
+  selectedSize: string = '';
+  quantity: number = 0;
+  requiredQuantity: number = 0;
   productPhotos: ProductPhoto[] = [];
-  private messageSubscription!: Subscription | null;
   constructor(
-    private productPhotoService: ProductPhotoService,
-    private categoryService: CategoryService,
-    private brandService: BrandsService,
-    private signalRService: SignalRService
+    private ProductsService: ProductsService,
+    private signalRService: SignalRService,
+    private cartItemService: CartItemService,
+    private globalData: GlobalDataService
   ) {
     console.log('component created');
     this.signalRService.startConnection().then(() => {
       this.signalRService.addReceiveMessageListener(() => {});
-      this.signalRService.joinGroup(`product${this.product.id}`);
+      this.signalRService.joinGroup(`product${this.productId}`);
     });
   }
   ngOnDestroy(): void {
     console.log('component destroyed');
-    this.signalRService.leaveGroup(`product${this.product.id}`).then(() => {
+    this.signalRService.leaveGroup(`product${this.productId}`).then(() => {
       this.signalRService.disconnect();
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['product'].previousValue != undefined)
+    if (changes['productId'].previousValue != undefined)
       if (
-        changes['product'].currentValue != changes['product'].previousValue.id
+        changes['productId'].currentValue !=
+        changes['productId'].previousValue.id
       ) {
         this.signalRService
-          .leaveGroup(`product${changes['product'].previousValue.id}`)
+          .leaveGroup(`product${changes['productId'].previousValue}`)
           .then(() => {});
         this.signalRService
-          .joinGroup(`product${changes['product'].currentValue.id}`)
+          .joinGroup(`product${changes['productId'].currentValue}`)
           .then(() => {});
+        console.log(changes);
       }
-    this.product = changes['product'].currentValue;
-    this.getProductPhotos(this.product.id);
-    this.getCategory(this.product.categoryId);
-    this.getBrand(this.product.brandId);
-  }
-  getCategory(categoryId: number) {
-    this.categoryService.getCategoryById(categoryId).subscribe({
+    this.productId = changes['productId'].currentValue;
+    this.ProductsService.getProduct(this.productId).subscribe({
       next: (response) => {
-        this.product.category = response;
+        this.product = response;
+        this.selectedSize = this.product.productAvailableSizes[0].availabeSize;
+        this.quantity = this.product.productAvailableSizes[0].quantity;
       },
-      error: (error) => {},
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
-  getBrand(brandId: number) {
-    this.brandService.getBrandById(brandId).subscribe({
-      next: (response) => {
-        this.product.brand = response;
-      },
-      error: (error) => {},
-    });
-  }
-  getProductPhotos(productId: number) {
-    this.productPhotoService.getPhotoProductByProductId(productId).subscribe({
-      next: (response) => {
-        this.productPhotos = response.photos;
-      },
-      error: (error) => {
-        console.log(error);
-      },
-    });
+  addToCart(productId: number) {
+    let cartItem: CartItem = {
+      cartId: '1eab183e-ed20-4682-8261-fe37d6a4aa79',
+      productId: productId,
+      size: this.selectedSize,
+      quantity: this.requiredQuantity,
+    };
+    this.globalData.apiCallSubject.next(true);
+    this.cartItemService
+      .addToCart(cartItem)
+      .pipe(
+        finalize(() => {
+          this.globalData.apiCallSubject.next(false);
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 }

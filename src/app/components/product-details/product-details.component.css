@@ -5,3 +5,8 @@
     display: block;
     margin: 0 auto;
 }
+
+.sizes:hover,.list-group-item.active {
+    background-color: #000000;
+    color: white;
+}

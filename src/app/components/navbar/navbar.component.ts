@@ -1,25 +1,23 @@
 import { Component, AfterViewInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LoginComponent } from "../login/login.component";
-import { RegisterComponent } from "../register/register.component";
+import { LoginComponent } from '../login/login.component';
+import { AccountService } from '../../services/accountService/account.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, LoginComponent],
+  imports: [RouterModule, LoginComponent,CommonModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
-  quantity: number = 0; // Default quantity
-
-  increment() {
-    this.quantity++;
-  }
-
-  decrement() {
-    if (this.quantity > 0) {
-      this.quantity--;
-    }
+  logged: boolean = false;
+  constructor(private accountService: AccountService) {
+    this.accountService.isLogged.subscribe({
+      next: (value) => {
+        this.logged = value; 
+      },
+    });
   }
 }

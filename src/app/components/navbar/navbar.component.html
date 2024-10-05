@@ -26,7 +26,9 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/clothes">Clothing</a>
+          <a class="nav-link active" aria-current="page" href="/clothes"
+            >Clothing</a
+          >
         </li>
 
         <!-- Dropdown for Men's -->
@@ -35,12 +37,18 @@
             aria-expanded="false">
             Men's
           </a>
-          <ul class="dropdown-menu " aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/shoes">Shoes</a></li>
+          <!-- Main dropdown menu for Men's -->
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a class="dropdown-item" aria-current="page" href="/shoes"
+                >Shoes</a
+              >
+            </li>
             <li><a class="dropdown-item" href="/bagsmen">Bags</a></li>
-            <!-- Nested dropdown for Accessories -->
+
+            <!-- Nested dropdown for Accessories aligned to the right -->
             <li class="dropdown-submenu">
-              <a class="dropdown-item" href="/accessors">Accessories</a>
+              <a class="dropdown-item" href="/accessors"> Accessories </a>
               <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item" href="/socks">Socks</a></li>
                 <li><a class="dropdown-item" href="/belts">Belts</a></li>
@@ -49,14 +57,17 @@
           </ul>
         </li>
 
-        <!-- Dropdown for Women's -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle active" href="/women" id="navbarDropdown" role="button"
             aria-expanded="false">
             Women's
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="/womenbags">Bags</a></li>
+            <li>
+              <a class="dropdown-item" aria-current="page" href="/womenbags"
+                >Bags</a
+              >
+            </li>
             <li><a class="dropdown-item" href="/womenshoes">Shoes</a></li>
           </ul>
         </li>
@@ -68,7 +79,6 @@
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
 
-      <!-- User and Cart Icons -->
       <ul class="navbar-nav ms-2 active" style="padding-left: 20px">
         <li class="nav-item me-3">
           <i style="cursor: pointer" data-bs-toggle="modal" href="#loginModal" class="fa-regular fa-user fa-2x"></i>
@@ -87,6 +97,8 @@
     </div>
   </div>
 </nav>
+<app-login></app-login>
+
 
 <!-- Modal for Shopping Cart -->
 <div class="modal fade" id="shoppingCartModal" tabindex="-1" aria-labelledby="shoppingCartModalLabel"

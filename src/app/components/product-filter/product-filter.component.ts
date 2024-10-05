@@ -12,6 +12,7 @@ import { Brand } from '../../models/brand/brand';
 import { Category } from '../../models/category/category';
 import { ProductsService } from '../../services/productsService/products.service';
 import { Product } from '../../models/product/product';
+import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
 
 @Component({
   selector: 'app-product-filter',
@@ -33,7 +34,7 @@ export class ProductFilterComponent {
     maxPrice: new FormControl<number | null>(null, [Validators.min(0)]),
     name: new FormControl<string>(''),
   });
-  @Output() productsFiltered = new EventEmitter<Product[]>()
+  @Output() productsFiltered = new EventEmitter<GetAllProductsDTO>()
   constructor(
     private brandsService: BrandsService,
     private CategoryService: CategoryService,
