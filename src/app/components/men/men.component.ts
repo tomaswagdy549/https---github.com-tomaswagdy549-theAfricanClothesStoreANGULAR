@@ -31,32 +31,24 @@ export class MenComponent implements OnInit {
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
-  selectedProductId: number = 0;
-  @ViewChild('container', { read: ViewContainerRef }) entry: ViewContainerRef;
-  productDetailsComponent!: ComponentRef<ProductDetailsComponent>;
+  selectedProductId: number = 1;
   constructor(
-    private resolver: ViewContainerRef,
     private activatedRoute: ActivatedRoute,
     private productService: ProductsService
   ) {
-    this.entry = resolver;
+    this.products = this.activatedRoute.snapshot.data['products'].entities;
+    this.selectedProductId = this.products[0].id
   }
 
   ngOnInit(): void {
-    this.products = this.activatedRoute.snapshot.data['products'].entities;
     for (let i = 1; i <= this.activatedRoute.snapshot.data['products'].totalPages; i++) {
       this.totalPages.push(i);
     }    
     this.searchFilterQuery = this.products[0].gender;
     this.totalPages = Array.from({
       length: Math.ceil(this.products.length / 6),
-    });
-    this.productDetailsComponent = this.entry.createComponent(
-      ProductDetailsComponent
-    );
-    this.selectedProductId = this.products[0].id;
-    this.productDetailsComponent.setInput('productId', this.selectedProductId);
-    
+    });   
+
   }
   moveToPage(currentPage: number) {
     this.productService

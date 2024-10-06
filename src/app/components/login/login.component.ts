@@ -59,9 +59,9 @@ export class LoginComponent {
       )
       .subscribe({
         next: (response) => {
+          document.getElementById('btn-close')?.click();
           localStorage.setItem('token', response['token']);
           this.accountService.logUser()
-          document.getElementById('btn-close')?.click();
           this.router.navigateByUrl('/clothes');
         },
         error: (error) => (this.message = error.error['message']),

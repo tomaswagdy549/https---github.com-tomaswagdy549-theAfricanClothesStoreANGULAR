@@ -9,12 +9,12 @@ import {
 import { Product } from '../../models/product/product';
 import { ProductPhoto } from '../../models/productPhoto/product-photo';
 import { SignalRService } from '../../services/signalRService/signal-r.service';
-import { ProductsService } from '../../services/productsService/products.service';
-import { CartItem } from '../../models/cartItem/cart-item';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
 import { finalize } from 'rxjs';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { AccountService } from '../../services/accountService/account.service';
+import { AddedCartItemDTO } from '../../models/DTOs/requestDTO/addedCartItemDTO/added-cart-item-dto';
+import { ProductsService } from '../../services/productsService/products.service';
 
 @Component({
   selector: 'app-product-details',
@@ -24,7 +24,7 @@ import { AccountService } from '../../services/accountService/account.service';
   styleUrl: './product-details.component.css',
 })
 export class ProductDetailsComponent implements OnChanges, OnDestroy {
-  @Input() productId!: number;
+  @Input() productId: number = 1;
   product!: Product;
   selectedSize: string = '';
   quantity: number = 0;
@@ -35,9 +35,8 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     private signalRService: SignalRService,
     private cartItemService: CartItemService,
     private globalDataService: GlobalDataService,
-    private accountService: AccountService,
+    private accountService: AccountService
   ) {
-    console.log('component created');
     this.signalRService.startConnection().then(() => {
       this.signalRService.addReceiveMessageListener(() => {});
       this.signalRService.joinGroup(`product${this.productId}`);
@@ -50,10 +49,9 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['productId'].previousValue != undefined)
+    if (changes['productId'].currentValue != undefined) {
       if (
-        changes['productId'].currentValue !=
-        changes['productId'].previousValue.id
+        changes['productId'].currentValue != changes['productId'].previousValue
       ) {
         this.signalRService
           .leaveGroup(`product${changes['productId'].previousValue}`)
@@ -61,42 +59,38 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
         this.signalRService
           .joinGroup(`product${changes['productId'].currentValue}`)
           .then(() => {});
-        console.log(changes);
       }
-    this.productId = changes['productId'].currentValue;
+    } else {
+      this.productId = 1;
+    }
     this.productsService.getProduct(this.productId).subscribe({
-      next: (response) => {
-        this.product = response;
+      next: (product) => {
+        this.product = product;
         this.selectedSize = this.product.productAvailableSizes[0].availabeSize;
         this.quantity = this.product.productAvailableSizes[0].quantity;
       },
-      error: (err) => {
-        console.log(err);
+      error: (error) => {
+        console.error(error);
       },
     });
   }
   addToCart(productId: number) {
-    let cartItem: CartItem = {
-      cartId: this.accountService.getCartId(),
+    let cartItem: AddedCartItemDTO = {
+      cartId: this.accountService.getCartId()!,
       productId: productId,
       size: this.selectedSize,
       quantity: this.requiredQuantity,
     };
     this.globalDataService.apiCallSubject.next(true);
-    this.cartItemService
-      .addToCart(cartItem)
-      .pipe(
-        finalize(() => {
-          this.globalDataService.apiCallSubject.next(false);
-        })
-      )
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+    this.cartItemService.addToCart(cartItem).subscribe({
+      next: (response) => {
+        this.globalDataService.apiCallSubject.next(false);
+        location.reload();
+      },
+      error: (err) => {
+        this.globalDataService.apiCallSubject.next(false);
+        console.log(err);
+      },
+    });
   }
 }

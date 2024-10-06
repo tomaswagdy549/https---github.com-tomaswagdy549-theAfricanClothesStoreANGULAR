@@ -23,7 +23,7 @@ export class AppComponent  {
   title = 'ecommerce';
   constructor(private accountService:AccountService) {
     if(localStorage.getItem("token")!=null){
-      this.accountService.isLogged.next(true)
+      this.accountService.logUser()
     }
   }
 

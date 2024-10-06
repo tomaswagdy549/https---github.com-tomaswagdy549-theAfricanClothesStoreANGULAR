@@ -10,6 +10,11 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class AccountService {
+  logOut() {
+    this.isLogged.next(false)
+    this.userData = null
+    localStorage.removeItem("token")
+  }
   isLogged = new BehaviorSubject<boolean>(false)
   userData: any = null;
   constructor(private http: HttpClient) {}
@@ -31,13 +36,15 @@ export class AccountService {
     this.userData = decoded
   }
   logUser(){
-    this.isLogged.next(true)
     const token = localStorage.getItem('token');
     const decoded = jwtDecode(token!);
     this.userData = decoded
+    this.isLogged.next(true)
   }
   getCartId(){
-    console.log(this.userData)
-    return this.userData['cartId'] as string
+    if(this.userData!=null){
+      return this.userData['cartId'] as string
+    }
+    return null
   }
 }

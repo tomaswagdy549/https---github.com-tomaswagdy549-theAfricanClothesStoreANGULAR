@@ -1,22 +1,37 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { enviroment } from '../../enviroment/enviroment';
+import { AddedCartItemDTO } from '../../models/DTOs/requestDTO/addedCartItemDTO/added-cart-item-dto';
 import { CartItem } from '../../models/cartItem/cart-item';
+import { GenericResponse } from '../../models/DTOs/responseDTO/genericResponse/generic-response';
+import { BaseResponse } from '../../models/DTOs/responseDTO/baseResponse/base-response';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartItemService {
-
   constructor(private http: HttpClient) {}
-  addToCart(cartItem:CartItem): Observable<any> {
-    return this.http.post<any>(
-      `${enviroment.baseUrl}/api/cartItems`,cartItem
+  addToCart(cartItem: AddedCartItemDTO): Observable<GenericResponse<CartItem>> {
+    return this.http.post<GenericResponse<CartItem>>(
+      `${enviroment.baseUrl}/api/cartItems`,
+      cartItem
     );
   }
-  getBrandById(brandId:number) : Observable<any> {
-    return this.http.get<any>(`${enviroment.baseUrl}/api/brand/${brandId}`);
+  removeFromCart(cartItem: CartItem): Observable<BaseResponse> {
+    return this.http.delete<BaseResponse>(
+      `${enviroment.baseUrl}/api/cartItems/cartId/${cartItem.cartId}/productId/${cartItem.productId}/size/${cartItem.size}`,
+    );
   }
-  
+  getCartItemsByCartId(cartId: string): Observable<CartItem[]> {
+    return this.http.get<CartItem[]>(
+      `${enviroment.baseUrl}/api/cartItems/cartId/${cartId}`
+    );
+  }
+  editCartItem(cartItem: CartItem): Observable<GenericResponse<CartItem>> {
+    return this.http.put<GenericResponse<CartItem>>(
+      `${enviroment.baseUrl}/api/cartItems`,
+      cartItem
+    );
+  }
 }

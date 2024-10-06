@@ -7,7 +7,7 @@ export class Product {
     name:string="";
     productAvailableSizes:ProductAvailableSizes[]=[]
     productPhotos:ProductPhoto[]=[]
-    price:Number = 0 
+    price:number = 0 
     categoryId:number=0 
     brandId:number=0
     quantity:number=0

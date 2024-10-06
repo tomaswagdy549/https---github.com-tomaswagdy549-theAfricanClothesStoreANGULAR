@@ -28,9 +28,7 @@
               Price: LE {{ product.price }}
             </p>
             <button
-              (click)="
-                this.productDetailsComponent.setInput('productId', product.id)
-              "
+              (click)="selectedProductId=product.id"
               type="button"
               class="btn btn-secondary"
               data-bs-target="#productInfoModal"
@@ -78,4 +76,4 @@
   </div>
 </section>
 <app-product-filter></app-product-filter>
-<ng-container #container></ng-container>
+<app-product-details [productId]="selectedProductId"></app-product-details>

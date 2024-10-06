@@ -26,39 +26,25 @@ import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsD
   templateUrl: './clothes.component.html',
   styleUrl: './clothes.component.html',
 })
-export class ClothesComponent implements OnInit {
+export class ClothesComponent {
   pageSize: number = 6;
   currentPage: number = 1;
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
-  @ViewChild('container', { read: ViewContainerRef }) entry: ViewContainerRef;
-  productDetailsComponent!: ComponentRef<ProductDetailsComponent>;
-  constructor(
-    private productsService: ProductsService,
-    private resolver: ViewContainerRef
-  ) {
-    this.entry = resolver;
-  }
-
-  ngOnInit(): void {
+  constructor(private productsService: ProductsService) {
     this.moveToPage(this.pageSize, 1);
   }
   showFilteredProducts($event: GetAllProductsDTO) {
     this.products = $event.entities;
   }
   moveToPage(pageSize: number, Page: number) {
-    this.entry.remove();
     this.productsService.getAllProducts(pageSize, Page).subscribe({
       next: (res) => {
         this.products = res.entities;
         this.currentPage = res['currentPage'];
         this.totalPages = [];
         this.sentProduct = this.products[0];
-        this.productDetailsComponent = this.entry.createComponent(
-          ProductDetailsComponent
-        );
-        this.productDetailsComponent.setInput('productId', this.sentProduct.id);
         for (let i = 1; i <= res['totalPages']; i++) {
           this.totalPages.push(i);
         }
