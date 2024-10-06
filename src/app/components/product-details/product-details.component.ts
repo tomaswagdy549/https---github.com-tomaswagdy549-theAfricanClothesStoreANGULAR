@@ -81,14 +81,12 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
       size: this.selectedSize,
       quantity: this.requiredQuantity,
     };
-    this.globalDataService.apiCallSubject.next(true);
     this.cartItemService.addToCart(cartItem).subscribe({
       next: (response) => {
-        this.globalDataService.apiCallSubject.next(false);
-        location.reload();
+        // this.globalDataService.apiCallSubject.next(false);
       },
       error: (err) => {
-        this.globalDataService.apiCallSubject.next(false);
+        // this.globalDataService.apiCallSubject.next(false);
         console.log(err);
       },
     });

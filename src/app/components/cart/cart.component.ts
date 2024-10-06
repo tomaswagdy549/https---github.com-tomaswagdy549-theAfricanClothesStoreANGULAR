@@ -41,10 +41,10 @@ export class CartComponent implements OnChanges {
     }
   }
   removeFromCart(CartItem: CartItem,index:number) {
-    this.globalDateService.apiCallSubject.next(true)
+    // this.globalDateService.apiCallSubject.next(true)
     this.cartItemService.removeFromCart(CartItem).pipe(
       finalize(() => {
-        this.globalDateService.apiCallSubject.next(false)
+        // this.globalDateService.apiCallSubject.next(false)
       })
     ).subscribe({
       next: (data) => {

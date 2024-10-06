@@ -19,11 +19,11 @@ export class ShoppingcartComponent implements OnInit {
   constructor(
     private router: Router,
     private cartItemService: CartItemService,
-    private globalDataService:GlobalDataService
+    private globalDataService: GlobalDataService
   ) {
     this.cartItem =
       this.router.getCurrentNavigation()!.extras.state!['cartItem'];
-      this.quantity = this.cartItem.quantity
+    this.quantity = this.cartItem.quantity;
   }
   ngOnInit(): void {}
   increment() {
@@ -36,26 +36,22 @@ export class ShoppingcartComponent implements OnInit {
     }
   }
   editCartItem() {
-    let updatedCartItem : CartItem = {
+    let updatedCartItem: CartItem = {
       cartId: this.cartItem.cartId,
       productId: this.cartItem.productId,
       quantity: this.quantity,
-      size : this.cartItem.size,
-      product:this.cartItem.product
-    }
-    this.globalDataService.apiCallSubject.next(true);
-    this.cartItemService
-      .editCartItem(updatedCartItem)
-      .subscribe({
-        next: (data) => {
-          this.globalDataService.apiCallSubject.next(false);
-          location.reload();
-          this.quantity=data.entitiy.quantity
-        },
-        error: (error) => {
-          this.globalDataService.apiCallSubject.next(false);
-          console.error(error);
-        },
-      });
+      size: this.cartItem.size,
+      product: this.cartItem.product,
+    };
+    // this.globalDataService.apiCallSubject.next(true);
+    this.cartItemService.editCartItem(updatedCartItem).subscribe({
+      next: (data) => {
+        // this.globalDataService.apiCallSubject.next(false);
+      },
+      error: (error) => {
+        // this.globalDataService.apiCallSubject.next(false);
+        console.error(error);
+      },
+    });
   }
 }
