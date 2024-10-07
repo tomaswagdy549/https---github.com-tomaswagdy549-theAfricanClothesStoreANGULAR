@@ -18,6 +18,7 @@ import { productResolver } from './guards/resolveGuard/product.guard';
 import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.guard';
 import { OrderComponent } from './components/order/order.component';
 import { AddingProductComponent } from './components/adding-product/adding-product.component';
+import { EditingProductComponent } from './components/editing-product/editing-product.component';
 
 
 
@@ -41,5 +42,6 @@ export const routes: Routes = [
   { path: 'shoppingcart', component: ShoppingcartComponent },
   { path: 'order', component: OrderComponent },
   {path:'addingproduct',component:AddingProductComponent},
+  {path:'editingproduct',component:EditingProductComponent},
   { path: '**', redirectTo: '' },
 ];

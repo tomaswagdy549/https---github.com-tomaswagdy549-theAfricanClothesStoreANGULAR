@@ -2,7 +2,7 @@
     <!-- Product Name -->
     <label for="productName">Product Name:</label>
     <input type="text" id="productName" formControlName="productName" placeholder="Enter product name">
-    
+  
     <!-- Category Dropdown -->
     <label for="category">Category:</label>
     <select id="category" formControlName="category">
@@ -18,10 +18,16 @@
     <label for="price">Price:</label>
     <input type="number" id="price" formControlName="price" placeholder="Enter product price">
   
+    <!-- Current Image Display -->
+    <div *ngIf="productImage">
+      <p>Current Product Image:</p>
+      <img [src]="productImage" alt="Product Image" width="200">
+    </div>
+  
     <!-- Image Upload -->
-    <label for="productImage">Product Image:</label>
+    <label for="productImage">Change Product Image:</label>
     <input type="file" id="productImage" (change)="onFileSelected($event)" accept="image/*">
-    
+  
     <!-- Image Preview -->
     <div *ngIf="imagePreview">
       <p>Image Preview:</p>
@@ -29,6 +35,7 @@
     </div>
   
     <!-- Submit Button -->
-    <button type="submit" [disabled]="!productForm.valid || !selectedFile">Adding Product</button>
+    <button type="submit" [disabled]="!productForm.valid">Update Product</button>
+    
   </form>
   
