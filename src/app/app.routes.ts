@@ -17,6 +17,10 @@ import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.co
 import { productResolver } from './guards/resolveGuard/product.guard';
 import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.guard';
 import { OrderComponent } from './components/order/order.component';
+import { AddingProductComponent } from './components/adding-product/adding-product.component';
+
+
+
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -36,5 +40,6 @@ export const routes: Routes = [
   { path: 'womenbags', component: WomenbagsComponent },
   { path: 'shoppingcart', component: ShoppingcartComponent },
   { path: 'order', component: OrderComponent },
+  {path:'addingproduct',component:AddingProductComponent},
   { path: '**', redirectTo: '' },
 ];
