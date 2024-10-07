@@ -20,9 +20,6 @@ import { OrderComponent } from './components/order/order.component';
 import { AddingProductComponent } from './components/adding-product/adding-product.component';
 import { EditingProductComponent } from './components/editing-product/editing-product.component';
 
-
-
-
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'AboutUs', component: AboutUsComponent },
@@ -31,8 +28,16 @@ export const routes: Routes = [
   { path: 'clothes', component: ClothesComponent },
   { path: '', component: HeaderComponent },
   { path: 'shoes', component: ShoesComponent },
-  { path: 'men', component: MenComponent,resolve:{products:productResolver} },
-  { path: 'women', component: MenComponent ,resolve:{products:femaleResolverGuard}},
+  {
+    path: 'men',
+    component: MenComponent,
+    resolve: { products: productResolver },
+  },
+  {
+    path: 'women',
+    component: MenComponent,
+    resolve: { products: femaleResolverGuard },
+  },
   { path: 'bagsmen', component: BagsmenComponent },
   { path: 'accessors', component: AccessorsComponent },
   { path: 'socks', component: SocksComponent },
@@ -41,7 +46,7 @@ export const routes: Routes = [
   { path: 'womenbags', component: WomenbagsComponent },
   { path: 'shoppingcart', component: ShoppingcartComponent },
   { path: 'order', component: OrderComponent },
-  {path:'addingproduct',component:AddingProductComponent},
-  {path:'editingproduct',component:EditingProductComponent},
+  { path: 'addingproduct', component: AddingProductComponent },
+  { path: 'editingproduct/:id', component: EditingProductComponent },
   { path: '**', redirectTo: '' },
 ];

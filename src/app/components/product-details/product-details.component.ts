@@ -87,4 +87,8 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
       },
     });
   }
+  userIsLogged(): boolean {
+    return this.accountService.isLogged.getValue();
+  }
+
 }

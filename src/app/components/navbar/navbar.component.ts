@@ -49,6 +49,9 @@ export class NavbarComponent {
       },
     });
   }
+  ifUserIsAdmin(): boolean {
+    return this.accountService.isAdmin();
+  }
   logOut() {
     this.accountService.logOut();
   }

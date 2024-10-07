@@ -10,13 +10,8 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class AccountService {
-  logOut() {
-    this.isLogged.next(false)
-    this.userData = null
-    localStorage.removeItem("token")
-  }
   isLogged = new BehaviorSubject<boolean>(false)
-  userData: any = null;
+  private userData: any = null;
   constructor(private http: HttpClient) {}
   register(RegisteredUserDTO: RegisteredUserDTO): Observable<any> {
     return this.http.post<any>(
@@ -30,10 +25,10 @@ export class AccountService {
       LoggedUserDTO
     );
   }
-  private decodeToken(){
-    const token = localStorage.getItem('token');
-    const decoded = jwtDecode(token!);
-    this.userData = decoded
+  logOut() {
+    this.isLogged.next(false)
+    this.userData = null
+    localStorage.removeItem("token")
   }
   logUser(){
     const token = localStorage.getItem('token');
@@ -52,5 +47,20 @@ export class AccountService {
       return this.userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] as string
     }
     return null
+  }
+  isAdmin(){
+    if(this.userData!=null){
+      let role = this.userData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] as string
+      role = role.toLowerCase()
+      if(role == 'admin'){
+        return true
+      }
+    }
+    return false
+  }
+  private decodeToken(){
+    const token = localStorage.getItem('token');
+    const decoded = jwtDecode(token!);
+    this.userData = decoded
   }
 }

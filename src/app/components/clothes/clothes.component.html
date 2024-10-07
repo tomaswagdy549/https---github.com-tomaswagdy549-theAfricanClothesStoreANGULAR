@@ -25,6 +25,7 @@
           <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text">Price : {{ product.price }}</p>
+            <div class="d-flex justify-content-between">
             <a
               (click)="sentProduct = product"
               class="btn btn-outline-dark"
@@ -32,6 +33,12 @@
               data-bs-toggle="modal"
               >Details</a
             >
+              <a
+              [href]="'editingproduct/'+product.id"
+              class="btn btn-outline-dark"
+              >Edit product</a
+            >  
+            </div>
           </div>
         </div>
       </div>

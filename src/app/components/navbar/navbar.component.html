@@ -93,7 +93,7 @@
 
 
 
-        <li class="nav-item dropdown">
+        <li *ngIf="ifUserIsAdmin()" class="nav-item dropdown">
           <a
             class="nav-link  active"
             href="/addingproduct"
@@ -101,11 +101,11 @@
             role="button"
             aria-expanded="false"
           >
-           adding-product
+           Add product
           </a>
        
         </li>
-        <li class="nav-item dropdown">
+        <!-- <li *ngIf="ifUserIsAdmin()" class="nav-item dropdown">
           <a
             class="nav-link  active"
             href="/editingproduct"
@@ -116,7 +116,7 @@
            editing-product
           </a>
        
-        </li>
+        </li> -->
 
       </ul>
 
