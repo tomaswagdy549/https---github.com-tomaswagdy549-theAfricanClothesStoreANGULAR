@@ -77,8 +77,7 @@
         <img [src]="productImage" alt="Product Image" width="200" />
       </div>
 
-      <!-- Image Upload -->
-      <label for="productImage">Change Product Image:</label>
+      <!-- <label for="productImage">Change Product Image:</label>
       <input
         type="file"
         id="productImage"
@@ -86,11 +85,10 @@
         accept="image/*"
       />
 
-      <!-- Image Preview -->
       <div *ngIf="imagePreview">
         <p>Image Preview:</p>
         <img [src]="imagePreview" alt="Image Preview" width="200" />
-      </div>
+      </div> -->
 
       <!-- Submit Button -->
       <button type="submit" [disabled]="productForm.invalid">
@@ -109,14 +107,67 @@
           <input
             type="number"
             id="productName"
-            [value]="availableSize.quantity"
+            [(ngModel)]="availableSize.quantity"
+            [ngModelOptions]="{ standalone: true }"
             placeholder="Enter quantity"
             class="form-control me-2"
-            style="width: 75%;margin-bottom: 0;"
+            style="width: 75%; margin-bottom: 0"
           />
-          <button type="button" class="btn btn-outline-primary">Edit</button>
+          <button
+            (click)="editProductSize(availableSize)"
+            type="button"
+            class="btn btn-outline-primary"
+          >
+            Edit quantity
+          </button>
+          <button
+            (click)="deleteProductSize(availableSize)"
+            class="ms-2"
+            style="background-color: brown"
+            type="button"
+          >
+            Delete
+          </button>
         </div>
       </div>
+      <div
+        *ngFor="let newSize of getArray(); index as index"
+        class="d-flex align-items-center mb-3"
+      >
+        <div
+          [formGroup]="getFormGroup(index)"
+          class="d-flex align-items-center mb-3"
+        >
+          <input
+            placeholder="enter the size"
+            type="text"
+            formControlName="size"
+            class="form-control me-2"
+            style="width: 75%; margin-bottom: 0"
+          />
+          <input
+            placeholder="quantity"
+            type="number"
+            formControlName="quantity"
+            class="form-control me-2"
+            style="width: 75%; margin-bottom: 0"
+          />
+          <button
+            (click)="addNewSize(index)"
+            type="button"
+            class="btn btn-outline-primary"
+          >
+            Add the new size
+          </button>
+        </div>
+      </div>
+      <button
+        (click)="NewSize()"
+        type="button"
+        [disabled]="productForm.invalid"
+      >
+        Add new Size
+      </button>
     </form>
   </div>
 </div>

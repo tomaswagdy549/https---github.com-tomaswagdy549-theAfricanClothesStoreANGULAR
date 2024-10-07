@@ -1,9 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
+  FormArray,
   FormBuilder,
+  FormControl,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -13,39 +16,45 @@ import { CategoryService } from '../../services/categoryService/category.service
 import { BrandsService } from '../../services/brandsService/brands.service';
 import { Category } from '../../models/category/category';
 import { Brand } from '../../models/brand/brand';
-import { ProductPhoto } from '../../models/productPhoto/product-photo';
 import { ProductAvailableSizes } from '../../models/productAvailableSizes/product-available-sizes';
+import { UpdatedProductDTO } from '../../models/DTOs/requestDTO/updatedProductDTO/updated-product-dto';
+import { ProductAvailableSizeService } from '../../services/productAvailableService/product-available-size.service';
+import { UpdatedProductAvailableDTO } from '../../models/DTOs/requestDTO/updatedProductAvailableDTO/updated-product-available-dto';
+import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
 
 @Component({
   selector: 'app-editing-product',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './editing-product.component.html',
   styleUrl: './editing-product.component.css',
 })
-export class EditingProductComponent implements OnInit {
+export class EditingProductComponent {
   productForm: FormGroup;
+  productAvailableSizesForm: FormArray<FormGroup>;
   productImage: string | null = null;
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
-  productId: number = 0; 
-  productAvailableSize:ProductAvailableSizes[]=[]
+  productAvailableSize: ProductAvailableSizes[] = [];
   categories: Category[] = [];
   brands: Brand[] = [];
+  productId: number = 0;
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
+    private productAvailableSizeService: ProductAvailableSizeService,
     private productService: ProductsService,
     private categoryService: CategoryService,
     private brandService: BrandsService
   ) {
     this.productForm = this.fb.group({
       productName: ['', Validators.required],
-      categoryId: [0, [Validators.required,Validators.min(1)]],
-      brandId: [0, [Validators.required,Validators.min(1)]],
+      categoryId: [0, [Validators.required, Validators.min(1)]],
+      brandId: [0, [Validators.required, Validators.min(1)]],
       gender: ['', Validators.required],
       price: ['', [Validators.required, Validators.min(1)]],
     });
+    this.productAvailableSizesForm = new FormArray<FormGroup>([]);
     this.route.paramMap.subscribe((parms) => {
       this.productId = parseInt(parms.get('id')!);
     });
@@ -56,7 +65,7 @@ export class EditingProductComponent implements OnInit {
         this.productForm.controls['gender'].setValue(product.gender);
         this.productForm.controls['categoryId'].setValue(product.categoryId);
         this.productForm.controls['brandId'].setValue(product.brandId);
-        this.productAvailableSize = product.productAvailableSizes
+        this.productAvailableSize = product.productAvailableSizes;
       },
       error: (error) => {
         console.error('Error fetching product:', error);
@@ -72,19 +81,6 @@ export class EditingProductComponent implements OnInit {
         this.brands = brands.brands;
       },
     });
-  }
-
-  ngOnInit(): void {
-    // Fetch existing product data by ID and populate the form
-    // this.productService.getProductById(this.productId).subscribe((product: { name: any; categoryId: any; description: any; price: any; imageUrl: string | null; }) => {
-    //   this.productForm.patchValue({
-    //     productName: product.name,
-    //     category: product.categoryId,
-    //     description: product.description,
-    //     price: product.price,
-    //   });
-    //   this.productImage = product.imageUrl; // Load current product image
-    // });
   }
 
   // File selection for updating product image
@@ -106,30 +102,85 @@ export class EditingProductComponent implements OnInit {
 
   // Submit updated product data
   onSubmit(): void {
-    // if (this.productForm.valid) {
-      console.log(this.productForm)
-      // const formData = new FormData();
-      // formData.append(
-      //   'productName',
-      //   this.productForm.get('productName')?.value
-      // );
-      // formData.append('category', this.productForm.get('category')?.value);
-      // formData.append(
-      //   'description',
-      //   this.productForm.get('description')?.value
-      // );
-      // formData.append('price', this.productForm.get('price')?.value);
-
-      // if (this.selectedFile) {
-      //   formData.append('productImage', this.selectedFile);
-      // }
-
-      // Submit updated data to the backend
-      // this.productService.updateProduct(this.productId, formData).subscribe((response: any) => {
-      //   console.log('Product updated successfully', response);
-      // }, (error: any) => {
-      //   console.error('Error updating product', error);
-      // });
-    // }
+    if (this.productForm.valid) {
+      let updatedProductDTO: UpdatedProductDTO = {
+        Id: this.productId,
+        price: this.productForm.controls['price'].value,
+        name: this.productForm.controls['productName'].value,
+        gender: this.productForm.controls['gender'].value,
+        categoryId: this.productForm.controls['categoryId'].value,
+        brandId: this.productForm.controls['brandId'].value,
+      };
+      this.productService.updateProduct(updatedProductDTO).subscribe({
+        next: (response) => {
+          console.log('Product updated successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error updating product:', error);
+        },
+      });
+    }
+  }
+  NewSize() {
+    this.productAvailableSizesForm.push(
+      new FormGroup({
+        size: new FormControl('', Validators.required),
+        quantity: new FormControl(0, Validators.required),
+      })
+    );
+  }
+  addNewSize(index: number) {
+    let formGroup = this.productAvailableSizesForm.at(index);
+    let addedProductAvailableSizesDTO: AddedProductAvailableSizesDTO = {
+      availabeSize: formGroup.get('size')!.value,
+      quantity: formGroup.get('quantity')!.value,
+      productId: this.productId,
+    };
+    this.productAvailableSizeService.addProductAvailableSize(addedProductAvailableSizesDTO).subscribe({
+      next: (response) => {
+        console.log('Product available size added successfully:', response);
+      },
+      error: (error) => {
+        console.error('Error adding product available size:', error);
+      }
+    })
+  }
+  editProductSize(productAvailableSizes: ProductAvailableSizes) {
+    let updatedProductAvailableDTO: UpdatedProductAvailableDTO = {
+      productId: productAvailableSizes.productId,
+      availabeSize: productAvailableSizes.availabeSize,
+      quantity: productAvailableSizes.quantity,
+    };
+    this.productAvailableSizeService
+      .editProductAvailableSize(updatedProductAvailableDTO)
+      .subscribe({
+        next: (response) => {
+          console.log('Product available size updated successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error updating product available size:', error);
+        },
+      });
+  }
+  deleteProductSize(productAvailableSize: ProductAvailableSizes) {
+    this.productAvailableSizeService
+      .deleteProductAvailableSize(
+        productAvailableSize.productId,
+        productAvailableSize.availabeSize
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('Product size deleted successfully:', response);
+        },
+        error: (error) => {
+          console.error('Error deleting product size:', error);
+        },
+      });
+  }
+  getArray(): any {
+    return this.productAvailableSizesForm.controls;
+  }
+  getFormGroup(index: number): FormGroup<any> {
+    return this.productAvailableSizesForm.at(index);
   }
 }

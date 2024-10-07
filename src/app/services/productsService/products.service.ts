@@ -4,6 +4,7 @@ import { enviroment } from '../../enviroment/enviroment';
 import { Observable } from 'rxjs';
 import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto'; 
 import { Product } from '../../models/product/product';
+import { UpdatedProductDTO } from '../../models/DTOs/requestDTO/updatedProductDTO/updated-product-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,13 @@ export class ProductsService {
   ): Observable<Product> {
     return this.http.get<Product>(
       `${enviroment.baseUrl}/api/products/Id/${id}`,
+    );
+  }
+  updateProduct(
+    updatedProductDTO:UpdatedProductDTO
+  ): Observable<any> {
+    return this.http.put<any>(
+      `${enviroment.baseUrl}/api/products`,updatedProductDTO
     );
   }
   filterProducts(
