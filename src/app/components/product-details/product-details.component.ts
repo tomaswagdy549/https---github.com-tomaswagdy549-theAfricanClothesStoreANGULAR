@@ -34,7 +34,6 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     private productsService: ProductsService,
     private signalRService: SignalRService,
     private cartItemService: CartItemService,
-    private globalDataService: GlobalDataService,
     private accountService: AccountService
   ) {
     this.signalRService.startConnection().then(() => {
@@ -82,8 +81,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
       quantity: this.requiredQuantity,
     };
     this.cartItemService.addToCart(cartItem).subscribe({
-      next: (response) => {
-      },
+      next: (response) => {},
       error: (err) => {
         console.log(err);
       },

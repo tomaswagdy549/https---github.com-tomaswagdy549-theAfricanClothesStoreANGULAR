@@ -6,6 +6,7 @@ import { AddedOrderDTO } from '../../models/DTOs/requestDTO/addedOrderDTO/added-
 import { AddedOrderDetails } from '../../models/DTOs/requestDTO/addedOrderDTO/addedOrderDTO/added-order-details';
 import { AccountService } from '../../services/accountService/account.service';
 import { OrderService } from '../../services/orderService/order.service';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-order',
@@ -43,12 +44,13 @@ export class OrderComponent {
     });
   }
   addOrder() {
+    this.addedOrderDTO.addedOrderDetailsDTO = this.addedOrderDTO.addedOrderDetailsDTO.splice(0,2)
     this.orderService.addOrder(this.addedOrderDTO).subscribe({
       next: (data) => {
-        console.log(data);
+        HandleResponse.handleSuccess(data.message)
       },
       error: (error) => {
-        console.error(error);
+        HandleResponse.handleError(error.message)
       },
     });
   }

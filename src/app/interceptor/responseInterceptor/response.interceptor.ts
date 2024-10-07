@@ -47,6 +47,10 @@ export function responseInterceptor(
 function chceckRes(response: HttpErrorResponse) {
   let message = '';
   switch (response.status) {
+    case 0:
+      message = 'you are out of connection , check your internet connection';
+      return message;
+      break;
     case 401:
       message =
         'you are not authorized to execute this request , log to your account and try again';
