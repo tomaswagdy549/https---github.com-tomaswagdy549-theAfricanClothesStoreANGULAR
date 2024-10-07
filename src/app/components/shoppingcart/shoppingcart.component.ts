@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartItem } from '../../models/cartItem/cart-item';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
-import { finalize } from 'rxjs';
-import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -19,7 +17,6 @@ export class ShoppingcartComponent implements OnInit {
   constructor(
     private router: Router,
     private cartItemService: CartItemService,
-    private globalDataService: GlobalDataService
   ) {
     this.cartItem =
       this.router.getCurrentNavigation()!.extras.state!['cartItem'];
@@ -43,13 +40,10 @@ export class ShoppingcartComponent implements OnInit {
       size: this.cartItem.size,
       product: this.cartItem.product,
     };
-    // this.globalDataService.apiCallSubject.next(true);
     this.cartItemService.editCartItem(updatedCartItem).subscribe({
       next: (data) => {
-        // this.globalDataService.apiCallSubject.next(false);
       },
       error: (error) => {
-        // this.globalDataService.apiCallSubject.next(false);
         console.error(error);
       },
     });

@@ -33,7 +33,7 @@
                 <div class="row">
                   <!-- Image Column -->
                   <div class="col-md-6">
-                    <a href="/shoppingcart" (click)="route(cartItem)">
+                    <a href="/shoppingcart" (click)="routeToShoppingCart(cartItem)">
                       <img
                         [src]="cartItem.product.mainPhotoUrl"
                         alt="Product Image"
@@ -79,7 +79,7 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <button type="button" class="btn btn-primary">purchase the order</button>
+        <button (click)="routeToOrder()"  type="button" class="btn btn-primary">purchase the order</button>
       </div>
     </div>
   </div>

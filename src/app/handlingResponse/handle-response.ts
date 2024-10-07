@@ -11,9 +11,10 @@ export class HandleResponse {
   }
   public static handleError(message: string) {
     Swal.fire({
+      position: 'top-end',
       icon: 'error',
       title: 'Error',
-      text: 'message',
+      text: message,
     });
   }
 }

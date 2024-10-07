@@ -1,0 +1,32 @@
+.table th, .table td {
+    vertical-align: middle;
+  }
+  
+  .card-header {
+    font-weight: bold;
+  }
+  
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  table img {
+    max-width: 50px;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  @media (max-width: 768px) {
+    table img {
+      max-width: 30px;
+    }
+  }
+  .larger-text {
+    font-size: 1.25rem; /* Increase the font size */
+    font-weight: bold;  /* Make the text bold */
+  }
+  
+  .badge.larger-text {
+    font-size: 1.5rem; /* Larger font size for total price badge */
+  }
+  
+  

@@ -16,6 +16,7 @@ import { WomenbagsComponent } from './components/womenbags/womenbags.component';
 import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
 import { productResolver } from './guards/resolveGuard/product.guard';
 import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.guard';
+import { OrderComponent } from './components/order/order.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -34,5 +35,6 @@ export const routes: Routes = [
   { path: 'womenshoes', component: WomenshoesComponent },
   { path: 'womenbags', component: WomenbagsComponent },
   { path: 'shoppingcart', component: ShoppingcartComponent },
+  { path: 'order', component: OrderComponent },
   { path: '**', redirectTo: '' },
 ];

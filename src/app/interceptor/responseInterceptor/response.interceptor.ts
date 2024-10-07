@@ -37,9 +37,25 @@ export function responseInterceptor(
     }),
     catchError((error: HttpErrorResponse) => {
       return throwError(() => {
-        HandleResponse.handleSuccess(error.error.message);
+        let message = chceckRes(error);
+        HandleResponse.handleError(message);
         globalDataService.apiCallSubject.next(false);
       });
     })
   );
+}
+function chceckRes(response: HttpErrorResponse) {
+  let message = '';
+  switch (response.status) {
+    case 401:
+      message =
+        'you are not authorized to execute this request , log to your account and try again';
+      return message;
+      break;
+    case 429:
+      message = 'too many requests , try again later please';
+      return message;
+      break;
+  }
+  return response.error.message;
 }

@@ -47,4 +47,10 @@ export class AccountService {
     }
     return null
   }
+  getUserId(){
+    if(this.userData!=null){
+      return this.userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] as string
+    }
+    return null
+  }
 }

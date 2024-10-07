@@ -1,0 +1,74 @@
+<!-- <div class="container mt-4">
+  <h2 class="text-center mb-4">Order Details</h2>
+
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">Product Name</th>
+              <th scope="col">Size</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">unit Price</th>
+              <th scope="col">Total Price</th>
+            </tr>
+          </thead>
+          <tbody *ngFor="let cartItem of cartItems; let i = index">
+            <tr>
+              <td>{{ cartItem.product.name }}</td>
+              <td>{{ cartItem.size }}</td>
+              <td>{{ cartItem.quantity }}</td>
+              <td>{{ cartItem.product.price }}</td>
+              <td>{{ cartItem.product.price * cartItem.quantity }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
+    >
+      <span>Total Price: {{ getTotalPrice() }}</span>
+    </div>
+  </div>
+</div> -->
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Order Details</h2>
+  
+    <div class="card mb-3 shadow-sm">
+      <div class="card-body p-2">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered text-center">
+            <thead class="bg-primary text-white small">
+              <tr>
+                <th scope="col">Image</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Size</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col">Total Price</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let cartItem of cartItems; let i = index">
+              <tr>
+                <td>
+                    <img [src]="cartItem.product.mainPhotoUrl" alt="{{ cartItem.product.name }}" class="img-fluid rounded" style="max-width: 50px;">
+                  </td>
+                <td>{{ cartItem.product.name }}</td>
+                <td>{{ cartItem.size }}</td>
+                <td>{{ cartItem.quantity }}</td>
+                <td>{{ cartItem.product.price }}</td>
+                <td>{{ cartItem.product.price * cartItem.quantity }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer bg-light p-2 d-flex justify-content-between align-items-center">
+        <span class="font-weight-bold">Total Price:</span>
+        <span (click)="addOrder()" class="badge bg-secondary p-2 larger-text">{{ getTotalPrice() }} L.E</span>
+      </div>
+    </div>
+  </div>
+  

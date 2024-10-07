@@ -6,6 +6,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { LoadingSpinnerComponent } from './components/loadingSpinner/loading-spinner/loading-spinner.component';
 import { enviroment } from './enviroment/enviroment';
 import { AccountService } from './services/accountService/account.service';
+import { OrderComponent } from "./components/order/order.component";
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -15,7 +16,8 @@ import { AccountService } from './services/accountService/account.service';
     FooterComponent,
     HeaderComponent,
     LoadingSpinnerComponent,
-  ],
+    OrderComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

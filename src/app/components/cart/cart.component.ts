@@ -9,7 +9,7 @@ import {
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
 import { CartItem } from '../../models/cartItem/cart-item';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { finalize } from 'rxjs';
 
@@ -23,9 +23,8 @@ import { finalize } from 'rxjs';
 export class CartComponent implements OnChanges {
   @Input() cartId: string | null = null;
   @Output() numberOfCartItems = new EventEmitter<number>();
-  cartItems: CartItem[] = [];
+  public cartItems: CartItem[] = [];
   constructor(
-    private globalDateService: GlobalDataService,
     private cartItemService: CartItemService,
     public router: Router
   ) {}
@@ -41,10 +40,8 @@ export class CartComponent implements OnChanges {
     }
   }
   removeFromCart(CartItem: CartItem,index:number) {
-    // this.globalDateService.apiCallSubject.next(true)
     this.cartItemService.removeFromCart(CartItem).pipe(
       finalize(() => {
-        // this.globalDateService.apiCallSubject.next(false)
       })
     ).subscribe({
       next: (data) => {
@@ -56,7 +53,10 @@ export class CartComponent implements OnChanges {
       },
     });
   }
-  route(cartItem: CartItem) {
+  routeToShoppingCart(cartItem: CartItem) {
     this.router.navigate(['/shoppingcart'], { state: { cartItem } });
+  }
+  routeToOrder() {
+    this.router.navigate(['/order'], { state: { cartItems:this.cartItems } });
   }
 }
