@@ -7,24 +7,72 @@
     formControlName="productName"
     placeholder="Enter product name"
   />
-
+  <div
+    *ngIf="
+      productForm.controls['productName'].invalid &&
+      productForm.controls['productName'].touched
+    "
+    class="text-danger"
+  >
+    <small *ngIf="productForm.controls['productName'].errors!['required']"
+      >product Name is required.</small
+    >
+  </div>
   <!-- Category Dropdown -->
   <label for="category">Category:</label>
-  <select id="category" formControlName="category">
+  <select id="category" formControlName="categoryId">
     <option value="">Select category</option>
     <option *ngFor="let category of categories" [value]="category.id">
       {{ category.name }}
     </option>
   </select>
-
+  <div
+    *ngIf="
+      productForm.controls['categoryId'].invalid &&
+      productForm.controls['categoryId'].touched
+    "
+    class="text-danger"
+  >
+    <small *ngIf="productForm.controls['categoryId'].errors!['required']"
+      >category is required.</small
+    >
+  </div>
+  <label for="category">Brand:</label>
+  <select id="category" formControlName="brandId">
+    <option value="">Select Brand</option>
+    <option *ngFor="let brand of brands" [value]="brand.id">
+      {{ brand.name }}
+    </option>
+  </select>
+  <div
+    *ngIf="
+      productForm.controls['brandId'].invalid &&
+      productForm.controls['brandId'].touched
+    "
+    class="text-danger"
+  >
+    <small *ngIf="productForm.controls['brandId'].errors!['required']"
+      >brand is required.</small
+    >
+  </div>
   <!-- Description -->
-  <label for="description">Description:</label>
-  <textarea
-    id="description"
-    formControlName="description"
-    placeholder="Enter product description"
-  ></textarea>
-
+  <label for="description">Gender:</label>
+  <input
+    type="text"
+    formControlName="gender"
+    placeholder="Enter product gender"
+  />
+  <div
+    *ngIf="
+      productForm.controls['gender'].invalid &&
+      productForm.controls['gender'].touched
+    "
+    class="text-danger"
+  >
+    <small *ngIf="productForm.controls['gender'].errors!['required']"
+      >gender is required.</small
+    >
+  </div>
   <!-- Price -->
   <label for="price">Price:</label>
   <input
@@ -33,7 +81,17 @@
     formControlName="price"
     placeholder="Enter product price"
   />
-
+  <div
+    *ngIf="
+      productForm.controls['price'].invalid &&
+      productForm.controls['price'].touched
+    "
+    class="text-danger"
+  >
+    <small *ngIf="productForm.controls['price'].errors!['required']"
+      >price is required.</small
+    >
+  </div>
   <!-- Image Upload -->
   <label for="productImage">Product Image:</label>
   <input
