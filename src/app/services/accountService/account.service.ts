@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { RegisteredUserDTO } from '../../models/DTOs/requestDTO/registeredUserDTO/registered-user-dto';
 import { LoggedUserDTO } from '../../models/DTOs/requestDTO/loggedUserDTO/logged-user-dto'; 
 import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ import { jwtDecode } from 'jwt-decode';
 export class AccountService {
   isLogged = new BehaviorSubject<boolean>(false)
   private userData: any = null;
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient,private router:Router) {}
   register(RegisteredUserDTO: RegisteredUserDTO): Observable<any> {
     return this.http.post<any>(
       `${enviroment.baseUrl}/api/user/register`,
@@ -29,6 +30,7 @@ export class AccountService {
     this.isLogged.next(false)
     this.userData = null
     localStorage.removeItem("token")
+    this.router.navigateByUrl('/')
   }
   logUser(){
     const token = localStorage.getItem('token');
