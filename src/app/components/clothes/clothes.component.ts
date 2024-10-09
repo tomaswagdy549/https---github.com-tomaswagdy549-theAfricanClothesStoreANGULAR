@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductFilterComponent } from '../product-filter/product-filter.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
+import { AccountService } from '../../services/accountService/account.service';
 
 @Component({
   selector: 'app-clothes',
@@ -32,7 +33,7 @@ export class ClothesComponent {
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
-  constructor(private productsService: ProductsService) {
+  constructor(private productsService: ProductsService,private accountService:AccountService) {
     this.moveToPage(this.pageSize, 1);
   }
   showFilteredProducts($event: GetAllProductsDTO) {
@@ -54,5 +55,8 @@ export class ClothesComponent {
         console.log(err);
       },
     });
+  }
+  checkIfAuthorized(){
+    return this.accountService.isAdmin();
   }
 }

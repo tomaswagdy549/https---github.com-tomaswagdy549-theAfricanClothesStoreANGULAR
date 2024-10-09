@@ -19,6 +19,7 @@ import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.gua
 import { OrderComponent } from './components/order/order.component';
 import { AddingProductComponent } from './components/adding-product/adding-product.component';
 import { EditingProductComponent } from './components/editing-product/editing-product.component';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,6 +39,7 @@ export const routes: Routes = [
     component: MenComponent,
     resolve: { products: femaleResolverGuard },
   },
+  { path: 'register', component: RegisterComponent },
   { path: 'bagsmen', component: BagsmenComponent },
   { path: 'accessors', component: AccessorsComponent },
   { path: 'socks', component: SocksComponent },

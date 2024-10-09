@@ -91,19 +91,16 @@
           </ul>
         </li>
 
-
-
         <li *ngIf="ifUserIsAdmin()" class="nav-item dropdown">
           <a
-            class="nav-link  active"
+            class="nav-link active"
             href="/addingproduct"
             id="navbarDropdown"
             role="button"
             aria-expanded="false"
           >
-           Add product
+            Add product
           </a>
-       
         </li>
         <!-- <li *ngIf="ifUserIsAdmin()" class="nav-item dropdown">
           <a
@@ -117,7 +114,6 @@
           </a>
        
         </li> -->
-
       </ul>
 
       <!-- Search Form -->
@@ -150,7 +146,7 @@
         </li>
 
         <li *ngIf="logged" class="nav-item">
-          <i 
+          <i
             [routerLink]="'/'"
             style="cursor: pointer"
             class="fa-solid fa-cart-shopping fa-2x"
@@ -160,7 +156,7 @@
           <span
             class="position-absolute translate-middle badge rounded-pill bg-danger"
           >
-            {{numberOfCartItems}}
+            {{ numberOfCartItems }}
             <span class="visually-hidden">unread messages</span>
           </span>
         </li>

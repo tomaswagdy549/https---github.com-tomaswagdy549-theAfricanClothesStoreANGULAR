@@ -10,6 +10,8 @@ import {
 import { LoginComponent } from '../login/login.component';
 import { AccountService } from '../../services/accountService/account.service';
 import { RegisteredUserDTO } from '../../models/DTOs/requestDTO/registeredUserDTO/registered-user-dto';
+import { Router } from '@angular/router';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-register',
@@ -20,7 +22,7 @@ import { RegisteredUserDTO } from '../../models/DTOs/requestDTO/registeredUserDT
 })
 export class RegisterComponent {
   registerUserDTO!: RegisteredUserDTO;
-  constructor(private accountService: AccountService) {}
+  constructor(private accountService: AccountService, private router: Router) {}
   registerForm = new FormGroup({
     firstName: new FormControl('', [
       Validators.required,
@@ -71,11 +73,30 @@ export class RegisterComponent {
       userName: this.registerForm.get('userName')?.value!,
       email: this.registerForm.get('email')?.value!,
       password: this.registerForm.get('password')?.value!,
-      role: this.registerForm.get('role')?.value!,
+      role: 'Client',
     };
     this.accountService.register(this.registerUserDTO).subscribe({
-      next: (response) => console.log(response),
+      next: (response) => {
+        HandleResponse.handleSuccess('registerd successfully');
+        this.login();
+      },
       error: (error) => console.error(error),
+    });
+  }
+  login() {
+    let loggedUserDto = {
+      email: this.registerForm.get('email')?.value!,
+      password: this.registerForm.get('password')?.value!,
+    };
+    this.accountService.login(loggedUserDto).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response['token']);
+        this.accountService.logUser();
+        this.router.navigateByUrl('/clothes');
+      },
+      error: (error) => {
+        console.error(error);
+      },
     });
   }
 }

@@ -33,7 +33,7 @@
               data-bs-toggle="modal"
               >Details</a
             >
-              <a
+              <a *ngIf="checkIfAuthorized()"
               [href]="'editingproduct/'+product.id"
               class="btn btn-outline-dark"
               >Edit product</a

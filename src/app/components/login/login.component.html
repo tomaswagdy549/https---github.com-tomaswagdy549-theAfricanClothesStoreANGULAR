@@ -24,7 +24,6 @@
           class="container mt-5"
         >
           <div class="row">
-            <!-- Email -->
             <div class="col-md-6 mb-3">
               <label for="email" class="form-label">Email</label>
               <input
@@ -47,7 +46,6 @@
               </div>
             </div>
 
-            <!-- Password -->
             <div class="col-md-6 mb-3">
               <label for="password" class="form-label">Password</label>
               <input
@@ -71,7 +69,6 @@
             </div>
           </div>
 
-          <!-- Submit Button -->
           <div class="row">
             <div class="col-md-12 text-center">
               <button
@@ -79,19 +76,19 @@
                 class="btn btn-outline-success"
                 [disabled]="loginForm.invalid"
               >
-                Login
-              </button><br>
-              {{message}}
+                Login</button
+              ><br />
+              {{ message }}
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button
-          class="btn btn-outline-success" 
+          (click)="goToRegister()"
+          class="btn btn-outline-success"
           data-bs-target="#registerModal"
           data-bs-toggle="modal"
-          data-bs-dismiss="modal"
         >
           Register
         </button>
@@ -99,4 +96,3 @@
     </div>
   </div>
 </div>
-<app-register></app-register>

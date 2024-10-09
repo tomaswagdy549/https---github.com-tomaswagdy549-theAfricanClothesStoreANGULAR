@@ -1,21 +1,5 @@
-<div
-  class="modal fade"
-  id="registerModal"
-  aria-hidden="true"
-  aria-labelledby="exampleModalToggleLabel2"
-  tabindex="-1"
->
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalToggleLabel2">Register</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
       <div class="modal-body">
         <form
           [formGroup]="registerForm"
@@ -194,8 +178,7 @@
             </div>
           </div>
 
-          <div class="row">
-            <!-- Role -->
+          <!-- <div class="row">
             <div class="col-md-6 mb-3">
               <label for="role" class="form-label">Role</label>
               <input
@@ -214,32 +197,19 @@
                 >
               </div>
             </div>
-          </div>
+          </div> -->
 
           <!-- Submit Button -->
-          <div class="row">
             <div class="col-md-12 text-center">
               <button
+                (click)="register()"
                 type="submit"
-                class="btn btn-outline-success"
-                [disabled]="registerForm.invalid"
+                class="btn btn-outline-success mb-2"
               >
                 Register
               </button>
             </div>
-          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button
-          class="btn btn-outline-success"
-          data-bs-target="#loginModal"
-          data-bs-toggle="modal"
-          data-bs-dismiss="modal"
-        >
-          Back to login
-        </button>
       </div>
     </div>
   </div>
-</div>

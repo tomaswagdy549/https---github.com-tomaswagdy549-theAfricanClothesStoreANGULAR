@@ -61,10 +61,15 @@ export class LoginComponent {
         next: (response) => {
           document.getElementById('btn-close')?.click();
           localStorage.setItem('token', response['token']);
-          this.accountService.logUser()
+          this.accountService.logUser();
           this.router.navigateByUrl('/clothes');
         },
         error: (error) => (this.message = error.error['message']),
       });
   }
+  goToRegister(): void {
+    document.getElementById('btn-close')?.click()
+    this.router.navigateByUrl('/register');
+  }
+
 }
