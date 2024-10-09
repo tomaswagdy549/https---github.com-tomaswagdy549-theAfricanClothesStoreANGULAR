@@ -1,12 +1,25 @@
 import { Component } from '@angular/core';
 
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CategoryService } from '../../services/categoryService/category.service';
 import { BrandsService } from '../../services/brandsService/brands.service';
 import { Category } from '../../models/category/category';
 import { Brand } from '../../models/brand/brand';
+import { ProductsService } from '../../services/productsService/products.service';
+import { AddedProductDTO } from '../../models/DTOs/requestDTO/addedProductDTO/added-product-dto';
+import { ProductAvailableSizeService } from '../../services/productAvailableService/product-available-size.service';
+import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
 
 @Component({
   selector: 'app-adding-product',
@@ -24,15 +37,29 @@ export class AddingProductComponent {
 
   constructor(
     private fb: FormBuilder,
+    private productsService: ProductsService,
+    private productAvailableSizeService: ProductAvailableSizeService,
     private categoryService: CategoryService,
     private brandService: BrandsService
   ) {
-    this.productForm = this.fb.group({
-      productName: ['', Validators.required],
-      brandId: ['', Validators.required],
-      categoryId: ['', Validators.required],
-      gender: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(1)]],
+    this.productForm = new FormGroup({
+      productName: new FormControl('', Validators.required),
+      brandId: new FormControl('', Validators.required),
+      categoryId: new FormControl('', Validators.required),
+      gender: new FormControl('', Validators.required),
+      price: new FormControl('', [Validators.required, Validators.min(1)]),
+      availableSize: new FormArray(
+        [
+          new FormGroup({
+            size: new FormControl('', Validators.required),
+            quantity: new FormControl(null, [
+              Validators.required,
+              Validators.min(1),
+            ]),
+          }),
+        ],
+        [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
+      ),
     });
     this.categoryService.getAllCategories(12, 1).subscribe({
       next: (categories) => {
@@ -65,29 +92,108 @@ export class AddingProductComponent {
 
   // Form submission
   onSubmit(): void {
-    if (this.productForm.valid && this.selectedFile) {
-      const formData = new FormData();
-      formData.append(
-        'productName',
-        this.productForm.get('productName')?.value
-      );
-      formData.append('categoryId', this.productForm.get('categoryId')?.value);
-      formData.append(
-        'description',
-        this.productForm.get('description')?.value
-      );
-      formData.append('price', this.productForm.get('price')?.value);
-      formData.append('productImage', this.selectedFile);
-
-      // Submit formData to your backend API (example)
-      console.log('Form Data:', formData);
-
-      // Example API call:
-      // this.productService.addProduct(formData).subscribe(response => {
-      //   console.log('Product added successfully', response);
-      // }, error => {
-      //   console.error('Error adding product', error);
-      // });
+    if (this.productForm.valid) {
+      let addedProductDTO: AddedProductDTO = {
+        name: this.productForm.get('productName')!.value,
+        gender: this.productForm.get('gender')!.value,
+        categoryId: this.productForm.get('categoryId')!.value,
+        brandId: this.productForm.get('brandId')!.value,
+        price: this.productForm.get('price')!.value,
+        imageOfProduct: this.selectedFile!,
+      };
+      let formData = new FormData();
+      formData.append('name', addedProductDTO.name);
+      formData.append('gender', addedProductDTO.gender);
+      formData.append('categoryId', addedProductDTO.categoryId.toString());
+      formData.append('brandId', addedProductDTO.brandId.toString());
+      formData.append('price', addedProductDTO.price.toString());
+      formData.append('imageOfProduct', addedProductDTO.imageOfProduct);
+      this.productsService.addProduct(formData).subscribe({
+        next: (response) => {
+          console.log(response);
+          this.addProductAvailableSizes(response.entity.id);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
     }
+  }
+  getFormGroup(index: number): FormGroup {
+    let formArray: FormArray = this.getArray() as FormArray;
+    let formGroup: FormGroup = formArray.at(index) as FormGroup;
+    return formGroup;
+  }
+  getArray(): any {
+    let formArray: FormArray = this.productForm.controls[
+      'availableSize'
+    ] as FormArray;
+    return formArray.controls;
+  }
+  deleteSize(index: number) {
+    let formArray = this.productForm.controls['availableSize'] as FormArray;
+    formArray.removeAt(index);
+  }
+  NewSize() {
+    let formArray = this.productForm.controls['availableSize'] as FormArray;
+    formArray.push(
+      new FormGroup({
+        size: new FormControl('', Validators.required),
+        quantity: new FormControl(null, [
+          Validators.required,
+          Validators.min(1),
+        ]),
+      })
+    );
+  }
+  addProductAvailableSizes(id: number) {
+    let AddedProductAvailableSizes: AddedProductAvailableSizesDTO[] = [];
+    let formArray = this.productForm.controls[
+      'availableSize'
+    ] as FormArray<FormGroup>;
+    formArray.controls.forEach((form) => {
+      let AddedProductAvailableSize: AddedProductAvailableSizesDTO = {
+        productId: id,
+        availabeSize: form.controls['size'].value,
+        quantity: form.controls['quantity'].value,
+      };
+      AddedProductAvailableSizes.push(AddedProductAvailableSize);
+    });
+    this.productAvailableSizeService
+      .addRangeOfProductAvailableSize(AddedProductAvailableSizes)
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+  }
+  private uniqueSizeQuantityValidator(): ValidatorFn {
+    return (formArray: AbstractControl): ValidationErrors | null => {
+      const controls = (formArray as FormArray).controls;
+
+      // Create a set to track unique size and quantity combinations
+      const seenCombinations = new Set<string>();
+
+      for (const control of controls) {
+        const group = control as FormGroup;
+        const size = group.get('size')?.value;
+
+        // Create a string key based on size and quantity values
+        const key = `${size}`;
+
+        // Check if the combination is already in the set
+        if (seenCombinations.has(key)) {
+          return { duplicate: true }; // If duplicate, return an error
+        }
+
+        // If not, add the combination to the set
+        seenCombinations.add(key);
+      }
+
+      return null; // Return null if no duplicates
+    };
   }
 }

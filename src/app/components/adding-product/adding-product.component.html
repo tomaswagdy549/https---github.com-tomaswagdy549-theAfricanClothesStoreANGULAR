@@ -1,114 +1,179 @@
-<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-  <!-- Product Name -->
-  <label for="productName">Product Name:</label>
-  <input
-    type="text"
-    id="productName"
-    formControlName="productName"
-    placeholder="Enter product name"
-  />
-  <div
-    *ngIf="
-      productForm.controls['productName'].invalid &&
-      productForm.controls['productName'].touched
-    "
-    class="text-danger"
-  >
-    <small *ngIf="productForm.controls['productName'].errors!['required']"
-      >product Name is required.</small
-    >
-  </div>
-  <!-- Category Dropdown -->
-  <label for="category">Category:</label>
-  <select id="category" formControlName="categoryId">
-    <option value="">Select category</option>
-    <option *ngFor="let category of categories" [value]="category.id">
-      {{ category.name }}
-    </option>
-  </select>
-  <div
-    *ngIf="
-      productForm.controls['categoryId'].invalid &&
-      productForm.controls['categoryId'].touched
-    "
-    class="text-danger"
-  >
-    <small *ngIf="productForm.controls['categoryId'].errors!['required']"
-      >category is required.</small
-    >
-  </div>
-  <label for="category">Brand:</label>
-  <select id="category" formControlName="brandId">
-    <option value="">Select Brand</option>
-    <option *ngFor="let brand of brands" [value]="brand.id">
-      {{ brand.name }}
-    </option>
-  </select>
-  <div
-    *ngIf="
-      productForm.controls['brandId'].invalid &&
-      productForm.controls['brandId'].touched
-    "
-    class="text-danger"
-  >
-    <small *ngIf="productForm.controls['brandId'].errors!['required']"
-      >brand is required.</small
-    >
-  </div>
-  <!-- Description -->
-  <label for="description">Gender:</label>
-  <input
-    type="text"
-    formControlName="gender"
-    placeholder="Enter product gender"
-  />
-  <div
-    *ngIf="
-      productForm.controls['gender'].invalid &&
-      productForm.controls['gender'].touched
-    "
-    class="text-danger"
-  >
-    <small *ngIf="productForm.controls['gender'].errors!['required']"
-      >gender is required.</small
-    >
-  </div>
-  <!-- Price -->
-  <label for="price">Price:</label>
-  <input
-    type="number"
-    id="price"
-    formControlName="price"
-    placeholder="Enter product price"
-  />
-  <div
-    *ngIf="
-      productForm.controls['price'].invalid &&
-      productForm.controls['price'].touched
-    "
-    class="text-danger"
-  >
-    <small *ngIf="productForm.controls['price'].errors!['required']"
-      >price is required.</small
-    >
-  </div>
-  <!-- Image Upload -->
-  <label for="productImage">Product Image:</label>
-  <input
-    type="file"
-    id="productImage"
-    (change)="onFileSelected($event)"
-    accept="image/*"
-  />
+<div class="row">
+  <div class="col-md-6">
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <!-- Product Name -->
+      <label for="productName">Product Name:</label>
+      <input
+        type="text"
+        id="productName"
+        formControlName="productName"
+        placeholder="Enter product name"
+      />
+      <div
+        *ngIf="
+          productForm.controls['productName'].invalid &&
+          productForm.controls['productName'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['productName'].errors!['required']"
+          >product Name is required.</small
+        >
+      </div>
+      <!-- Category Dropdown -->
+      <label for="category">Category:</label>
+      <select id="category" formControlName="categoryId">
+        <option value="">Select category</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          productForm.controls['categoryId'].invalid &&
+          productForm.controls['categoryId'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['categoryId'].errors!['required']"
+          >category is required.</small
+        >
+      </div>
+      <label for="category">Brand:</label>
+      <select id="category" formControlName="brandId">
+        <option value="">Select Brand</option>
+        <option *ngFor="let brand of brands" [value]="brand.id">
+          {{ brand.name }}
+        </option>
+      </select>
+      <div
+        *ngIf="
+          productForm.controls['brandId'].invalid &&
+          productForm.controls['brandId'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['brandId'].errors!['required']"
+          >brand is required.</small
+        >
+      </div>
+      <!-- Description -->
+      <label for="description">Gender:</label>
+      <input
+        type="text"
+        formControlName="gender"
+        placeholder="Enter product gender"
+      />
+      <div
+        *ngIf="
+          productForm.controls['gender'].invalid &&
+          productForm.controls['gender'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['gender'].errors!['required']"
+          >gender is required.</small
+        >
+      </div>
+      <!-- Price -->
+      <label for="price">Price:</label>
+      <input
+        type="number"
+        id="price"
+        formControlName="price"
+        placeholder="Enter product price"
+      />
+      <div
+        *ngIf="
+          productForm.controls['price'].invalid &&
+          productForm.controls['price'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['price'].errors!['required']"
+          >price is required.</small
+        >
+      </div>
+      <!-- Image Upload -->
+      <label for="productImage">Product Image:</label>
+      <input
+        type="file"
+        id="productImage"
+        (change)="onFileSelected($event)"
+        accept="image/*"
+      />
 
-  <!-- Image Preview -->
-  <div *ngIf="imagePreview">
-    <p>Image Preview:</p>
-    <img [src]="imagePreview" alt="Image Preview" width="200" />
-  </div>
+      <!-- Image Preview -->
+      <div *ngIf="imagePreview">
+        <p>Image Preview:</p>
+        <img [src]="imagePreview" alt="Image Preview" width="200" />
+      </div>
 
-  <!-- Submit Button -->
-  <button type="submit" [disabled]="!productForm.valid || !selectedFile">
-    Adding Product
-  </button>
-</form>
+      <!-- Submit Button -->
+      <button
+        [disabled]="productForm.invalid || selectedFile == null"
+        type="submit"
+      >
+        Adding Product
+      </button>
+    </form>
+  </div>
+  <div class="col-md-6">
+    <form [formGroup]="productForm">
+      <h2>Product available sizes</h2>
+      <!-- Product Name -->
+      <div class="align-items-center mb-3">
+        <div
+          *ngFor="let size of getArray(); index as index"
+          class="align-items-start mb-3"
+        >
+          <div
+            [formGroup]="getFormGroup(index)"
+            class="d-flex align-items-center"
+          >
+            <input
+              placeholder="the size"
+              formControlName="size"
+              type="text"
+              class="form-control me-2"
+              style="width: 75%; margin-bottom: 0"
+            />
+            <input
+              placeholder="quantity"
+              formControlName="quantity"
+              type="number"
+              class="form-control me-2"
+              style="width: 75%; margin-bottom: 0"
+            />
+            <button
+              (click)="deleteSize(index)"
+              type="button"
+              class="btn btn-outline-primary"
+            >
+              Delete size
+            </button>
+          </div>
+          <div
+            *ngIf="
+              getFormGroup(index).controls['quantity'].invalid ||
+              getFormGroup(index).controls['size'].invalid
+            "
+            class="text-danger"
+          >
+            <small
+              *ngIf="
+                getFormGroup(index).controls['quantity'].invalid ||
+                getFormGroup(index).controls['size'].invalid
+              "
+              >quantity and size is required.</small
+            >
+          </div>
+          <small class="text-danger" *ngIf="this.productForm.controls['availableSize'].hasError('duplicate')">
+            size and quantity already exists
+          </small>      
+        </div>
+      </div>
+      <button (click)="NewSize()" type="button">Add new Size</button>
+    </form>
+  </div>
+</div>

@@ -17,6 +17,14 @@ export class ProductAvailableSizeService {
       AddedProductAvailableSizesDTO
     );
   }
+  addRangeOfProductAvailableSize(
+    AddedProductAvailableSizesDTO: AddedProductAvailableSizesDTO[]
+  ) {
+    return this.http.post(
+      `${enviroment.baseUrl}/api/productAvailableSizes/addRange`,
+      AddedProductAvailableSizesDTO
+    );
+  }
   editProductAvailableSize(
     updatedProductAvailableDTO: UpdatedProductAvailableDTO
   ) {
