@@ -20,9 +20,11 @@ import { OrderComponent } from './components/order/order.component';
 import { AddingProductComponent } from './components/adding-product/adding-product.component';
 import { EditingProductComponent } from './components/editing-product/editing-product.component';
 import { RegisterComponent } from './components/register/register.component';
+import { isLoggedGuard } from './guards/guards/isLogged/is-logged.guard';
+import { isAdminGuard } from './guards/guards/isAdmin/is-admin.guard';
 
 export const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
   { path: 'AboutUs', component: AboutUsComponent },
   { path: 'return-refund-policy', component: ReturnRefundPolicyComponent },
   { path: 'terms-of-service', component: TermsOfServiceComponent },
@@ -39,16 +41,32 @@ export const routes: Routes = [
     component: MenComponent,
     resolve: { products: femaleResolverGuard },
   },
-  { path: 'register', component: RegisterComponent },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [isLoggedGuard],
+  },
   { path: 'bagsmen', component: BagsmenComponent },
   { path: 'accessors', component: AccessorsComponent },
   { path: 'socks', component: SocksComponent },
   { path: 'belts', component: BeltsComponent },
   { path: 'womenshoes', component: WomenshoesComponent },
   { path: 'womenbags', component: WomenbagsComponent },
-  { path: 'shoppingcart', component: ShoppingcartComponent },
-  { path: 'order', component: OrderComponent },
-  { path: 'addingproduct', component: AddingProductComponent },
-  { path: 'editingproduct/:id', component: EditingProductComponent },
+  {
+    path: 'shoppingcart',
+    component: ShoppingcartComponent,
+    canActivate: [isLoggedGuard],
+  },
+  { path: 'order', component: OrderComponent, canActivate: [isLoggedGuard] },
+  {
+    path: 'addingproduct',
+    component: AddingProductComponent,
+    canActivate: [isAdminGuard],
+  },
+  {
+    path: 'editingproduct/:id',
+    component: EditingProductComponent,
+    canActivate: [isAdminGuard],
+  },
   { path: '**', redirectTo: '' },
 ];
