@@ -22,6 +22,7 @@ import { EditingProductComponent } from './components/editing-product/editing-pr
 import { RegisterComponent } from './components/register/register.component';
 import { isLoggedGuard } from './guards/guards/isLogged/is-logged.guard';
 import { isAdminGuard } from './guards/guards/isAdmin/is-admin.guard';
+import { isLoggedOutGuard } from './guards/guards/isLoggedOut/is-logged-out.guard';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -55,9 +56,9 @@ export const routes: Routes = [
   {
     path: 'shoppingcart',
     component: ShoppingcartComponent,
-    canActivate: [isLoggedGuard],
+    canActivate: [isLoggedOutGuard],
   },
-  { path: 'order', component: OrderComponent, canActivate: [isLoggedGuard] },
+  { path: 'order', component: OrderComponent, canActivate: [isLoggedOutGuard] },
   {
     path: 'addingproduct',
     component: AddingProductComponent,

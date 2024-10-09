@@ -16,8 +16,8 @@ export function responseInterceptor(
   globalDataService.apiCallSubject.next(true);
   return next(req).pipe(
     tap((event) => {
-      if (event instanceof HttpResponse) {
-        if (req.method != 'GET') {
+      if (event instanceof HttpResponse ) {
+        if (req.method != 'GET' && !req.url.includes("user")) {
           let operation: string = '';
           switch (req.method) {
             case 'POST':

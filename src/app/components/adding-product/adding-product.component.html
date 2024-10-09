@@ -1,6 +1,7 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-4">
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+      <h2>Product details</h2>
       <!-- Product Name -->
       <label for="productName">Product Name:</label>
       <input
@@ -99,7 +100,7 @@
       <input
         type="file"
         id="productImage"
-        (change)="onFileSelected($event)"
+        (change)="onPhotoSelected($event)"
         accept="image/*"
       />
 
@@ -111,14 +112,14 @@
 
       <!-- Submit Button -->
       <button
-        [disabled]="productForm.invalid || selectedFile == null"
+        [disabled]="productForm.invalid || selectedPhoto == null"
         type="submit"
       >
         Adding Product
       </button>
     </form>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-4">
     <form [formGroup]="productForm">
       <h2>Product available sizes</h2>
       <!-- Product Name -->
@@ -168,12 +169,41 @@
               >quantity and size is required.</small
             >
           </div>
-          <small class="text-danger" *ngIf="this.productForm.controls['availableSize'].hasError('duplicate')">
+          <small
+            class="text-danger"
+            *ngIf="
+              this.productForm.controls['availableSize'].hasError('duplicate')
+            "
+          >
             size and quantity already exists
-          </small>      
+          </small>
         </div>
       </div>
       <button (click)="NewSize()" type="button">Add new Size</button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <form [formGroup]="productForm">
+      <h2>Product photos</h2>
+      <p>Image Preview:</p>
+      <input
+        type="file"
+        id="productImage"
+        (change)="onProductPhotosSelected($event)"
+        accept="image/*"
+      />
+      <!-- Product Name -->
+      <div class="align-items-center mb-3">
+        <div class="row">
+          <div class="col-6 mb-2" *ngFor="let photo of selectedPhotos">
+            <img
+              [src]="photo.imagePreview"
+              alt="Image Preview"
+              style="height: 17.5rem; width: 100%; object-fit: cover"
+            />
+          </div>
+        </div>
+      </div>
     </form>
   </div>
 </div>

@@ -21,38 +21,44 @@
             class="card-img-top"
             [src]="product.mainPhotoUrl"
             alt="Card image cap"
+            style="height: 17.5rem; width: 100%; object-fit: cover"
           />
           <div class="card-body">
             <h5 class="card-title">{{ product.name }}</h5>
             <p class="card-text">Price : {{ product.price }}</p>
             <div class="d-flex justify-content-between">
-            <a
-              (click)="sentProduct = product"
-              class="btn btn-outline-dark"
-              data-bs-target="#productInfoModal"
-              data-bs-toggle="modal"
-              >Details</a
-            >
-              <a *ngIf="checkIfAuthorized()"
-              [href]="'editingproduct/'+product.id"
-              class="btn btn-outline-dark"
-              >Edit product</a
-            >  
+              <a
+                (click)="sentProduct = product"
+                class="btn btn-outline-dark"
+                data-bs-target="#productInfoModal"
+                data-bs-toggle="modal"
+                >Details</a
+              >
+              <a
+                *ngIf="checkIfAuthorized()"
+                [href]="'editingproduct/' + product.id"
+                class="btn btn-outline-dark"
+                >Edit product</a
+              >
             </div>
           </div>
         </div>
       </div>
     </div>
-    <nav aria-label="Page navigation example">
-        <ul style="cursor: pointer;" class="pagination">
-          <li *ngIf="currentPage != 1" class="page-item">
-            <a
-              class="page-link"
-              (click)="moveToPage(pageSize, currentPage - 1)"
-              >Previous</a
-            >
-          </li>
-          <li *ngFor="let Page of totalPages; let index as i" class="page-item">
+    <nav
+      aria-label="Page navigation example"
+      class="d-flex justify-content-center"
+    >
+      <ul style="cursor: pointer" class="pagination pagination-sm">
+        <li *ngIf="currentPage != 1" class="page-item">
+          <a class="page-link" (click)="moveToPage(pageSize, currentPage - 1)"
+            >Previous</a
+          >
+        </li>
+          <li
+            *ngFor="let Page of totalPages; let index; as: i"
+            class="page-item"
+          >
             <a
               [ngClass]="{ active: currentPage == Page }"
               class="page-link"
@@ -60,14 +66,12 @@
               >{{ Page }}</a
             >
           </li>
-          <li *ngIf="currentPage != totalPages.length" class="page-item">
-            <a
-              class="page-link"
-              (click)="moveToPage(pageSize, currentPage + 1)"
-              >next</a
-            >
-          </li>
-        </ul>  
+        <li *ngIf="currentPage != totalPages.length" class="page-item">
+          <a class="page-link" (click)="moveToPage(pageSize, currentPage + 1)"
+            >next</a
+          >
+        </li>
+      </ul>
     </nav>
   </div>
 </section>

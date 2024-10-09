@@ -12,6 +12,7 @@ import { LoggedUserDTO } from '../../models/DTOs/requestDTO/loggedUserDTO/logged
 import { Router } from '@angular/router';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { finalize } from 'rxjs';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-login',
@@ -62,6 +63,7 @@ export class LoginComponent {
           document.getElementById('btn-close')?.click();
           localStorage.setItem('token', response['token']);
           this.accountService.logUser();
+          HandleResponse.handleSuccess("Logged succesfully")
           this.router.navigateByUrl('/clothes');
         },
         error: (error) => (this.message = error.error['message']),

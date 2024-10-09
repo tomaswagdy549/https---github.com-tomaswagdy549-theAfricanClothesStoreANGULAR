@@ -3,7 +3,6 @@ import { Component } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
-  FormBuilder,
   FormControl,
   FormGroup,
   ValidationErrors,
@@ -20,6 +19,7 @@ import { ProductsService } from '../../services/productsService/products.service
 import { AddedProductDTO } from '../../models/DTOs/requestDTO/addedProductDTO/added-product-dto';
 import { ProductAvailableSizeService } from '../../services/productAvailableService/product-available-size.service';
 import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-adding-product',
@@ -32,11 +32,13 @@ export class AddingProductComponent {
   productForm: FormGroup;
   categories: Category[] = [];
   brands: Brand[] = [];
-  selectedFile: File | null = null;
+  selectedPhoto: File | null = null;
+  selectedPhotos:
+    | { file: File; imagePreview: string | ArrayBuffer | null }[]
+    | null = [];
   imagePreview: string | ArrayBuffer | null = null;
 
   constructor(
-    private fb: FormBuilder,
     private productsService: ProductsService,
     private productAvailableSizeService: ProductAvailableSizeService,
     private categoryService: CategoryService,
@@ -60,6 +62,10 @@ export class AddingProductComponent {
         ],
         [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
       ),
+      photos: new FormArray(
+        [new FormControl<File | null>(null)],
+        [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
+      ),
     });
     this.categoryService.getAllCategories(12, 1).subscribe({
       next: (categories) => {
@@ -74,10 +80,10 @@ export class AddingProductComponent {
   }
 
   // File selection for image upload with preview
-  onFileSelected(event: any): void {
+  onPhotoSelected(event: any): void {
     const file = event.target.files[0];
     if (file && file.type.startsWith('image/')) {
-      this.selectedFile = file;
+      this.selectedPhoto = file;
 
       // Generate preview
       const reader = new FileReader();
@@ -86,7 +92,20 @@ export class AddingProductComponent {
       };
       reader.readAsDataURL(file);
     } else {
-      alert('Please select a valid image file.');
+      HandleResponse.handleError('Please select a valid image file.');
+    }
+  }
+  onProductPhotosSelected(event: any) {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      // Generate preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedPhotos?.push({ file: file, imagePreview: reader.result });
+      };
+      reader.readAsDataURL(file);
+    } else {
+      HandleResponse.handleError('Please select a valid image file.');
     }
   }
 
@@ -99,7 +118,7 @@ export class AddingProductComponent {
         categoryId: this.productForm.get('categoryId')!.value,
         brandId: this.productForm.get('brandId')!.value,
         price: this.productForm.get('price')!.value,
-        imageOfProduct: this.selectedFile!,
+        imageOfProduct: this.selectedPhoto!,
       };
       let formData = new FormData();
       formData.append('name', addedProductDTO.name);
