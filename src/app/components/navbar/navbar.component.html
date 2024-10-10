@@ -11,12 +11,12 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-
     <div
       class="collapse navbar-collapse tocenter"
       id="navbarSupportedContent"
       style="padding-right: 200px"
     >
+    <br>
       <a href="/">
         <img
           src="assets/images/logo.png"
@@ -25,12 +25,11 @@
             border-radius: 50%;
             width: 80px;
             height: 50px;
-            padding-left: 20px;
           "
         />
       </a>
 
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" style="padding-left: 200px">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
@@ -126,8 +125,8 @@
         />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
-
-      <ul class="navbar-nav ms-2 active" style="padding-left: 20px">
+      <br>
+      <ul class="navbar-nav active">
         <li class="nav-item me-3">
           <i
             *ngIf="!logged"
@@ -144,7 +143,7 @@
             LogOut
           </button>
         </li>
-
+        <br>
         <li *ngIf="logged" class="nav-item">
           <i
             [routerLink]="'/'"
@@ -157,7 +156,6 @@
             class="position-absolute translate-middle badge rounded-pill bg-danger"
           >
             {{ numberOfCartItems }}
-            <span class="visually-hidden">unread messages</span>
           </span>
         </li>
       </ul>

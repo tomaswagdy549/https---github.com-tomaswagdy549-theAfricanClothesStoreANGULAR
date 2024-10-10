@@ -23,7 +23,7 @@
                   class="form-select"
                   id="brandIds"
                 >
-                  <option selected>Select a brand</option>
+                  <option selected value="0">Select a brand</option>
                   <option *ngFor="let brand of brands" [value]="brand.id">
                     {{ brand.name }}
                   </option>
@@ -38,7 +38,7 @@
                   class="form-select"
                   id="categoryIds"
                 >
-                  <option selected>Select a category</option>
+                  <option selected value="0">Select a category</option>
                   <option
                     [value]="category.id"
                     *ngFor="let category of categories"
@@ -97,7 +97,28 @@
                 />
               </div>
             </div>
+            <div class="row mb-3">
+              <div class="col">
+                <label for="maxPrice" class="form-label">product Available Sizes</label>
+                <input
+                  type="text"
+                  formControlName="availableSizes"
+                  class="form-control"
+                  id="maxPrice"
+                  min="0"
+                />
+              </div>
 
+              <div class="col">
+                <label for="name" class="form-label">Product gender</label>
+                <input
+                  type="text"
+                  formControlName="gender"
+                  class="form-control"
+                  id="name"
+                />
+              </div>
+            </div>
             <button
               type="button"
               (click)="filterProducts()"

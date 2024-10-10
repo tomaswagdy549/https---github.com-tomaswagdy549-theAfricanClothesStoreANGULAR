@@ -1,11 +1,4 @@
-import {
-  Component,
-  ComponentFactoryResolver,
-  ComponentRef,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { ProductsService } from '../../services/productsService/products.service';
 import { Product } from '../../models/product/product';
 import { CommonModule } from '@angular/common';
@@ -33,14 +26,22 @@ export class ClothesComponent {
   totalPages: number[] = [];
   products: Product[] = [];
   sentProduct!: Product;
-  constructor(private productsService: ProductsService,private accountService:AccountService) {
+  constructor(
+    private productsService: ProductsService,
+    private accountService: AccountService
+  ) {
     this.moveToPage(this.pageSize, 1);
   }
-  showFilteredProducts($event: GetAllProductsDTO) {
-    this.products = $event.entities;
+  showFilteredProducts($event:GetAllProductsDTO) {
+      this.products = $event.entities;
+      this.totalPages = [];
+      for (let i = 1; i <= $event.totalPages; i++) {
+        this.totalPages.push(i);
+      }
+      this.currentPage = $event.currentPage;
   }
-  moveToPage(pageSize: number, Page: number) {
-    this.productsService.getAllProducts(pageSize, Page).subscribe({
+  moveToPage(pageSize: number, page: number) {
+    this.productsService.getAllProducts(pageSize,page).subscribe({
       next: (res) => {
         this.products = res.entities;
         this.currentPage = res['currentPage'];
@@ -56,7 +57,7 @@ export class ClothesComponent {
       },
     });
   }
-  checkIfAuthorized(){
+  checkIfAuthorized() {
     return this.accountService.isAdmin();
   }
 }

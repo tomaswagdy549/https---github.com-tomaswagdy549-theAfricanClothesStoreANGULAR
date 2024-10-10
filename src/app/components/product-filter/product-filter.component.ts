@@ -13,6 +13,7 @@ import { Category } from '../../models/category/category';
 import { ProductsService } from '../../services/productsService/products.service';
 import { Product } from '../../models/product/product';
 import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-product-filter',
@@ -26,15 +27,16 @@ export class ProductFilterComponent {
   categories: Category[] = [];
   filteredProducts: Product[] = [];
   filterForm: FormGroup = new FormGroup({
-    brandIds: new FormControl<number[] | null>([]),
-    categoryIds: new FormControl<number[] | null>([]),
-    availableSizes: new FormControl<string[]>([]),
+    brandIds: new FormControl<number>(0),
+    categoryIds: new FormControl<number>(0),
+    availableSizes: new FormControl<string | null>(null),
     quantity: new FormControl<number | null>(null, Validators.min(0)),
     minPrice: new FormControl<number | null>(null, [Validators.min(0)]),
     maxPrice: new FormControl<number | null>(null, [Validators.min(0)]),
-    name: new FormControl<string>(''),
+    name: new FormControl<string | null>(null),
+    gender: new FormControl<string | null>(null),
   });
-  @Output() productsFiltered = new EventEmitter<GetAllProductsDTO>()
+  @Output() productsFiltered = new EventEmitter<GetAllProductsDTO>();
   constructor(
     private brandsService: BrandsService,
     private CategoryService: CategoryService,
@@ -64,54 +66,66 @@ export class ProductFilterComponent {
     });
   }
   filterProducts() {
-    let brandIdsQuery =  ``;
-      this.filterForm.value['brandIds'].map((brandId: number)=>{
-        brandIdsQuery += `brandIds=${brandId}&`
-      })
-    let categoryIdsQuery = ``;
-    this.filterForm.value['categoryIds'].map((categoryId: number)=>{
-      brandIdsQuery += `categoryIds=${categoryId}&`
-    })
-    let availableSizesQuery =  ``;
-    this.filterForm.value['availableSizes'].map((availableSize: number)=>{
-      brandIdsQuery += `availableSizes=${availableSize}&`
-    })
+    let brandIdsQuery =
+      this.filterForm.value['brandIds'] != 0
+        ? `brandIds=${this.filterForm.value['brandIds']}`
+        : ``;
+    let categoryIdsQuery =
+      this.filterForm.value['categoryIds'] != 0
+        ? `categoryIds=${this.filterForm.value['categoryIds']}`
+        : ``;
+    let availableSizesQuery =
+      this.filterForm.value['availableSizes'] != null
+        ? `availableSizes=${this.filterForm.value['availableSizes']}`
+        : ``;
+    let genderQuery =
+      this.filterForm.value['gender'] != null
+        ? `gender=${this.filterForm.value['gender']}`
+        : ``;
+    let nameQuery =
+      this.filterForm.value['name'] != null
+        ? `name=${this.filterForm.value['name']}`
+        : ``;
     let quantityQuery =
-      this.filterForm.value['quantity'] !== null
+      this.filterForm.value['quantity'] != null
         ? `quantity=${this.filterForm.value['quantity']}`
         : ``;
+
     let minPriceQuery =
-      this.filterForm.value['minPrice'] !== null
+      this.filterForm.value['minPrice'] != null
         ? `minPrice=${this.filterForm.value['minPrice']}`
         : ``;
     let maxPriceQuery =
-      this.filterForm.value['maxPrice'] !== null
+      this.filterForm.value['maxPrice'] != null
         ? `maxPrice=${this.filterForm.value['maxPrice']}`
         : ``;
-    let nameQuery =
-      this.filterForm.value['name'] != ''
-        ? `name=${this.filterForm.value['name']}`
-        : ``;
+    let pageNumber = 1;
+    let pageSize = 6;
     // Combine all the queries, filtering out any empty strings
     let queries = [
       brandIdsQuery,
       categoryIdsQuery,
       availableSizesQuery,
+      genderQuery,
       quantityQuery,
       minPriceQuery,
       maxPriceQuery,
       nameQuery,
+      `pageNumber= ${pageNumber}`,
+      `pageSize= ${pageSize}`,
     ]
       .filter((query) => query) // remove empty queries
       .join('&');
     let totalQuery = `${queries}`;
-    console.log(totalQuery)
     this.productsService.filterProducts(totalQuery).subscribe({
       next: (response) => {
-        this.productsFiltered.emit(response)
-      },
-      error: (error) => {
-        console.error('Error fetching products:', error);
+        if (response != null) {
+          this.productsFiltered.emit(response);
+        } else {
+          HandleResponse.handleError(
+            'there are no product like you search , try again later'
+          );
+        }
       },
     });
   }

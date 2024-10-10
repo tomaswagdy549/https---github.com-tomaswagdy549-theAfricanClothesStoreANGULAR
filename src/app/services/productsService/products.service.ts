@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
 import { Product } from '../../models/product/product';
 import { UpdatedProductDTO } from '../../models/DTOs/requestDTO/updatedProductDTO/updated-product-dto';
-import { AddedProductDTO } from '../../models/DTOs/requestDTO/addedProductDTO/added-product-dto';
 import { GenericResponse } from '../../models/DTOs/responseDTO/genericResponse/generic-response';
 
 @Injectable({

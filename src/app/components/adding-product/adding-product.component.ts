@@ -20,6 +20,8 @@ import { AddedProductDTO } from '../../models/DTOs/requestDTO/addedProductDTO/ad
 import { ProductAvailableSizeService } from '../../services/productAvailableService/product-available-size.service';
 import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { ProductPhotoService } from '../../services/productPhotoService/product-photo.service';
+import { AddedProductPhotoDTO } from '../../models/DTOs/requestDTO/addedProductPhotoDTO/added-product-photo-dto';
 
 @Component({
   selector: 'app-adding-product',
@@ -41,6 +43,7 @@ export class AddingProductComponent {
   constructor(
     private productsService: ProductsService,
     private productAvailableSizeService: ProductAvailableSizeService,
+    private productPhotoService: ProductPhotoService,
     private categoryService: CategoryService,
     private brandService: BrandsService
   ) {
@@ -129,12 +132,8 @@ export class AddingProductComponent {
       formData.append('imageOfProduct', addedProductDTO.imageOfProduct);
       this.productsService.addProduct(formData).subscribe({
         next: (response) => {
-          console.log(response);
           this.addProductAvailableSizes(response.entity.id);
-        },
-        error: (error) => {
-          console.error(error);
-        },
+        }
       });
     }
   }
@@ -165,14 +164,14 @@ export class AddingProductComponent {
       })
     );
   }
-  addProductAvailableSizes(id: number) {
+  addProductAvailableSizes(productId: number) {
     let AddedProductAvailableSizes: AddedProductAvailableSizesDTO[] = [];
     let formArray = this.productForm.controls[
       'availableSize'
     ] as FormArray<FormGroup>;
     formArray.controls.forEach((form) => {
       let AddedProductAvailableSize: AddedProductAvailableSizesDTO = {
-        productId: id,
+        productId: productId,
         availabeSize: form.controls['size'].value,
         quantity: form.controls['quantity'].value,
       };
@@ -182,36 +181,32 @@ export class AddingProductComponent {
       .addRangeOfProductAvailableSize(AddedProductAvailableSizes)
       .subscribe({
         next: (response) => {
-          console.log(response);
-        },
-        error: (error) => {
-          console.error(error);
-        },
+          this.addProductPhotos(productId);
+        }
       });
   }
+  addProductPhotos(productId: number) {
+    this.selectedPhotos?.forEach((photo) => {
+      let productPhoto: FormData = new FormData();
+      productPhoto.append('productId', productId.toString());
+      productPhoto.append('photo', photo.file);
+      this.productPhotoService.addPhotoProduct(productPhoto).subscribe({});
+    });
+  }
+
   private uniqueSizeQuantityValidator(): ValidatorFn {
     return (formArray: AbstractControl): ValidationErrors | null => {
       const controls = (formArray as FormArray).controls;
-
-      // Create a set to track unique size and quantity combinations
       const seenCombinations = new Set<string>();
-
       for (const control of controls) {
         const group = control as FormGroup;
         const size = group.get('size')?.value;
-
-        // Create a string key based on size and quantity values
         const key = `${size}`;
-
-        // Check if the combination is already in the set
         if (seenCombinations.has(key)) {
           return { duplicate: true }; // If duplicate, return an error
         }
-
-        // If not, add the combination to the set
         seenCombinations.add(key);
       }
-
       return null; // Return null if no duplicates
     };
   }
