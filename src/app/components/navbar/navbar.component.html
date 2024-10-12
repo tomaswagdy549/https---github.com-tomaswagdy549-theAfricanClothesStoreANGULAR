@@ -16,16 +16,12 @@
       id="navbarSupportedContent"
       style="padding-right: 200px"
     >
-    <br>
+      <br />
       <a href="/">
         <img
           src="assets/images/logo.png"
           alt="Logo"
-          style="
-            border-radius: 50%;
-            width: 80px;
-            height: 50px;
-          "
+          style="border-radius: 50%; width: 80px; height: 50px"
         />
       </a>
 
@@ -40,12 +36,11 @@
         </li>
 
         <!-- Dropdown for Men's -->
-        <li class="nav-item dropdown">
+        <li class="dropdown" style="cursor: pointer;">
           <a
-            class="nav-link dropdown-toggle active"
-            href="/men"
+            class="nav-link dropdown-toggle"
             id="navbarDropdown"
-            role="button"
+            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
             Men's
@@ -69,16 +64,14 @@
             </li>
           </ul>
         </li>
-
-        <li class="nav-item dropdown">
+        <li  class="dropdown" style="cursor: pointer;">
           <a
-            class="nav-link dropdown-toggle active"
-            href="/women"
-            id="navbarDropdown"
-            role="button"
+            class="nav-link dropdown-toggle"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Women's
+            Women
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
@@ -89,30 +82,23 @@
             <li><a class="dropdown-item" href="/womenshoes">Shoes</a></li>
           </ul>
         </li>
-
-        <li *ngIf="ifUserIsAdmin()" class="nav-item dropdown">
+        <li *ngIf="ifUserIsAdmin()" class="dropdown" style="cursor: pointer;">
           <a
-            class="nav-link active"
-            href="/addingproduct"
-            id="navbarDropdown"
-            role="button"
+            class="nav-link dropdown-toggle"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Add product
+            Options
           </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li>
+              <a class="dropdown-item" href="/addingproduct">Add product</a>
+            </li>
+            <li><a class="dropdown-item" href="/editingCategory">Edit categories</a></li>
+            <li><a class="dropdown-item" href="/editingBrand">Edit brands</a></li>
+          </ul>
         </li>
-        <!-- <li *ngIf="ifUserIsAdmin()" class="nav-item dropdown">
-          <a
-            class="nav-link  active"
-            href="/editingproduct"
-            id="navbarDropdown"
-            role="button"
-            aria-expanded="false"
-          >
-           editing-product
-          </a>
-       
-        </li> -->
       </ul>
 
       <!-- Search Form -->
@@ -125,7 +111,7 @@
         />
         <button class="btn btn-outline-dark" type="submit">Search</button>
       </form>
-      <br>
+      <br />
       <ul class="navbar-nav active">
         <li class="nav-item me-3">
           <i
@@ -143,7 +129,7 @@
             LogOut
           </button>
         </li>
-        <br>
+        <br />
         <li *ngIf="logged" class="nav-item">
           <i
             [routerLink]="'/'"

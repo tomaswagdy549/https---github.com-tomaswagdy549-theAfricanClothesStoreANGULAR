@@ -37,14 +37,15 @@ export function responseInterceptor(
     }),
     catchError((error: HttpErrorResponse) => {
       return throwError(() => {
-        let message = chceckRes(error);
+        let message = checkRes(error);
         HandleResponse.handleError(message);
         globalDataService.apiCallSubject.next(false);
       });
     })
   );
 }
-function chceckRes(response: HttpErrorResponse) {
+function checkRes(response: HttpErrorResponse) {
+  console.log(response)
   let message = '';
   switch (response.status) {
     case 0:

@@ -1,0 +1,65 @@
+<form>
+  <h2>Edit categories</h2>
+  <div>
+    <label for="productName">
+      <div
+        *ngFor="let category of categories"
+        class="d-flex align-items-center mb-3"
+      >
+        <input
+          [(ngModel)]="category.name"
+          [ngModelOptions]="{ standalone: true }"
+          name="name"
+          type="text"
+          id="productName"
+          placeholder="Edit category name"
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+        />
+        <button
+          [disabled]="category.name == ''"
+          (click)="editCategory(category)"
+          type="button"
+          class="btn btn-outline-primary"
+        >
+          Edit
+        </button>
+        <button
+          (click)="deleteCategory(category.id)"
+          class="ms-2"
+          style="background-color: brown"
+          type="button"
+        >
+          Delete
+        </button>
+      </div>
+      <div *ngIf="showCategoryAdd" class="d-flex align-items-center mb-3">
+        <input
+          [(ngModel)]="newCategory"
+          [ngModelOptions]="{ standalone: true }"
+          name="name"
+          placeholder="enter the category name"
+          type="text"
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+        />
+        <button
+          [disabled]="newCategory == ''"
+          (click)="addCategory()"
+          type="button"
+          class="btn btn-outline-primary"
+        >
+          Add
+        </button>
+      </div>
+      <button
+        style="width: 100%"
+        type="button"
+        (click)="showCategoryAdd = !showCategoryAdd"
+      >
+        <ng-container *ngIf="!showCategoryAdd">Add new Category</ng-container>
+        <ng-container *ngIf="showCategoryAdd">cancel</ng-container>
+      </button>
+    </label>
+  </div>
+</form>

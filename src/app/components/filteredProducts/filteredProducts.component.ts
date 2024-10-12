@@ -22,10 +22,10 @@ import { ProductsService } from '../../services/productsService/products.service
     ProductFilterComponent,
     ProductDetailsComponent,
   ],
-  templateUrl: './men.component.html',
-  styleUrl: './men.component.css',
+  templateUrl: './filteredProducts.component.html',
+  styleUrl: './filteredProducts.component.css',
 })
-export class MenComponent implements OnInit {
+export class filteredProductsComponent implements OnInit {
   currentPage: number = 1;
   searchFilterQuery: string = '';
   totalPages: number[] = [];
@@ -37,18 +37,21 @@ export class MenComponent implements OnInit {
     private productService: ProductsService
   ) {
     this.products = this.activatedRoute.snapshot.data['products'].entities;
-    this.selectedProductId = this.products[0].id
+    this.selectedProductId = this.products[0].id;
   }
 
   ngOnInit(): void {
-    for (let i = 1; i <= this.activatedRoute.snapshot.data['products'].totalPages; i++) {
+    for (
+      let i = 1;
+      i <= this.activatedRoute.snapshot.data['products'].totalPages;
+      i++
+    ) {
       this.totalPages.push(i);
-    }    
+    }
     this.searchFilterQuery = this.products[0].gender;
     this.totalPages = Array.from({
       length: Math.ceil(this.products.length / 6),
-    });   
-
+    });
   }
   moveToPage(currentPage: number) {
     this.productService
@@ -58,7 +61,7 @@ export class MenComponent implements OnInit {
       .subscribe({
         next: (response) => {
           this.products = response.entities;
-          this.currentPage = response.currentPage
+          this.currentPage = response.currentPage;
           window.scrollTo({ top: 0, behavior: 'smooth' });
         },
         error: (error) => {

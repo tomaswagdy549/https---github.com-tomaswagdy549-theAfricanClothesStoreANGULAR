@@ -17,4 +17,16 @@ export class HandleResponse {
       text: message,
     });
   }
+  public static async operationConfirmed(message: string) : Promise<boolean>{
+    const result = await Swal.fire({
+      title: message,
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    })
+    return result.isConfirmed as boolean;
+  }
 }

@@ -1,0 +1,52 @@
+<form>
+  <h2>Edit brands</h2>
+  <div>
+    <label for="productName">
+      <div *ngFor="let brand of brands" class="d-flex align-items-center mb-3">
+        <input
+          [(ngModel)]="brand.name"
+          [ngModelOptions]="{ standalone: true }"
+          type="text"
+          placeholder="Enter brand name"
+          class="form-control me-2"
+          style="width: 75%; margin-bottom: 0"
+        />
+        <button
+          (click)="editBrand(brand)"
+          type="button"
+          class="btn btn-outline-primary"
+        >
+          Edit
+        </button>
+        <button (click)="deleteBrand(brand.id)" class="ms-2" style="background-color: brown" type="button">
+          Delete
+        </button>
+      </div>
+      <div *ngIf="showBrandAdd" class="d-flex align-items-center mb-3">
+        <input
+          [(ngModel)]="newBrand"
+          name="newBrand"
+          placeholder="Enter the brand name"
+          type="text"
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+        />
+        <button
+          (click)="addBrand()"
+          type="button"
+          class="btn btn-outline-primary"
+        >
+          Add
+        </button>
+      </div>
+      <button
+        (click)="showBrandAdd = !showBrandAdd"
+        style="width: 100%"
+        type="button"
+      >
+        <ng-container *ngIf="!showBrandAdd">Add new brand</ng-container>
+        <ng-container *ngIf="showBrandAdd">cancel</ng-container>
+      </button>
+    </label>
+  </div>
+</form>

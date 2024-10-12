@@ -6,7 +6,6 @@ import { ReturnRefundPolicyComponent } from './components/return-refund-policy/r
 import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-service.component';
 import { ClothesComponent } from './components/clothes/clothes.component';
 import { ShoesComponent } from './components/shoes/shoes.component';
-import { MenComponent } from './components/men/men.component';
 import { BagsmenComponent } from './components/bagsmen/bagsmen.component';
 import { AccessorsComponent } from './components/accessors/accessors.component';
 import { SocksComponent } from './components/socks/socks.component';
@@ -23,6 +22,10 @@ import { RegisterComponent } from './components/register/register.component';
 import { isLoggedGuard } from './guards/guards/isLogged/is-logged.guard';
 import { isAdminGuard } from './guards/guards/isAdmin/is-admin.guard';
 import { isLoggedOutGuard } from './guards/guards/isLoggedOut/is-logged-out.guard';
+import { filteredProductsComponent } from './components/filteredProducts/filteredProducts.component';
+import { womenShoesResolver } from './guards/womenShoes/women-shoes.guard';
+import { EditCategoryComponent } from './components/edit-category/edit-category.component';
+import { EditBrandComponent } from './components/edit-brand/edit-brand.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -31,15 +34,19 @@ export const routes: Routes = [
   { path: 'terms-of-service', component: TermsOfServiceComponent },
   { path: 'clothes', component: ClothesComponent },
   { path: '', component: HeaderComponent },
-  { path: 'shoes', component: ShoesComponent },
+  {
+    path: 'shoes',
+    component: filteredProductsComponent,
+    resolve: { products: womenShoesResolver },
+  },
   {
     path: 'men',
-    component: MenComponent,
+    component: filteredProductsComponent,
     resolve: { products: productResolver },
   },
   {
     path: 'women',
-    component: MenComponent,
+    component: filteredProductsComponent,
     resolve: { products: femaleResolverGuard },
   },
   {
@@ -47,12 +54,36 @@ export const routes: Routes = [
     component: RegisterComponent,
     canActivate: [isLoggedGuard],
   },
-  { path: 'bagsmen', component: BagsmenComponent },
-  { path: 'accessors', component: AccessorsComponent },
-  { path: 'socks', component: SocksComponent },
-  { path: 'belts', component: BeltsComponent },
-  { path: 'womenshoes', component: WomenshoesComponent },
-  { path: 'womenbags', component: WomenbagsComponent },
+  {
+    path: 'bagsmen',
+    component: filteredProductsComponent,
+    resolve: { products: womenShoesResolver },
+  },
+  {
+    path: 'accessors',
+    component: filteredProductsComponent,
+    resolve: { products: womenShoesResolver },
+  },
+  {
+    path: 'socks',
+    component: filteredProductsComponent,
+    resolve: { products: womenShoesResolver },
+  },
+  {
+    path: 'belts',
+    component: filteredProductsComponent,
+    resolve: { products: womenShoesResolver },
+  },
+  {
+    path: 'womenshoes',
+    component: filteredProductsComponent,
+    resolve: { products: womenShoesResolver },
+  },
+  {
+    path: 'womenbags',
+    component: filteredProductsComponent,
+    resolve: { products: femaleResolverGuard },
+  },
   {
     path: 'shoppingcart',
     component: ShoppingcartComponent,
@@ -67,6 +98,16 @@ export const routes: Routes = [
   {
     path: 'editingproduct/:id',
     component: EditingProductComponent,
+    canActivate: [isAdminGuard],
+  },
+  {
+    path: 'editingCategory',
+    component: EditCategoryComponent,
+    canActivate: [isAdminGuard],
+  },
+  {
+    path: 'editingBrand',
+    component: EditBrandComponent,
     canActivate: [isAdminGuard],
   },
   { path: '**', redirectTo: '' },

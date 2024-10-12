@@ -76,21 +76,6 @@
         <p>Current Product Image:</p>
         <img [src]="productImage" alt="Product Image" width="200" />
       </div>
-
-      <!-- <label for="productImage">Change Product Image:</label>
-      <input
-        type="file"
-        id="productImage"
-        (change)="onFileSelected($event)"
-        accept="image/*"
-      />
-
-      <div *ngIf="imagePreview">
-        <p>Image Preview:</p>
-        <img [src]="imagePreview" alt="Image Preview" width="200" />
-      </div> -->
-
-      <!-- Submit Button -->
       <button type="submit" [disabled]="productForm.invalid">
         Update Product
       </button>
