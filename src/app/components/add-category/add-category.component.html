@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-6">
+      <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <h2>Category Details</h2>
+  
+        <!-- Category Name -->
+        <label for="categoryName">Category Name:</label>
+        <input
+          type="text"
+          id="categoryName"
+          formControlName="name"
+          placeholder="Enter category name"
+        />
+        <div
+          *ngIf="
+            categoryForm.controls['name'].invalid &&
+            categoryForm.controls['name'].touched
+          "
+          class="text-danger"
+        >
+          <small *ngIf="categoryForm.controls['name'].errors!['required']"
+            >Category name is required.</small
+          >
+        </div>
+  
+        <!-- Submit Button -->
+        <button [disabled]="categoryForm.invalid" type="submit">
+          Add Category
+        </button>
+      </form>
+    </div>
+  </div>
+  
