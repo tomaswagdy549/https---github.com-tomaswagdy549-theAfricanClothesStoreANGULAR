@@ -26,6 +26,8 @@ import { filteredProductsComponent } from './components/filteredProducts/filtere
 import { womenShoesResolver } from './guards/womenShoes/women-shoes.guard';
 import { EditCategoryComponent } from './components/edit-category/edit-category.component';
 import { EditBrandComponent } from './components/edit-brand/edit-brand.component';
+import { AddCategoryComponent } from './components/add-category/add-category.component';
+import { AddBrandComponent } from './components/add-brand/add-brand.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -110,5 +112,9 @@ export const routes: Routes = [
     component: EditBrandComponent,
     canActivate: [isAdminGuard],
   },
+  {path:'addcategory',component:AddCategoryComponent},
+  {path:'addbrand',component:AddBrandComponent},
+
   { path: '**', redirectTo: '' },
+
 ];
