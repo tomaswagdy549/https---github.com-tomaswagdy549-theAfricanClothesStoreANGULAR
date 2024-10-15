@@ -7,6 +7,7 @@ import { AddedOrderDetails } from '../../models/DTOs/requestDTO/addedOrderDTO/ad
 import { AccountService } from '../../services/accountService/account.service';
 import { OrderService } from '../../services/orderService/order.service';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { CartItemService } from '../../services/cartItemService/cart-item.service';
 
 @Component({
   selector: 'app-order',
@@ -27,6 +28,7 @@ export class OrderComponent {
   cartItems: CartItem[] = [];
   constructor(
     private router: Router,
+    private cartItemService:CartItemService,
     private accountService: AccountService,
     private orderService: OrderService
   ) {
@@ -43,16 +45,20 @@ export class OrderComponent {
       this.addedOrderDTO.addedOrderDetailsDTO.push(addedOrderDetails);
     });
   }
-  addOrder() {
-    this.addedOrderDTO.addedOrderDetailsDTO = this.addedOrderDTO.addedOrderDetailsDTO.splice(0,2)
-    this.orderService.addOrder(this.addedOrderDTO).subscribe({
-      next: (data) => {
-        HandleResponse.handleSuccess(data.message)
-      },
-      error: (error) => {
-        HandleResponse.handleError(error.message)
-      },
-    });
+  async addOrder() {
+    const confirmed = await HandleResponse.operationConfirmed(
+      'sure you want to purschase the order ?'
+    );
+    if (confirmed) {
+      this.orderService.addOrder(this.addedOrderDTO).subscribe({
+        next: (data) => {
+          HandleResponse.handleSuccess(data.message);
+          this.cartItemService.cartDeleted.next(true)
+        },
+        error: (error) => {
+          HandleResponse.handleError(error.message);
+        },
+      });
+    }
   }
-
 }

@@ -17,14 +17,14 @@
               style="width: 600px; height: 400px"
             />
           </div>
-          <!-- <div class="carousel-item">
+          <div *ngFor="let productPhoto of productPhotos" class="carousel-item">
             <img
-              src="/assets/images/wemonshose.jpg"
+              [src]="productPhoto.productPhotoUrl"
               class="d-block custom-carousel-img img-fluid"
               alt="Second Image"
               style="width: 600px; height: 400px"
             />
-          </div> -->
+          </div>
         </div>
         <button
           class="carousel-control-prev"
@@ -48,14 +48,17 @@
     </div>
     <!-- Right Column for Data (col-6) -->
     <div class="col-md-6">
-      <br>
+      <br />
       <h6 style="font-size: 1.5rem">{{ cartItem.product.name }}</h6>
       <br />
       <ul>
         <li>
-          <strong style="font-size: 1.25rem"> Price : </strong> {{ cartItem.product.price }}
+          <strong style="font-size: 1.25rem"> Price : </strong>
+          {{ cartItem.product.price }}
         </li>
-        <li><strong style="font-size: 1.25rem">Size:</strong> {{ cartItem.size }}</li>
+        <li>
+          <strong style="font-size: 1.25rem">Size:</strong> {{ cartItem.size }}
+        </li>
       </ul>
       <br />
       <div class="input-group mb-3" style="max-width: 120px">
@@ -63,15 +66,16 @@
           class="btn btn-outline-secondary"
           type="button"
           (click)="decrement()"
+          [disabled]="quantity <= 0"
         >
           -
         </button>
         <input
           [(ngModel)]="quantity"
           name="quantity"
-          type="text"
+          type="number"
+          min="1"
           class="form-control text-center"
-          readonly
         />
         <button
           class="btn btn-outline-secondary"
@@ -82,7 +86,13 @@
         </button>
       </div>
       <br />
-      <button (click)="editCartItem()" class="btn btn-primary">edit the quantity</button>
+      <button
+        (click)="editCartItem()"
+        class="btn btn-primary"
+        [disabled]="quantity <= 0"
+      >
+        edit the quantity
+      </button>
       <br />
       <br />
       <h6 style="color: red">HURRY! Exist Limited quantity IN STOCK.</h6>

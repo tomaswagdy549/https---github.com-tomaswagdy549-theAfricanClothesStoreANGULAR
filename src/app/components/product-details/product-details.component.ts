@@ -10,16 +10,15 @@ import { Product } from '../../models/product/product';
 import { ProductPhoto } from '../../models/productPhoto/product-photo';
 import { SignalRService } from '../../services/signalRService/signal-r.service';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
-import { finalize } from 'rxjs';
-import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { AccountService } from '../../services/accountService/account.service';
 import { AddedCartItemDTO } from '../../models/DTOs/requestDTO/addedCartItemDTO/added-cart-item-dto';
 import { ProductsService } from '../../services/productsService/products.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,FormsModule],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
@@ -81,7 +80,9 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
       quantity: this.requiredQuantity,
     };
     this.cartItemService.addToCart(cartItem).subscribe({
-      next: (response) => {},
+      next: (response) => {
+        this.cartItemService.cartItemAdded.next(response.entity)
+      },
       error: (err) => {
         console.log(err);
       },

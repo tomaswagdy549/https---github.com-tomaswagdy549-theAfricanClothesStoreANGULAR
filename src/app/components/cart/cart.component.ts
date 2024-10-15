@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { finalize } from 'rxjs';
+import { CartItemCompositeKey } from '../../models/DTOs/requestDTO/cartItemCompositeKey/cart-item-composite-key';
 
 @Component({
   selector: 'app-cart',
@@ -24,10 +25,29 @@ export class CartComponent implements OnChanges {
   @Input() cartId: string | null = null;
   @Output() numberOfCartItems = new EventEmitter<number>();
   public cartItems: CartItem[] = [];
-  constructor(
-    private cartItemService: CartItemService,
-    public router: Router
-  ) {}
+  constructor(private cartItemService: CartItemService, public router: Router) {
+    this.cartItemService.cartItemAdded.subscribe((value) => {
+      this.cartItems.push(value);
+      this.numberOfCartItems.emit(this.cartItems.length);
+    });
+    this.cartItemService.cartItemEdited.subscribe((value) => {
+      this.cartItems.map((item) => {
+        if (
+          item.cartId == value.cartId &&
+          item.productId == value.productId &&
+          item.size == value.size
+        ) {
+          item.quantity = value.quantity;
+        }
+      });
+    });
+    this.cartItemService.cartDeleted.subscribe((value) => {
+      if (value) {
+        this.cartItems = []
+        this.numberOfCartItems.emit(this.cartItems.length);
+      }
+    });
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['cartId'].currentValue != null) {
       this.cartItemService.getCartItemsByCartId(this.cartId!).subscribe({
@@ -39,25 +59,25 @@ export class CartComponent implements OnChanges {
       });
     }
   }
-  removeFromCart(CartItem: CartItem,index:number) {
-    this.cartItemService.removeFromCart(CartItem).pipe(
-      finalize(() => {
-      })
-    ).subscribe({
-      next: (data) => {
-        this.cartItems.splice(index,1)
-        this.numberOfCartItems.emit(this.cartItems.length);
-      },
-      error: (error) => {
-        console.error('Error:', error);
-      },
-    });
+  removeFromCart(CartItem: CartItem, index: number) {
+    this.cartItemService
+      .removeFromCart(CartItem)
+      .pipe(finalize(() => {}))
+      .subscribe({
+        next: (data) => {
+          this.cartItems.splice(index, 1);
+          this.numberOfCartItems.emit(this.cartItems.length);
+        },
+        error: (error) => {
+          console.error('Error:', error);
+        },
+      });
   }
   routeToShoppingCart(cartItem: CartItem) {
     this.router.navigate(['/shoppingcart'], { state: { cartItem } });
   }
   routeToOrder() {
-    document.getElementById("closerButton")?.click()
-    this.router.navigate(['/order'], { state: { cartItems:this.cartItems } });
+    document.getElementById('closerButton')?.click();
+    this.router.navigate(['/order'], { state: { cartItems: this.cartItems } });
   }
 }

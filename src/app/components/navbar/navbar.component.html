@@ -17,7 +17,7 @@
       style="padding-right: 200px"
     >
       <br />
-      <a href="/">
+      <a routerLink="/">
         <img
           src="assets/images/logo.png"
           alt="Logo"
@@ -27,10 +27,10 @@
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/clothes"
+          <a class="nav-link active" aria-current="page" routerLink="/clothes"
             >Clothing</a
           >
         </li>
@@ -48,18 +48,18 @@
           <!-- Main dropdown menu for Men's -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-              <a class="dropdown-item" aria-current="page" href="/shoes"
+              <a class="dropdown-item" aria-current="page" routerLink="/shoes"
                 >Shoes</a
               >
             </li>
-            <li><a class="dropdown-item" href="/bagsmen">Bags</a></li>
+            <li><a class="dropdown-item" routerLink="/bagsmen">Bags</a></li>
 
             <!-- Nested dropdown for Accessories aligned to the right -->
             <li class="dropdown-submenu">
-              <a class="dropdown-item" href="/accessors"> Accessories </a>
+              <a class="dropdown-item" routerLink="/accessors"> Accessories </a>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="/socks">Socks</a></li>
-                <li><a class="dropdown-item" href="/belts">Belts</a></li>
+                <li><a class="dropdown-item" routerLink="/socks">Socks</a></li>
+                <li><a class="dropdown-item" routerLink="/belts">Belts</a></li>
               </ul>
             </li>
           </ul>
@@ -75,11 +75,11 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-              <a class="dropdown-item" aria-current="page" href="/womenbags"
+              <a class="dropdown-item" aria-current="page" routerLink="/womenbags"
                 >Bags</a
               >
             </li>
-            <li><a class="dropdown-item" href="/womenshoes">Shoes</a></li>
+            <li><a class="dropdown-item" routerLink="/womenshoes">Shoes</a></li>
           </ul>
         </li>
         <li *ngIf="ifUserIsAdmin()" class="dropdown" style="cursor: pointer;">
@@ -93,10 +93,10 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <li>
-              <a class="dropdown-item" href="/addingproduct">Add product</a>
+              <a class="dropdown-item" routerLink="/addingproduct">Add product</a>
             </li>
-            <li><a class="dropdown-item" href="/editingCategory">Edit categories</a></li>
-            <li><a class="dropdown-item" href="/editingBrand">Edit brands</a></li>
+            <li><a class="dropdown-item" routerLink="/editingCategory">Edit categories</a></li>
+            <li><a class="dropdown-item" routerLink="/editingBrand">Edit brands</a></li>
           </ul>
         </li>
       </ul>
@@ -132,7 +132,6 @@
         <br />
         <li *ngIf="logged" class="nav-item">
           <i
-            [routerLink]="'/'"
             style="cursor: pointer"
             class="fa-solid fa-cart-shopping fa-2x"
             data-bs-toggle="modal"
