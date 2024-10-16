@@ -10,9 +10,7 @@ import { CartItemService } from '../../services/cartItemService/cart-item.servic
 import { CartItem } from '../../models/cartItem/cart-item';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { finalize } from 'rxjs';
-import { CartItemCompositeKey } from '../../models/DTOs/requestDTO/cartItemCompositeKey/cart-item-composite-key';
 
 @Component({
   selector: 'app-cart',
@@ -43,7 +41,7 @@ export class CartComponent implements OnChanges {
     });
     this.cartItemService.cartDeleted.subscribe((value) => {
       if (value) {
-        this.cartItems = []
+        this.cartItems = [];
         this.numberOfCartItems.emit(this.cartItems.length);
       }
     });
@@ -60,18 +58,15 @@ export class CartComponent implements OnChanges {
     }
   }
   removeFromCart(CartItem: CartItem, index: number) {
-    this.cartItemService
-      .removeFromCart(CartItem)
-      .pipe(finalize(() => {}))
-      .subscribe({
-        next: (data) => {
-          this.cartItems.splice(index, 1);
-          this.numberOfCartItems.emit(this.cartItems.length);
-        },
-        error: (error) => {
-          console.error('Error:', error);
-        },
-      });
+    this.cartItemService.removeFromCart(CartItem).subscribe({
+      next: (data) => {
+        this.cartItems.splice(index, 1);
+        this.numberOfCartItems.emit(this.cartItems.length);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+    });
   }
   routeToShoppingCart(cartItem: CartItem) {
     this.router.navigate(['/shoppingcart'], { state: { cartItem } });

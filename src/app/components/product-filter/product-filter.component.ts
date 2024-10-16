@@ -36,7 +36,7 @@ export class ProductFilterComponent {
     name: new FormControl<string | null>(null),
     gender: new FormControl<string | null>(null),
   });
-  @Output() productsFiltered = new EventEmitter<GetAllProductsDTO>();
+  @Output() productsFiltered = new EventEmitter<{querySearch:string,GetAllProductsDTO:GetAllProductsDTO}>();
   constructor(
     private brandsService: BrandsService,
     private CategoryService: CategoryService,
@@ -111,16 +111,17 @@ export class ProductFilterComponent {
       minPriceQuery,
       maxPriceQuery,
       nameQuery,
-      `pageNumber= ${pageNumber}`,
-      `pageSize= ${pageSize}`,
+      // `pageNumber= ${pageNumber}`,
+      // `pageSize= ${pageSize}`,
     ]
       .filter((query) => query) // remove empty queries
       .join('&');
-    let totalQuery = `${queries}`;
+    let pagingQuery = [queries,`&pageNumber= ${pageNumber}`,`&pageSize= ${pageSize}`].filter((query)=>query).join('');
+    let totalQuery = `${pagingQuery}`;
     this.productsService.filterProducts(totalQuery).subscribe({
       next: (response) => {
         if (response != null) {
-          this.productsFiltered.emit(response);
+          this.productsFiltered.emit({querySearch:queries,GetAllProductsDTO:response});
         } else {
           HandleResponse.handleError(
             'there are no product like you search , try again later'

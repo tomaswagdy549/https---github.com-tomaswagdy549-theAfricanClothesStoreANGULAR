@@ -42,8 +42,8 @@ export class BagsmenComponent implements OnInit {
   ngOnInit(): void {
     this.moveToPage(this.pageSize, 1);
   }
-  show($event: GetAllProductsDTO) {
-    this.products = $event.entities;
+  show($event: {querySearch:string,GetAllProductsDTO:GetAllProductsDTO}) {
+    this.products = $event.GetAllProductsDTO.entities;
   }
   moveToPage(pageSize: number, Page: number) {
     this.entry.clear()

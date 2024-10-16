@@ -36,7 +36,7 @@
         </li>
 
         <!-- Dropdown for Men's -->
-        <li class="dropdown" style="cursor: pointer;">
+        <li class="dropdown" style="cursor: pointer">
           <a
             class="nav-link dropdown-toggle"
             id="navbarDropdown"
@@ -64,7 +64,7 @@
             </li>
           </ul>
         </li>
-        <li  class="dropdown" style="cursor: pointer;">
+        <li class="dropdown" style="cursor: pointer">
           <a
             class="nav-link dropdown-toggle"
             id="dropdownMenuLink"
@@ -76,7 +76,10 @@
 
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
-              <a class="dropdown-item" aria-current="page" routerLink="/womenbags"
+              <a
+                class="dropdown-item"
+                aria-current="page"
+                routerLink="/womenbags"
                 >Bags</a
               >
             </li>
@@ -84,8 +87,7 @@
           </ul>
         </li>
 
-
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="/addcategory"
             >add-category</a
           >
@@ -95,9 +97,9 @@
           <a class="nav-link active" aria-current="page" href="/addbrand"
             >add-brand</a
           >
-        </li>
+        </li> -->
 
-        <li *ngIf="ifUserIsAdmin()" class="dropdown" style="cursor: pointer;">
+        <li *ngIf="ifUserIsAdmin()" class="dropdown" style="cursor: pointer">
           <a
             class="nav-link dropdown-toggle"
             id="dropdownMenuLink"
@@ -108,10 +110,20 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <li>
-              <a class="dropdown-item" routerLink="/addingproduct">Add product</a>
+              <a class="dropdown-item" routerLink="/addingproduct"
+                >Add product</a
+              >
             </li>
-            <li><a class="dropdown-item" routerLink="/editingCategory">Edit categories</a></li>
-            <li><a class="dropdown-item" routerLink="/editingBrand">Edit brands</a></li>
+            <li>
+              <a class="dropdown-item" routerLink="/editingCategory"
+                >Edit categories</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="/editingBrand"
+                >Edit brands</a
+              >
+            </li>
           </ul>
         </li>
       </ul>

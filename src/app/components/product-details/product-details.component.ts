@@ -25,7 +25,7 @@ import { FormsModule } from '@angular/forms';
 export class ProductDetailsComponent implements OnChanges, OnDestroy {
   @Input() productId: number = 1;
   product!: Product;
-  selectedSize: string = '';
+  selectedSize: string = ''
   quantity: number = 0;
   requiredQuantity: number = 0;
   productPhotos: ProductPhoto[] = [];
@@ -47,6 +47,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
     if (changes['productId'].currentValue != undefined) {
       if (
         changes['productId'].currentValue != changes['productId'].previousValue

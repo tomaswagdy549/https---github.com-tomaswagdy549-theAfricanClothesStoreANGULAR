@@ -55,17 +55,14 @@
             >Previous</a
           >
         </li>
-          <li
-            *ngFor="let Page of totalPages; let index; as: i"
-            class="page-item"
+        <li *ngFor="let Page of totalPages; let index; as: i" class="page-item">
+          <a
+            [ngClass]="{ active: currentPage == Page }"
+            class="page-link"
+            (click)="moveToPage(pageSize, Page)"
+            >{{ Page }}</a
           >
-            <a
-              [ngClass]="{ active: currentPage == Page }"
-              class="page-link"
-              (click)="moveToPage(pageSize, Page)"
-              >{{ Page }}</a
-            >
-          </li>
+        </li>
         <li *ngIf="currentPage != totalPages.length" class="page-item">
           <a class="page-link" (click)="moveToPage(pageSize, currentPage + 1)"
             >next</a

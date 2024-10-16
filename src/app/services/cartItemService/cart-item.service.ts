@@ -22,9 +22,9 @@ export class CartItemService {
       cartItem
     );
   }
-  removeFromCart(cartItem: CartItem): Observable<BaseResponse> {
+  removeFromCart(CartItemCompositeKey: CartItemCompositeKey): Observable<BaseResponse> {
     return this.http.delete<BaseResponse>(
-      `${enviroment.baseUrl}/api/cartItems/cartId/${cartItem.cartId}/productId/${cartItem.productId}/size/${cartItem.size}`
+      `${enviroment.baseUrl}/api/cartItems`,{body:CartItemCompositeKey}
     );
   }
   removeRangeFromCart(
