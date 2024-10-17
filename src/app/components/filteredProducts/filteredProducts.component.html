@@ -14,6 +14,10 @@
       <div
         class="col-lg-4 col-md-6 col-12 mb-5"
         *ngFor="let product of products"
+        data-bs-target="#productInfoModal"
+        data-bs-toggle="modal"
+        (click)="selectedProductId = product.id"
+        style="cursor: pointer"
       >
         <div class="card h-100 mx-auto" style="width: 18rem">
           <img
@@ -27,15 +31,7 @@
             <p class="card-text" style="color: red">
               Price: LE {{ product.price }}
             </p>
-            <button
-              (click)="selectedProductId=product.id"
-              type="button"
-              class="btn btn-secondary"
-              data-bs-target="#productInfoModal"
-              data-bs-toggle="modal"
-            >
-              Quick Shop
-            </button>
+              <a class="btn btn-secondary btn-sm" [href]="'editingproduct/' + product.id">Edit product</a>
           </div>
         </div>
       </div>
@@ -44,30 +40,29 @@
       <div>
         <nav aria-label="Page navigation example">
           <ul style="cursor: pointer" class="pagination">
-            <li class="page-item">
-              <a
-                class="page-link"
-                (click)="moveToPage(currentPage - 1)"
-                aria-label="Previous"
+            <li *ngIf="currentPage != 1" class="page-item">
+              <a class="page-link" (click)="moveToPage(currentPage - 1)"
+                >Previous</a
               >
-                <span aria-hidden="true">&laquo;</span>
-              </a>
             </li>
             <li
-              [ngClass]="{ active: (i+1) == currentPage }"
-              *ngFor="let page of totalPages; let i = index"
+              *ngFor="let Page of totalPages; let index; as: i"
               class="page-item"
             >
-              <a (click)="moveToPage(i+1)" class="page-link">{{ i +1  }}</a>
-            </li>
-            <li class="page-item">
               <a
+                [ngClass]="{ active: currentPage == Page }"
                 class="page-link"
-                (click)="moveToPage(currentPage + 1)"
-                aria-label="Next"
+                (click)="moveToPage(index)"
+                >{{ Page }}</a
               >
-                <span aria-hidden="true">&raquo;</span>
-              </a>
+            </li>
+            <li
+              *ngIf="currentPage != totalPages.length && totalPages.length > 0"
+              class="page-item"
+            >
+              <a class="page-link" (click)="moveToPage(currentPage + 1)"
+                >next</a
+              >
             </li>
           </ul>
         </nav>

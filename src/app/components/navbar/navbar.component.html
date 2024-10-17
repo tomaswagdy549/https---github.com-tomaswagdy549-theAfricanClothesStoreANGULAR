@@ -35,7 +35,6 @@
           >
         </li>
 
-        <!-- Dropdown for Men's -->
         <li class="dropdown" style="cursor: pointer">
           <a
             class="nav-link dropdown-toggle"
@@ -45,22 +44,11 @@
           >
             Men's
           </a>
-          <!-- Main dropdown menu for Men's -->
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
-              <a class="dropdown-item" aria-current="page" routerLink="/shoes"
-                >Shoes</a
-              >
-            </li>
-            <li><a class="dropdown-item" routerLink="/bagsmen">Bags</a></li>
-
-            <!-- Nested dropdown for Accessories aligned to the right -->
-            <li class="dropdown-submenu">
-              <a class="dropdown-item" routerLink="/accessors"> Accessories </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" routerLink="/socks">Socks</a></li>
-                <li><a class="dropdown-item" routerLink="/belts">Belts</a></li>
-              </ul>
+            <li *ngFor="let menCategory of menCategories">
+              <a class="dropdown-item" (click)="goToCategoryProducts(menCategory)">{{
+                menCategory.name
+              }}</a>
             </li>
           </ul>
         </li>
@@ -75,15 +63,11 @@
           </a>
 
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li>
-              <a
-                class="dropdown-item"
-                aria-current="page"
-                routerLink="/womenbags"
-                >Bags</a
-              >
+            <li *ngFor="let womenCategory of womenCategories">
+              <a class="dropdown-item" (click)="goToCategoryProducts(womenCategory)">{{
+                womenCategory.name
+              }}</a>
             </li>
-            <li><a class="dropdown-item" routerLink="/womenshoes">Shoes</a></li>
           </ul>
         </li>
 

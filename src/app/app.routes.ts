@@ -6,8 +6,6 @@ import { ReturnRefundPolicyComponent } from './components/return-refund-policy/r
 import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-service.component';
 import { ClothesComponent } from './components/clothes/clothes.component';
 import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
-import { productResolver } from './guards/resolveGuard/product.guard';
-import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.guard';
 import { OrderComponent } from './components/order/order.component';
 import { AddingProductComponent } from './components/adding-product/adding-product.component';
 import { EditingProductComponent } from './components/editing-product/editing-product.component';
@@ -16,7 +14,6 @@ import { isLoggedGuard } from './guards/guards/isLogged/is-logged.guard';
 import { isAdminGuard } from './guards/guards/isAdmin/is-admin.guard';
 import { isLoggedOutGuard } from './guards/guards/isLoggedOut/is-logged-out.guard';
 import { filteredProductsComponent } from './components/filteredProducts/filteredProducts.component';
-import { womenShoesResolver } from './guards/womenShoes/women-shoes.guard';
 import { EditCategoryComponent } from './components/edit-category/edit-category.component';
 import { EditBrandComponent } from './components/edit-brand/edit-brand.component';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
@@ -30,19 +27,8 @@ export const routes: Routes = [
   { path: 'clothes', component: ClothesComponent },
   { path: '', component: HeaderComponent },
   {
-    path: 'shoes',
+    path: 'filteredProducts/:searchQuery',
     component: filteredProductsComponent,
-    resolve: { products: womenShoesResolver },
-  },
-  {
-    path: 'men',
-    component: filteredProductsComponent,
-    resolve: { products: productResolver },
-  },
-  {
-    path: 'women',
-    component: filteredProductsComponent,
-    resolve: { products: femaleResolverGuard },
   },
   {
     path: 'register',
@@ -53,36 +39,6 @@ export const routes: Routes = [
     path: 'AddAdmin',
     component: RegisterComponent,
     canActivate: [isAdminGuard],
-  },
-  {
-    path: 'bagsmen',
-    component: filteredProductsComponent,
-    resolve: { products: womenShoesResolver },
-  },
-  {
-    path: 'accessors',
-    component: filteredProductsComponent,
-    resolve: { products: womenShoesResolver },
-  },
-  {
-    path: 'socks',
-    component: filteredProductsComponent,
-    resolve: { products: womenShoesResolver },
-  },
-  {
-    path: 'belts',
-    component: filteredProductsComponent,
-    resolve: { products: womenShoesResolver },
-  },
-  {
-    path: 'womenshoes',
-    component: filteredProductsComponent,
-    resolve: { products: womenShoesResolver },
-  },
-  {
-    path: 'womenbags',
-    component: filteredProductsComponent,
-    resolve: { products: femaleResolverGuard },
   },
   {
     path: 'shoppingcart',

@@ -4,11 +4,14 @@ import {
   ViewContainerRef,
   ViewChild,
 } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
 import { AccountService } from '../../services/accountService/account.service';
 import { CommonModule } from '@angular/common';
 import { CartComponent } from '../cart/cart.component';
+import { CategoryService } from '../../services/categoryService/category.service';
+import { Category } from '../../models/category/category';
+import { ProductsService } from '../../services/productsService/products.service';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +21,8 @@ import { CartComponent } from '../cart/cart.component';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent {
+  menCategories: Category[] = [];
+  womenCategories: Category[] = [];
   @ViewChild('cart', { read: ViewContainerRef }) cartEntry: ViewContainerRef;
   @ViewChild('login', { read: ViewContainerRef }) loginEntry: ViewContainerRef;
   cartComponent!: ComponentRef<CartComponent>;
@@ -31,7 +36,10 @@ export class NavbarComponent {
     return null;
   }
   constructor(
+    categoryService: CategoryService,
+    private router: Router,
     private accountService: AccountService,
+    private productService: ProductsService,
     private resolver: ViewContainerRef
   ) {
     this.cartEntry = this.resolver;
@@ -48,12 +56,30 @@ export class NavbarComponent {
         }
       },
     });
+    categoryService.getAllCategories(24, 1).subscribe({
+      next: (response) => {
+        console.log(response);
+        response.categories.map((category) => {
+          if (category.gender == 'Male') {
+            this.menCategories.push(category);
+          } else if (category.gender == 'Woman') {
+            this.womenCategories.push(category);
+          }
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
   ifUserIsAdmin(): boolean {
     return this.accountService.isAdmin();
   }
   logOut() {
     this.accountService.logOut();
+  }
+  goToCategoryProducts(category: Category) {
+        this.router.navigateByUrl(`/filteredProducts/categoryIds=${category.id}`)
   }
   private createCartComponent() {
     this.cartComponent = this.cartEntry.createComponent(CartComponent);

@@ -50,8 +50,10 @@ export class CartComponent implements OnChanges {
     if (changes['cartId'].currentValue != null) {
       this.cartItemService.getCartItemsByCartId(this.cartId!).subscribe({
         next: (data) => {
-          this.cartItems = data;
-          this.numberOfCartItems.emit(data.length);
+          if (data != null) {
+            this.cartItems = data;
+            this.numberOfCartItems.emit(data.length);
+          }
         },
         error: (error) => console.error(error),
       });
@@ -70,7 +72,7 @@ export class CartComponent implements OnChanges {
   }
   routeToShoppingCart(cartItem: CartItem) {
     document.getElementById('close')?.click();
-    this.cartItemService.cartItemSelected.next(cartItem)
+    this.cartItemService.cartItemSelected.next(cartItem);
     this.router.navigateByUrl('/shoppingcart', { state: { cartItem } });
   }
   routeToOrder() {

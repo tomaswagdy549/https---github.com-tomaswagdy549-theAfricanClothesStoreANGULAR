@@ -67,7 +67,6 @@ export class EditingProductComponent {
         this.productForm.controls['brandId'].setValue(product.brandId);
         this.productAvailableSize = product.productAvailableSizes;
         this.getCategories(`gender=${product.category.gender}&pageNumber=1&pageSize=40`)
-
       },
       error: (error) => {
         console.error('Error fetching product:', error);
