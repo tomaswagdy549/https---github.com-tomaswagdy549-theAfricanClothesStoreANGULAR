@@ -3,17 +3,18 @@ import { Injectable } from '@angular/core';
 import { enviroment } from '../../enviroment/enviroment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { RegisteredUserDTO } from '../../models/DTOs/requestDTO/registeredUserDTO/registered-user-dto';
-import { LoggedUserDTO } from '../../models/DTOs/requestDTO/loggedUserDTO/logged-user-dto'; 
+import { LoggedUserDTO } from '../../models/DTOs/requestDTO/loggedUserDTO/logged-user-dto';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  isLogged = new BehaviorSubject<boolean>(false)
+  isLogged = new BehaviorSubject<boolean>(false);
   private userData: any = null;
-  constructor(private http: HttpClient,private router:Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
   register(RegisteredUserDTO: RegisteredUserDTO): Observable<any> {
     return this.http.post<any>(
       `${enviroment.baseUrl}/api/user/register`,
@@ -27,42 +28,47 @@ export class AccountService {
     );
   }
   logOut() {
-    this.isLogged.next(false)
-    this.userData = null
-    localStorage.removeItem("token")
-    this.router.navigateByUrl('/')
+    this.isLogged.next(false);
+    this.userData = null;
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('/');
+    HandleResponse.handleSuccess('succesfully logged out');
   }
-  logUser(){
+  logUser() {
     const token = localStorage.getItem('token');
     const decoded = jwtDecode(token!);
-    this.userData = decoded
-    this.isLogged.next(true)
+    this.userData = decoded;
+    this.isLogged.next(true);
   }
-  getCartId(){
-    if(this.userData!=null){
-      return this.userData['cartId'] as string
+  getCartId() {
+    if (this.userData != null) {
+      return this.userData['cartId'] as string;
     }
-    return null
+    return null;
   }
-  getUserId(){
-    if(this.userData!=null){
-      return this.userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] as string
+  getUserId() {
+    if (this.userData != null) {
+      return this.userData[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+      ] as string;
     }
-    return null
+    return null;
   }
-  isAdmin(){
-    if(this.userData!=null){
-      let role = this.userData['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] as string
-      role = role.toLowerCase()
-      if(role == 'admin'){
-        return true
+  isAdmin() {
+    if (this.userData != null) {
+      let role = this.userData[
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ] as string;
+      role = role.toLowerCase();
+      if (role == 'admin') {
+        return true;
       }
     }
-    return false
+    return false;
   }
-  private decodeToken(){
+  private decodeToken() {
     const token = localStorage.getItem('token');
     const decoded = jwtDecode(token!);
-    this.userData = decoded
+    this.userData = decoded;
   }
 }

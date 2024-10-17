@@ -25,8 +25,17 @@ export class ShoppingcartComponent {
   ) {
     this.cartItem =
       this.router.getCurrentNavigation()!.extras.state!['cartItem'];
+    this.quantity = this.cartItem.quantity;
+    this.getCartItemPhotos(this.cartItem.productId)
+    this.cartItemService.cartItemSelected.subscribe((cartItem)=>{
+      this.cartItem = cartItem;
+      this.quantity = cartItem.quantity;
+      this.getCartItemPhotos(this.cartItem.productId);
+    })
+  }
+  getCartItemPhotos(productId: number) {
     this.productPhotoService
-      .getPhotoProductByProductId(this.cartItem.productId)
+      .getPhotoProductByProductId(productId)
       .subscribe({
         next: (data) => {
           this.productPhotos = data;
@@ -35,7 +44,6 @@ export class ShoppingcartComponent {
           console.error(error);
         },
       });
-    this.quantity = this.cartItem.quantity;
   }
   increment() {
     this.quantity++;

@@ -27,6 +27,11 @@ export class CategoryService {
       `${enviroment.baseUrl}/api/category/${categoryId}`
     );
   }
+  filter(querySearch: string): Observable<GetAllCategoriesDTO> {
+    return this.http.get<GetAllCategoriesDTO>(
+      `${enviroment.baseUrl}/api/category/Filter?${querySearch}`
+    );
+  }
   addCategory(categoryName: AddedCategoryDTO): Observable<GenericResponse<Category>> {
     return this.http.post<GenericResponse<Category>>(
       `${enviroment.baseUrl}/api/category`,categoryName

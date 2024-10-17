@@ -12,6 +12,7 @@
           Shopping Cart
         </h1>
         <button
+          id="close"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
@@ -37,7 +38,6 @@
                   <!-- Image Column -->
                   <div class="col-md-6">
                     <a
-                      href="/shoppingcart"
                       (click)="routeToShoppingCart(cartItem)"
                     >
                       <img
@@ -92,7 +92,7 @@
           Close
         </button>
         <button (click)="routeToOrder()" type="button" class="btn btn-primary">
-          purchase the order
+          checkout
         </button>
       </div>
     </div>

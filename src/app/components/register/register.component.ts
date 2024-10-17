@@ -92,7 +92,7 @@ export class RegisterComponent {
       next: (response) => {
         localStorage.setItem('token', response['token']);
         this.accountService.logUser();
-        this.router.navigateByUrl('/clothes');
+        this.router.navigateByUrl('/');
       },
       error: (error) => {
         console.error(error);

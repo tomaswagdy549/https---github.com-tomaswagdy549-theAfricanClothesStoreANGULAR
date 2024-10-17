@@ -21,6 +21,9 @@ import { AccountService } from '../../services/accountService/account.service';
   styleUrl: './clothes.component.html',
 })
 export class ClothesComponent {
+showProduct(product: Product) {
+  this.sentProduct = product
+}
   @ViewChild('productDetails', { read: ViewContainerRef })
   productDetailsEntry!: ViewContainerRef;
   ProductDetailsComponent!: ComponentRef<ProductDetailsComponent>;

@@ -5,13 +5,6 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ReturnRefundPolicyComponent } from './components/return-refund-policy/return-refund-policy.component';
 import { TermsOfServiceComponent } from './components/terms-of-service/terms-of-service.component';
 import { ClothesComponent } from './components/clothes/clothes.component';
-import { ShoesComponent } from './components/shoes/shoes.component';
-import { BagsmenComponent } from './components/bagsmen/bagsmen.component';
-import { AccessorsComponent } from './components/accessors/accessors.component';
-import { SocksComponent } from './components/socks/socks.component';
-import { BeltsComponent } from './components/belts/belts.component';
-import { WomenshoesComponent } from './components/womenshoes/womenshoes.component';
-import { WomenbagsComponent } from './components/womenbags/womenbags.component';
 import { ShoppingcartComponent } from './components/shoppingcart/shoppingcart.component';
 import { productResolver } from './guards/resolveGuard/product.guard';
 import { femaleResolverGuard } from './guards/femaleResolver/female-resolver.guard';
@@ -55,6 +48,11 @@ export const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [isLoggedGuard],
+  },
+  {
+    path: 'AddAdmin',
+    component: RegisterComponent,
+    canActivate: [isAdminGuard],
   },
   {
     path: 'bagsmen',
@@ -112,9 +110,8 @@ export const routes: Routes = [
     component: EditBrandComponent,
     canActivate: [isAdminGuard],
   },
-  {path:'addcategory',component:AddCategoryComponent},
-  {path:'addbrand',component:AddBrandComponent},
+  { path: 'addcategory', component: AddCategoryComponent },
+  { path: 'addbrand', component: AddBrandComponent },
 
   { path: '**', redirectTo: '' },
-
 ];

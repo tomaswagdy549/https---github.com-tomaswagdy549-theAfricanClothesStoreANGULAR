@@ -62,18 +62,15 @@ export class EditingProductComponent {
       next: (product) => {
         this.productForm.controls['productName'].setValue(product.name);
         this.productForm.controls['price'].setValue(product.price);
-        this.productForm.controls['gender'].setValue(product.gender);
+        this.productForm.controls['gender'].setValue(product.category.gender);
         this.productForm.controls['categoryId'].setValue(product.categoryId);
         this.productForm.controls['brandId'].setValue(product.brandId);
         this.productAvailableSize = product.productAvailableSizes;
+        this.getCategories(`gender=${product.category.gender}&pageNumber=1&pageSize=40`)
+
       },
       error: (error) => {
         console.error('Error fetching product:', error);
-      },
-    });
-    this.categoryService.getAllCategories(12, 1).subscribe({
-      next: (categories) => {
-        this.categories = categories.categories;
       },
     });
     this.brandService.getAllBrands(12, 1).subscribe({
@@ -82,7 +79,14 @@ export class EditingProductComponent {
       },
     });
   }
-
+  getCategories(querySearch:string){
+    this.categoryService.filter(querySearch).subscribe({
+      next: (categories) => {
+        this.categories = categories.categories;
+        console.log(this.categories)
+      },
+    });
+  }
   // File selection for updating product image
   onFileSelected(event: any): void {
     const file = event.target.files[0];

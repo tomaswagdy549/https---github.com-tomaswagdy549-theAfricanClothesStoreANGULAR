@@ -16,6 +16,7 @@ export class CartItemService {
   cartItemAdded = new Subject<CartItem>();
   cartItemEdited = new Subject<CartItem>();
   cartDeleted = new Subject<boolean>();
+  cartItemSelected = new Subject<CartItem>();
   addToCart(cartItem: AddedCartItemDTO): Observable<GenericResponse<CartItem>> {
     return this.http.post<GenericResponse<CartItem>>(
       `${enviroment.baseUrl}/api/cartItems`,

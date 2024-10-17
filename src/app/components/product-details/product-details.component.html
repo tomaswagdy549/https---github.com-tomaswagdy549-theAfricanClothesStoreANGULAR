@@ -128,6 +128,19 @@
                 Add to Cart
               </button>
             </div>
+            <div
+              *ngIf="!userIsLogged()"
+              class="d-flex align-items-center justify-content-center"
+            >
+              <button
+                data-bs-target="#loginModal"
+                data-bs-toggle="modal"
+                type="button"
+                class="btn btn-outline-dark ms-2"
+              >
+                Login to purchase
+              </button>
+            </div>
           </li>
           <li class="list-group-item">
             <strong>Category:</strong>
@@ -153,3 +166,6 @@
     </div>
   </div>
 </div>
+@defer (when !userIsLogged()) {
+<app-login></app-login>
+}

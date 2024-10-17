@@ -14,11 +14,12 @@ import { AccountService } from '../../services/accountService/account.service';
 import { AddedCartItemDTO } from '../../models/DTOs/requestDTO/addedCartItemDTO/added-cart-item-dto';
 import { ProductsService } from '../../services/productsService/products.service';
 import { FormsModule } from '@angular/forms';
+import { LoginComponent } from "../login/login.component";
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, LoginComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css',
 })
@@ -41,13 +42,11 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    console.log('component destroyed');
     this.signalRService.leaveGroup(`product${this.productId}`).then(() => {
       this.signalRService.disconnect();
     });
   }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
     if (changes['productId'].currentValue != undefined) {
       if (
         changes['productId'].currentValue != changes['productId'].previousValue

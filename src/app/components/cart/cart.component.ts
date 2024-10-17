@@ -69,7 +69,9 @@ export class CartComponent implements OnChanges {
     });
   }
   routeToShoppingCart(cartItem: CartItem) {
-    this.router.navigate(['/shoppingcart'], { state: { cartItem } });
+    document.getElementById('close')?.click();
+    this.cartItemService.cartItemSelected.next(cartItem)
+    this.router.navigateByUrl('/shoppingcart', { state: { cartItem } });
   }
   routeToOrder() {
     document.getElementById('closerButton')?.click();
