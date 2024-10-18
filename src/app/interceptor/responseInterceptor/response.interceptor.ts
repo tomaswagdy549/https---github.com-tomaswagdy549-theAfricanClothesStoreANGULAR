@@ -16,8 +16,8 @@ export function responseInterceptor(
   globalDataService.apiCallSubject.next(true);
   return next(req).pipe(
     tap((event) => {
-      if (event instanceof HttpResponse ) {
-        if (req.method != 'GET' && !req.url.includes("user")) {
+      if (event instanceof HttpResponse) {
+        if (req.method != 'GET' && !req.url.includes('user')) {
           let operation: string = '';
           switch (req.method) {
             case 'POST':
@@ -45,8 +45,17 @@ export function responseInterceptor(
   );
 }
 function checkRes(response: HttpErrorResponse) {
-  console.log(response)
+  console.log(response);
   let message = '';
+  if (response.error.status == 422) {
+    Object.entries(response.error.errors).forEach((value) => {
+      let c = value[1] as string[];
+      c.forEach((err) => {
+        message += `${err} `;
+      });
+    });
+    return message;
+  }
   switch (response.status) {
     case 0:
       message = 'you are out of connection , check your internet connection';

@@ -28,10 +28,23 @@
           />
           <div class="card-body">
             <p class="card-text">{{ product.name }}</p>
+            @defer (when !product.onSale) {
             <p class="card-text" style="color: red">
               Price: LE {{ product.price }}
             </p>
-              <a class="btn btn-secondary btn-sm" [href]="'editingproduct/' + product.id">Edit product</a>
+            } @defer (when product.onSale) {
+            <p class="card-text" style="color: red">
+              Price: {{ product.salePrice }} LE instead of
+              <span style="text-decoration: line-through">{{
+                product.price
+              }}</span>
+            </p>
+            }
+            <a
+              class="btn btn-secondary btn-sm"
+              [href]="'editingproduct/' + product.id"
+              >Edit product</a
+            >
           </div>
         </div>
       </div>

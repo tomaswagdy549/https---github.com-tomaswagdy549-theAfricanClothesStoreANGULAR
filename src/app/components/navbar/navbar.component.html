@@ -45,11 +45,40 @@
             Men's
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li *ngFor="let menCategory of menCategories">
-              <a class="dropdown-item" (click)="goToCategoryProducts(menCategory)">{{
-                menCategory.name
-              }}</a>
+            <li>
+              <a
+                (click)="goToOnSaleProducts(menCategories)"
+                class="dropdown-item"
+                >On sale</a
+              >
             </li>
+            <ng-container *ngFor="let menCategory of menCategories">
+              <li>
+                <a
+                  [routerLink]="
+                    '/filteredProducts/categoryIds=' + menCategory.id
+                  "
+                  class="dropdown-item"
+                  >{{ menCategory.name }}</a
+                >
+                <ul
+                  style="list-style-type: circle"
+                  *ngIf="menCategory.subCategories.length"
+                  aria-labelledby="navbarDropdown"
+                >
+                  <li *ngFor="let subCategory of menCategory.subCategories">
+                    <a
+                      [routerLink]="
+                        '/filteredProducts/subCategoryId=' + subCategory.id
+                      "
+                      style="padding-left: 0"
+                      class="dropdown-item"
+                      >{{ subCategory.name }}</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ng-container>
           </ul>
         </li>
         <li class="dropdown" style="cursor: pointer">
@@ -63,10 +92,37 @@
           </a>
 
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a
+                (click)="goToOnSaleProducts(womenCategories)"
+                class="dropdown-item"
+                >On sale</a
+              >
+            </li>
             <li *ngFor="let womenCategory of womenCategories">
-              <a class="dropdown-item" (click)="goToCategoryProducts(womenCategory)">{{
-                womenCategory.name
-              }}</a>
+              <a
+                class="dropdown-item"
+                [routerLink]="
+                  '/filteredProducts/categoryIds=' + womenCategory.id
+                "
+                >{{ womenCategory.name }}</a
+              >
+              <ul
+                style="list-style-type: circle"
+                *ngIf="womenCategory.subCategories.length"
+                aria-labelledby="navbarDropdown"
+              >
+                <li *ngFor="let subCategory of womenCategory.subCategories">
+                  <a
+                    [routerLink]="
+                      '/filteredProducts/subCategoryId=' + subCategory.id
+                    "
+                    style="padding-left: 0"
+                    class="dropdown-item"
+                    >{{ subCategory.name }}</a
+                  >
+                </li>
+              </ul>
             </li>
           </ul>
         </li>
@@ -161,3 +217,5 @@
 </nav>
 <ng-container #cart></ng-container>
 <ng-container #login></ng-container>
+<!--                  
+-->

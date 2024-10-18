@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
 import { CartComponent } from '../cart/cart.component';
 import { CategoryService } from '../../services/categoryService/category.service';
 import { Category } from '../../models/category/category';
-import { ProductsService } from '../../services/productsService/products.service';
+import { SubCategory } from '../../models/subCategory/sub-category';
 
 @Component({
   selector: 'app-navbar',
@@ -39,7 +39,6 @@ export class NavbarComponent {
     categoryService: CategoryService,
     private router: Router,
     private accountService: AccountService,
-    private productService: ProductsService,
     private resolver: ViewContainerRef
   ) {
     this.cartEntry = this.resolver;
@@ -78,8 +77,12 @@ export class NavbarComponent {
   logOut() {
     this.accountService.logOut();
   }
-  goToCategoryProducts(category: Category) {
-        this.router.navigateByUrl(`/filteredProducts/categoryIds=${category.id}`)
+  goToOnSaleProducts(categories: Category[]) {
+    let querySearch=''
+    categories.map((category)=>{
+      querySearch += `categoryIds=${category.id}&`
+    })
+    this.router.navigateByUrl(`/filteredProducts/${querySearch}onSale=true`);
   }
   private createCartComponent() {
     this.cartComponent = this.cartEntry.createComponent(CartComponent);

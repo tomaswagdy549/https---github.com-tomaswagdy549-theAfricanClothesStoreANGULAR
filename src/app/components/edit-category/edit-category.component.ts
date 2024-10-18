@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UpdatedCategoryDTO } from '../../models/DTOs/requestDTO/updatedCategoryDTO/updated-category-dto';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { AddedCategoryDTO } from '../../models/DTOs/requestDTO/addedCategoryDTO/added-category-dto';
 
 @Component({
   selector: 'app-edit-category',
@@ -14,13 +15,18 @@ import { HandleResponse } from '../../handlingResponse/handle-response';
   styleUrl: './edit-category.component.css',
 })
 export class EditCategoryComponent {
-  newCategory: string = '';
+  newCategory: AddedCategoryDTO ={
+    name: '',
+    gender: '',
+    collection: '',
+  }
   categories: Category[] = [];
   showCategoryAdd: boolean = false;
   constructor(private categoryService: CategoryService) {
     this.categoryService.getAllCategories(50, 1).subscribe({
       next: (response) => {
         this.categories = response.categories;
+        console.log(this.categories)
       },
       error: (error) => {
         console.error(error);
@@ -33,13 +39,10 @@ export class EditCategoryComponent {
     );
     if (confirmed) {
       this.categoryService
-        .addCategory({
-          name: this.newCategory,
-        })
+        .addCategory(this.newCategory)
         .subscribe({
           next: (response) => {
             this.categories.push(response.entity);
-            this.newCategory = '';
             this.showCategoryAdd = false;
           },
         });
@@ -51,6 +54,8 @@ export class EditCategoryComponent {
     );
     if (confirmed) {
       let updatedCategoryDTO: UpdatedCategoryDTO = {
+        gender:editedCategory.gender,
+        collection:editedCategory.collection,
         name: editedCategory.name,
         Id: editedCategory.id,
       };

@@ -32,9 +32,19 @@
           />
           <div style="cursor: pointer" class="card-body">
             <p class="card-text">{{ product.name }}</p>
-            <p class="card-text" style="color: red">
-              Price: LE {{ product.price }}
-            </p>
+            @defer (when !product.onSale) {
+              <p class="card-text" style="color: red">
+                Price: LE {{ product.price }}
+              </p>  
+            }
+            @defer (when product.onSale) {
+              <p class="card-text" style="color: red">
+                Price: {{ product.salePrice }} LE instead of
+                <span style="text-decoration: line-through">{{
+                  product.price
+                }}</span>
+              </p>  
+            }
             <div class="d-flex justify-content-between">
               <a
                 *ngIf="checkIfAuthorized()"
@@ -70,8 +80,7 @@
           >
         </li>
 
-        }
-        @defer (when totalPages.length>5) {
+        } @defer (when totalPages.length>5) {
         <li *ngFor="let Page of totalPages; let index; as: i" class="page-item">
           <a
             [ngClass]="{ active: currentPage == Page }"

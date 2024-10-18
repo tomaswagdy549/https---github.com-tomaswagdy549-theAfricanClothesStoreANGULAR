@@ -21,7 +21,7 @@ import { ProductAvailableSizeService } from '../../services/productAvailableServ
 import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
 import { HandleResponse } from '../../handlingResponse/handle-response';
 import { ProductPhotoService } from '../../services/productPhotoService/product-photo.service';
-import { AddedProductPhotoDTO } from '../../models/DTOs/requestDTO/addedProductPhotoDTO/added-product-photo-dto';
+import { SubCategory } from '../../models/subCategory/sub-category';
 
 @Component({
   selector: 'app-adding-product',
@@ -31,7 +31,36 @@ import { AddedProductPhotoDTO } from '../../models/DTOs/requestDTO/addedProductP
   styleUrl: './adding-product.component.css',
 })
 export class AddingProductComponent {
-  productForm: FormGroup;
+  productForm: FormGroup = new FormGroup({
+    productName: new FormControl('', Validators.required),
+    brandId: new FormControl('', Validators.required),
+    categoryId: new FormControl('', Validators.required),
+    gender: new FormControl('', Validators.required),
+    collection: new FormControl('', Validators.required),
+    price: new FormControl('', [Validators.required, Validators.min(1)]),
+    note: new FormControl(''),
+    subCategoryId: new FormControl(''),
+    salePrice: new FormControl(''),
+    onSale: new FormControl(false, Validators.required),
+    availableSize: new FormArray(
+      [
+        new FormGroup({
+          size: new FormControl('', Validators.required),
+          quantity: new FormControl(null, [
+            Validators.required,
+            Validators.min(1),
+          ]),
+        }),
+      ],
+      [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
+    ),
+    photos: new FormArray(
+      [new FormControl<File | null>(null)],
+      [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
+    ),
+  });
+  displayedCategories: Category[] = [];
+  displayedSubCategories: SubCategory[] = [];
   categories: Category[] = [];
   brands: Brand[] = [];
   selectedPhoto: File | null = null;
@@ -39,6 +68,8 @@ export class AddingProductComponent {
     | { file: File; imagePreview: string | ArrayBuffer | null }[]
     | null = [];
   imagePreview: string | ArrayBuffer | null = null;
+  showSubCategories: boolean = false;
+  showSalePrice: boolean = false;
 
   constructor(
     private productsService: ProductsService,
@@ -47,38 +78,71 @@ export class AddingProductComponent {
     private categoryService: CategoryService,
     private brandService: BrandsService
   ) {
-    this.productForm = new FormGroup({
-      productName: new FormControl('', Validators.required),
-      brandId: new FormControl('', Validators.required),
-      categoryId: new FormControl('', Validators.required),
-      gender: new FormControl('', Validators.required),
-      price: new FormControl('', [Validators.required, Validators.min(1)]),
-      availableSize: new FormArray(
-        [
-          new FormGroup({
-            size: new FormControl('', Validators.required),
-            quantity: new FormControl(null, [
-              Validators.required,
-              Validators.min(1),
-            ]),
-          }),
-        ],
-        [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
-      ),
-      photos: new FormArray(
-        [new FormControl<File | null>(null)],
-        [Validators.minLength(1), this.uniqueSizeQuantityValidator()]
-      ),
-    });
-    this.categoryService.getAllCategories(12, 1).subscribe({
+    this.productForm.controls['gender'].valueChanges.subscribe((value) => {});
+    this.categoryService.getAllCategories(50, 1).subscribe({
       next: (categories) => {
         this.categories = categories.categories;
+        this.displayedCategories = this.categories;
       },
     });
     this.brandService.getAllBrands(12, 1).subscribe({
       next: (brands) => {
         this.brands = brands.brands;
       },
+    });
+    this.productForm.controls['gender'].valueChanges.subscribe((gender) => {
+      this.displayedCategories = this.categories.filter((value) => {
+        return (
+          value.gender == gender &&
+          (value.collection == this.productForm.controls['collection'].value ||
+            this.productForm.controls['collection'].value == '')
+        );
+      });
+    });
+    this.productForm.controls['collection'].valueChanges.subscribe(
+      (collection) => {
+        this.displayedCategories = this.categories.filter((value) => {
+          return (
+            value.collection == collection &&
+            (value.gender == this.productForm.controls['gender'].value ||
+              this.productForm.controls['gender'].value == '')
+          );
+        });
+      }
+    );
+    this.productForm.controls['categoryId'].valueChanges.subscribe(
+      (categoryId) => {
+        this.productForm.controls['subCategoryId'].removeValidators(
+          Validators.required
+        );
+        this.showSubCategories = false;
+        for (let i = 0; i < this.categories.length; i++) {
+          if (
+            this.categories[i].id == categoryId &&
+            this.categories[i].subCategories.length > 0
+          ) {
+            this.displayedSubCategories = this.categories[i].subCategories;
+            this.productForm.controls['subCategoryId'].addValidators(
+              Validators.required
+            );
+            this.showSubCategories = true;
+            break;
+          }
+        }
+      }
+    );
+    this.productForm.controls['onSale'].valueChanges.subscribe((onSale) => {
+      if (onSale) {
+        this.productForm.controls['salePrice'].addValidators(
+          Validators.required
+        );
+        this.showSalePrice = true;
+      } else {
+        this.productForm.controls['salePrice'].removeValidators(
+          Validators.required
+        );
+        this.showSalePrice = false;
+      }
     });
   }
 
@@ -117,15 +181,17 @@ export class AddingProductComponent {
     if (this.productForm.valid) {
       let addedProductDTO: AddedProductDTO = {
         name: this.productForm.get('productName')!.value,
-        gender: this.productForm.get('gender')!.value,
         categoryId: this.productForm.get('categoryId')!.value,
         brandId: this.productForm.get('brandId')!.value,
         price: this.productForm.get('price')!.value,
         imageOfProduct: this.selectedPhoto!,
+        note: this.productForm.get('note')!.value,
+        subCategoryId: this.productForm.get('subCategoryId')!.value,
+        salePrice: this.productForm.get('salePrice')!.value,
+        onSale: this.productForm.get('onSale')!.value,
       };
       let formData = new FormData();
       formData.append('name', addedProductDTO.name);
-      formData.append('gender', addedProductDTO.gender);
       formData.append('categoryId', addedProductDTO.categoryId.toString());
       formData.append('brandId', addedProductDTO.brandId.toString());
       formData.append('price', addedProductDTO.price.toString());
@@ -133,7 +199,7 @@ export class AddingProductComponent {
       this.productsService.addProduct(formData).subscribe({
         next: (response) => {
           this.addProductAvailableSizes(response.entity.id);
-        }
+        },
       });
     }
   }
@@ -182,7 +248,7 @@ export class AddingProductComponent {
       .subscribe({
         next: (response) => {
           this.addProductPhotos(productId);
-        }
+        },
       });
   }
   addProductPhotos(productId: number) {

@@ -61,8 +61,14 @@
           <li class="list-group-item">
             <strong>Name:</strong> {{ product.name }}
           </li>
-          <li class="list-group-item">
+          <li *ngIf="!product.onSale" class="list-group-item">
             <strong>Price:</strong> ${{ product.price }}
+          </li>
+          <li *ngIf="product.onSale" class="list-group-item">
+            <strong>Price:</strong> ${{ product.salePrice }} instead of
+            <span style="text-decoration: line-through">{{
+              product.price
+            }}</span>
           </li>
           <li class="list-group-item d-flex align-items-center">
             <strong class="me-2">Available Sizes </strong>
@@ -87,81 +93,92 @@
               <strong>Quantity:</strong>
               {{ quantity == 1 ? "Last piece" : quantity }}
             </div>
-
-            <div
-              *ngIf="userIsLogged()"
-              class="d-flex align-items-center justify-content-center"
-            >
-              <div class="input-group" style="max-width: 150px">
-                <button
-                  [disabled]="requiredQuantity <= 0"
-                  (click)="requiredQuantity = requiredQuantity - 1"
-                  class="btn btn-outline-secondary"
-                  type="button"
-                >
-                  -
-                </button>
-                <input
-                  type="number"
-                  class="form-control text-center"
-                  name="requiredQuantity"
-                  [(ngModel)]="requiredQuantity"
-                  min="0"
-                  [max]="quantity"
-                />
-                <button
-                  [disabled]="requiredQuantity >= quantity"
-                  (click)="requiredQuantity = requiredQuantity + 1"
-                  class="btn btn-outline-secondary"
-                  type="button"
-                >
-                  +
-                </button>
-              </div>
-
-              <button
-                type="button"
-                class="btn btn-outline-dark ms-2"
-                (click)="addToCart(product.id)"
-                [disabled]="requiredQuantity <= 0"
-              >
-                Add to Cart
-              </button>
-            </div>
-            <div
-              *ngIf="!userIsLogged()"
-              class="d-flex align-items-center justify-content-center"
-            >
-              <button
-                data-bs-target="#loginModal"
-                data-bs-toggle="modal"
-                type="button"
-                class="btn btn-outline-dark ms-2"
-              >
-                Login to purchase
-              </button>
-            </div>
           </li>
-          <li class="list-group-item">
+          <li *ngIf="product.subCategory == null" class="list-group-item">
             <strong>Category:</strong>
             {{
               product.category == null ? "No Category" : product.category.name
+            }}
+          </li>
+          <li *ngIf="product.subCategory != null" class="list-group-item">
+            <strong>Category:</strong>
+            {{
+              product.category == null
+                ? "No Category"
+                : product.subCategory.name
             }}
           </li>
           <li class="list-group-item">
             <strong>Brand:</strong>
             {{ product.brand == null ? "No Brand" : product.brand.name }}
           </li>
+          <li *ngIf="product.note != null" class="list-group-item">
+            <strong>Note:</strong>
+            {{ product.note }}
+          </li>
         </ul>
       </div>
       <div class="modal-footer">
-        <button
+        <!-- <button
           type="button"
           class="btn btn-outline-dark"
           data-bs-dismiss="modal"
         >
           Close
-        </button>
+        </button> -->
+        <div
+          *ngIf="userIsLogged()"
+          class="d-flex align-items-center justify-content-center"
+        >
+          <div class="input-group" style="max-width: 150px">
+            <button
+              [disabled]="requiredQuantity <= 0"
+              (click)="requiredQuantity = requiredQuantity - 1"
+              class="btn btn-outline-secondary"
+              type="button"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              class="form-control text-center"
+              name="requiredQuantity"
+              [(ngModel)]="requiredQuantity"
+              min="0"
+              [max]="quantity"
+            />
+            <button
+              [disabled]="requiredQuantity >= quantity"
+              (click)="requiredQuantity = requiredQuantity + 1"
+              class="btn btn-outline-secondary"
+              type="button"
+            >
+              +
+            </button>
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-outline-dark ms-2"
+            (click)="addToCart(product.id)"
+            [disabled]="requiredQuantity <= 0"
+          >
+            Add to Cart
+          </button>
+        </div>
+        <div
+          *ngIf="!userIsLogged()"
+          class="d-flex align-items-center justify-content-center"
+        >
+          <button
+            data-bs-target="#loginModal"
+            data-bs-toggle="modal"
+            type="button"
+            class="btn btn-outline-dark ms-2"
+          >
+            Login to purchase
+          </button>
+        </div>
       </div>
     </div>
   </div>

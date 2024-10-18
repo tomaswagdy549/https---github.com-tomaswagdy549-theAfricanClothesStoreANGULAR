@@ -20,9 +20,9 @@ import { ProductsService } from '../../services/productsService/products.service
   styleUrl: './filteredProducts.component.css',
 })
 export class filteredProductsComponent {
-checkIfAuthorized(): any {
-throw new Error('Method not implemented.');
-}
+  checkIfAuthorized(): any {
+    throw new Error('Method not implemented.');
+  }
   currentPage: number = 1;
   searchFilterQuery: string = '';
   totalPages: number[] = [];
@@ -32,35 +32,33 @@ throw new Error('Method not implemented.');
   selectedProductId: number = 1;
   constructor(
     private productService: ProductsService,
-    private activatedRoute: ActivatedRoute,
+    private activatedRoute: ActivatedRoute
   ) {
     this.activatedRoute.paramMap.subscribe((param) => {
       this.searchFilterQuery = param.get('searchQuery')!;
       productService
-        .filterProducts(this.searchFilterQuery+`&pageNumber=${this.currentPage}&pageSize=${this.pageSize}`)
+        .filterProducts(
+          this.searchFilterQuery +
+            `&pageNumber=${this.currentPage}&pageSize=${this.pageSize}`
+        )
         .subscribe((response) => {
           this.products = response.entities;
           this.currentPage = response.currentPage;
           this.selectedProductId = this.products[0].id;
-          this.getPages(response.totalPages)
+          this.getPages(response.totalPages);
         });
     });
   }
-  getPages(totalPages:number){
-    this.totalPages=[]
-    for (
-      let i = 1;
-      i <=
-      totalPages;
-      i++
-    ) {
+  getPages(totalPages: number) {
+    this.totalPages = [];
+    for (let i = 1; i <= totalPages; i++) {
       this.totalPages.push(i);
     }
   }
   moveToPage(currentPage: number) {
     this.productService
       .filterProducts(
-        `categoryIds=${this.products[0].categoryId}&pageNumber=${currentPage}&pageSize=6`
+        `${this.searchFilterQuery}&pageNumber=${currentPage}&pageSize=6`
       )
       .subscribe({
         next: (response) => {

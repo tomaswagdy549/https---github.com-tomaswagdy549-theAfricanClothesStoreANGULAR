@@ -16,6 +16,26 @@
           class="form-control me-2"
           style="width: 100%; margin-bottom: 0"
         />
+        <input
+          [(ngModel)]="category.collection"
+          [ngModelOptions]="{ standalone: true }"
+          name="collection"
+          type="text"
+          id="productName"
+          placeholder="Edit category collection"
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+        />
+        <input
+          [(ngModel)]="category.gender"
+          [ngModelOptions]="{ standalone: true }"
+          name="gender"
+          type="text"
+          id="productName"
+          placeholder="Edit category gender"
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+        />
         <button
           [disabled]="category.name == ''"
           (click)="editCategory(category)"
@@ -32,10 +52,13 @@
         >
           Delete
         </button>
+        <br />
+        <br />
+        <br />
       </div>
       <div *ngIf="showCategoryAdd" class="d-flex align-items-center mb-3">
         <input
-          [(ngModel)]="newCategory"
+          [(ngModel)]="newCategory.name"
           [ngModelOptions]="{ standalone: true }"
           name="name"
           placeholder="enter the category name"
@@ -43,8 +66,35 @@
           class="form-control me-2"
           style="width: 100%; margin-bottom: 0"
         />
+        <select
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+          id="brandId"
+          [(ngModel)]="newCategory.gender"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <option value="">Select gender</option>
+          <option value="Male">Male</option>
+          <option value="Women">Women</option>
+        </select>
+        <select
+          class="form-control me-2"
+          style="width: 100%; margin-bottom: 0"
+          id="brandId"
+          [(ngModel)]="newCategory.collection"
+          [ngModelOptions]="{ standalone: true }"
+        >
+          <option value="">Select collection</option>
+          <option value="Summer">Summer</option>
+          <option value="Winter">Winter</option>
+        </select>
+
         <button
-          [disabled]="newCategory == ''"
+          [disabled]="
+            newCategory.name == '' ||
+            newCategory.gender == '' ||
+            newCategory.collection == ''
+          "
           (click)="addCategory()"
           type="button"
           class="btn btn-outline-primary"
