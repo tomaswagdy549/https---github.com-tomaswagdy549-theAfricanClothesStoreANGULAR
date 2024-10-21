@@ -57,7 +57,6 @@ export class NavbarComponent {
     });
     categoryService.getAllCategories(24, 1).subscribe({
       next: (response) => {
-        console.log(response);
         response.categories.map((category) => {
           if (category.gender == 'Male') {
             this.menCategories.push(category);

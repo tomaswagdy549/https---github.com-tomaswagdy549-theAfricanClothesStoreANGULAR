@@ -41,6 +41,7 @@
             </p>
             }
             <a
+              *ngIf="isAdmin()"
               class="btn btn-secondary btn-sm"
               [href]="'editingproduct/' + product.id"
               >Edit product</a

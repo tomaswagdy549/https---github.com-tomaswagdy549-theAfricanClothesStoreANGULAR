@@ -6,6 +6,7 @@ import { ProductFilterComponent } from '../product-filter/product-filter.compone
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../services/productsService/products.service';
+import { AccountService } from '../../services/accountService/account.service';
 
 @Component({
   selector: 'app-men',
@@ -32,6 +33,7 @@ export class filteredProductsComponent {
   selectedProductId: number = 1;
   constructor(
     private productService: ProductsService,
+    private accountService:AccountService,
     private activatedRoute: ActivatedRoute
   ) {
     this.activatedRoute.paramMap.subscribe((param) => {
@@ -70,5 +72,8 @@ export class filteredProductsComponent {
           console.log(error);
         },
       });
+  }
+  isAdmin():boolean{
+    return this.accountService.isAdmin()
   }
 }

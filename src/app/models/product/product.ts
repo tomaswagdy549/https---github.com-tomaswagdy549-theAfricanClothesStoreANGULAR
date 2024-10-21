@@ -13,7 +13,7 @@ export class Product {
   subCategoryId: number = 0;
   note: string = '';
   onSale: boolean = false;
-  salePrice!: number;
+  salePrice!: number|null;
   brandId: number = 0;
   quantity: number = 0;
   category!: Category;

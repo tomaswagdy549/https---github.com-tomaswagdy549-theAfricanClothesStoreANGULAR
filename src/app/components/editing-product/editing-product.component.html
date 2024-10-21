@@ -18,21 +18,77 @@
           >Product name is required.</small
         >
       </div>
-
-      <!-- Category Dropdown -->
-      <label for="categoryId">Category:</label>
-      <select id="categoryId" formControlName="categoryId">
-        <option value="0">Select category</option>
-        <option *ngFor="let category of categories" [value]="category.id">
-          {{ category.name }}
-        </option>
+      <label for="description">Gender:</label>
+      <select formControlName="gender">
+        <option value="">Select gender</option>
+        <option value="Male">Male</option>
+        <option value="Woman">Woman</option>
+        <option value="Both">Both</option>
       </select>
       <div
-        *ngIf="productForm.controls['categoryId'].invalid"
+        *ngIf="
+          productForm.controls['gender'].invalid &&
+          productForm.controls['gender'].touched
+        "
         class="text-danger"
       >
-        <small>category is required.</small>
+        <small *ngIf="productForm.controls['gender'].errors!['required']"
+          >gender is required.</small
+        >
       </div>
+      <!-- Description -->
+      <label for="description">Collection : </label>
+      <select formControlName="collection">
+        <option value="">Select collection</option>
+        <option value="Summer">Summer</option>
+        <option value="Winter">Winter</option>
+        <option value="Both">Both</option>
+      </select>
+      <div
+        *ngIf="
+          productForm.controls['collection'].invalid &&
+          productForm.controls['collection'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['collection'].errors!['required']"
+          >collection is required.</small
+        >
+      </div>
+      <!-- Category Dropdown -->
+      <ng-container *ngIf="showCategory">
+        <label for="categoryId">Category:</label>
+        <select id="categoryId" formControlName="categoryId">
+          <option [value]="null">Select category</option>
+          <option
+            *ngFor="let category of displayedCategories"
+            [value]="category.id"
+          >
+            {{ category.name }}
+          </option>
+        </select>
+        <div
+          *ngIf="productForm.controls['categoryId'].invalid"
+          class="text-danger"
+        >
+          <small>category is required.</small>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="showSubCategory">
+        <label for="subCategoryId">Sub category:</label>
+        <select id="subCategoryId" formControlName="subCategoryId">
+          <option [value]="null">Select sub Category</option>
+          <option *ngFor="let category of subCategories" [value]="category.id">
+            {{ category.name }}
+          </option>
+        </select>
+        <div
+          *ngIf="productForm.controls['subCategoryId'].invalid"
+          class="text-danger"
+        >
+          <small>sub Category is required.</small>
+        </div>
+      </ng-container>
       <label for="brandId">Brand:</label>
       <select id="brandId" formControlName="brandId">
         <option value="0">Select brand</option>
@@ -42,19 +98,6 @@
       </select>
       <div *ngIf="productForm.controls['brandId'].invalid" class="text-danger">
         <small>brand name is required.</small>
-      </div>
-      <!-- Description -->
-      <label for="gender">gender:</label>
-      <input
-        type="text"
-        id="gender"
-        formControlName="gender"
-        placeholder="Enter product gender"
-      />
-      <div *ngIf="productForm.controls['gender'].invalid" class="text-danger">
-        <small *ngIf="productForm.controls['gender'].errors!['required']"
-          >Gender is required.</small
-        >
       </div>
 
       <!-- Price -->
@@ -70,7 +113,56 @@
           >Price is required.</small
         >
       </div>
-
+      <div style="margin-top: 1%" class="form-check form-switch">
+        <input
+          formControlName="onSale"
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="flexSwitchCheckChecked"
+        />
+        <label class="form-check-label" for="flexSwitchCheckChecked"
+          >On sale</label
+        >
+      </div>
+      <ng-container *ngIf="showSalePrice">
+        <label for="price">Sale price:</label>
+        <input
+          type="number"
+          id="price"
+          formControlName="salePrice"
+          placeholder="Enter product sale price"
+        />
+        <div
+          *ngIf="
+            productForm.controls['salePrice'].invalid &&
+            productForm.controls['salePrice'].touched
+          "
+          class="text-danger"
+        >
+          <small *ngIf="productForm.controls['salePrice'].errors!['required']"
+            >sale price is required.</small
+          >
+        </div>
+      </ng-container>
+      <label for="price">Notices:</label>
+      <input
+        type="text"
+        id="price"
+        formControlName="note"
+        placeholder="Enter product note"
+      />
+      <div
+        *ngIf="
+          productForm.controls['note'].invalid &&
+          productForm.controls['note'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['note'].errors!['required']"
+          >note is required.</small
+        >
+      </div>
       <!-- Current Image Display -->
       <div *ngIf="productImage">
         <p>Current Product Image:</p>

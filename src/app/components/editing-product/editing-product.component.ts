@@ -21,6 +21,9 @@ import { UpdatedProductDTO } from '../../models/DTOs/requestDTO/updatedProductDT
 import { ProductAvailableSizeService } from '../../services/productAvailableService/product-available-size.service';
 import { UpdatedProductAvailableDTO } from '../../models/DTOs/requestDTO/updatedProductAvailableDTO/updated-product-available-dto';
 import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
+import { Product } from '../../models/product/product';
+import { SubCategory } from '../../models/subCategory/sub-category';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-editing-product',
@@ -30,59 +33,176 @@ import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/adde
   styleUrl: './editing-product.component.css',
 })
 export class EditingProductComponent {
-  productForm: FormGroup;
+  productForm = new FormGroup({
+    productName: new FormControl<string>('', Validators.required),
+    brandId: new FormControl<number>(0, [
+      Validators.required,
+      Validators.min(1),
+    ]),
+    categoryId: new FormControl<number | null>(null, [
+      Validators.required,
+      Validators.min(1),
+    ]),
+    gender: new FormControl<string>('', Validators.required),
+    collection: new FormControl<string>('', Validators.required),
+    price: new FormControl<number>(0, [Validators.required, Validators.min(1)]),
+    note: new FormControl<string | null>(''),
+    subCategoryId: new FormControl<number | null>(null),
+    salePrice: new FormControl<number>(0),
+    onSale: new FormControl<boolean>(false, Validators.required),
+  });
   productAvailableSizesForm: FormArray<FormGroup>;
   productImage: string | null = null;
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   productAvailableSize: ProductAvailableSizes[] = [];
   categories: Category[] = [];
+  displayedCategories: Category[] = [];
+  subCategories: SubCategory[] = [];
   brands: Brand[] = [];
   productId: number = 0;
+  showSalePrice: boolean = false;
+  showCategory: boolean = false;
+  showSubCategory: boolean = false;
   constructor(
-    private fb: FormBuilder,
     private route: ActivatedRoute,
     private productAvailableSizeService: ProductAvailableSizeService,
     private productService: ProductsService,
     private categoryService: CategoryService,
     private brandService: BrandsService
   ) {
-    this.productForm = this.fb.group({
-      productName: ['', Validators.required],
-      categoryId: [0, [Validators.required, Validators.min(1)]],
-      brandId: [0, [Validators.required, Validators.min(1)]],
-      gender: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(1)]],
-    });
     this.productAvailableSizesForm = new FormArray<FormGroup>([]);
     this.route.paramMap.subscribe((parms) => {
       this.productId = parseInt(parms.get('id')!);
     });
     this.productService.getProduct(this.productId).subscribe({
       next: (product) => {
-        this.productForm.controls['productName'].setValue(product.name);
-        this.productForm.controls['price'].setValue(product.price);
-        this.productForm.controls['gender'].setValue(product.category.gender);
-        this.productForm.controls['categoryId'].setValue(product.categoryId);
-        this.productForm.controls['brandId'].setValue(product.brandId);
-        this.productAvailableSize = product.productAvailableSizes;
-        this.getCategories(`gender=${product.category.gender}&pageNumber=1&pageSize=40`)
-      },
-      error: (error) => {
-        console.error('Error fetching product:', error);
+        this.assignProductForm(product);
+        if (product.subCategory != null) {
+          this.showSubCategory = true;
+        }
+        this.showCategory =
+          this.productForm.controls['gender'].value != '' &&
+          this.productForm.controls['collection'].value != '';
+        this.subscribeTheFormValueChanges();
+        this.getCategories(product);
       },
     });
-    this.brandService.getAllBrands(12, 1).subscribe({
+    this.getBrands();
+    this.productForm.controls['onSale'].valueChanges.subscribe((onSale) => {
+      if (onSale) {
+        this.productForm.controls['salePrice'].addValidators([
+          Validators.required,
+        ]);
+        this.showSalePrice = true;
+      } else {
+        this.productForm.controls['salePrice'].removeValidators([
+          Validators.required,
+        ]);
+        this.productForm.controls['salePrice'].setValue(null);
+        this.showSalePrice = false;
+      }
+    });
+  }
+  assignProductForm(product: Product) {
+    this.productForm.controls['productName'].setValue(product.name);
+    this.productForm.controls['price'].setValue(product.price);
+    this.productForm.controls['gender'].setValue(product.category.gender);
+    this.productForm.controls['categoryId'].setValue(product.categoryId);
+    this.productForm.controls['brandId'].setValue(product.brandId);
+    this.productForm.controls['note'].setValue(product.note);
+    this.productForm.controls['salePrice'].setValue(product.salePrice);
+    this.productForm.controls['subCategoryId'].setValue(product.subCategoryId);
+    this.productForm.controls['onSale'].setValue(product.onSale);
+    this.productForm.controls['collection'].setValue(
+      product.category.collection
+    );
+    this.productAvailableSize = product.productAvailableSizes;
+  }
+  subscribeTheFormValueChanges() {
+    this.productForm.controls['gender'].valueChanges.subscribe((gender) => {
+      if (gender == '') {
+        this.showCategory = false;
+      } else {
+        this.showCategory = true;
+      }
+      this.productForm.controls['categoryId'].setValue(null);
+      this.displayedCategories = this.categories.filter((value) => {
+        return (
+          value.gender == gender &&
+          (value.collection == this.productForm.controls['collection'].value ||
+            this.productForm.controls['collection'].value == '')
+        );
+      });
+    });
+    this.productForm.controls['collection'].valueChanges.subscribe(
+      (collection) => {
+        if (collection == '') {
+          this.showCategory = false;
+        } else {
+          this.showCategory = true;
+        }
+        this.productForm.controls['categoryId'].setValue(null);
+        this.displayedCategories = this.categories.filter((value) => {
+          return (
+            value.collection == collection &&
+            (value.gender == this.productForm.controls['gender'].value ||
+              this.productForm.controls['gender'].value == '')
+          );
+        });
+      }
+    );
+    this.productForm.controls['categoryId'].valueChanges.subscribe(
+      (categoryId) => {
+        let category = this.categories.find((value) => {
+          return value.id == categoryId;
+        });
+        if (category != undefined) {
+          if (category!.subCategories.length > 0) {
+            this.subCategories = category!.subCategories;
+            this.productForm.controls['subCategoryId'].setValue(null);
+            this.productForm.controls['subCategoryId'].addValidators([
+              Validators.required,
+              Validators.min(1),
+            ]);
+            this.showSubCategory = true;
+            return;
+          } else {
+            this.productForm.controls['subCategoryId'].setValue(null);
+            this.productForm.controls['subCategoryId'].clearValidators();
+          }
+        }
+        this.showSubCategory = false;
+        // this.productForm.controls['categoryId'].clearValidators();
+        // this.productForm.controls['categoryId'].setValue(null);
+      }
+    );
+  }
+  getBrands() {
+    this.brandService.getAllBrands(50, 1).subscribe({
       next: (brands) => {
         this.brands = brands.brands;
       },
     });
   }
-  getCategories(querySearch:string){
-    this.categoryService.filter(querySearch).subscribe({
+  getCategories(product: Product) {
+    this.categoryService.getAllCategories(50, 1).subscribe({
       next: (categories) => {
         this.categories = categories.categories;
-        console.log(this.categories)
+        this.categories.map((category) => {
+          if (
+            category.gender == product.category.gender &&
+            category.collection == product.category.collection
+          ) {
+            this.displayedCategories.push(category);
+          }
+          if (
+            category.id == product.categoryId &&
+            product.subCategory != null
+          ) {
+            this.subCategories = category.subCategories;
+          }
+        });
       },
     });
   }
@@ -104,24 +224,33 @@ export class EditingProductComponent {
   }
 
   // Submit updated product data
-  onSubmit(): void {
+  async onSubmit() {
     if (this.productForm.valid) {
-      let updatedProductDTO: UpdatedProductDTO = {
-        Id: this.productId,
-        price: this.productForm.controls['price'].value,
-        name: this.productForm.controls['productName'].value,
-        gender: this.productForm.controls['gender'].value,
-        categoryId: this.productForm.controls['categoryId'].value,
-        brandId: this.productForm.controls['brandId'].value,
-      };
-      this.productService.updateProduct(updatedProductDTO).subscribe({
-        next: (response) => {
-          console.log('Product updated successfully:', response);
-        },
-        error: (error) => {
-          console.error('Error updating product:', error);
-        },
-      });
+      const confirmed = await HandleResponse.operationConfirmed(
+        'Are you sure you want to Edit this product ?'
+      );
+      if (confirmed) {
+        let updatedProductDTO: UpdatedProductDTO = {
+          Id: this.productId,
+          price: this.productForm.controls['price'].value!,
+          name: this.productForm.controls['productName'].value!,
+          categoryId: this.productForm.controls['categoryId'].value!,
+          brandId: this.productForm.controls['brandId'].value!,
+          subCategoryId: this.productForm.controls['subCategoryId'].value,
+          onSale: this.productForm.controls['onSale'].value!,
+          salePrice: this.productForm.controls['salePrice'].value,
+          note: this.productForm.controls['note'].value,
+        };
+        console.log(this.productForm);
+        this.productService.updateProduct(updatedProductDTO).subscribe({
+          next: (response) => {
+            console.log('Product updated successfully:', response);
+          },
+          error: (error) => {
+            console.error('Error updating product:', error);
+          },
+        });
+      }
     }
   }
   NewSize() {
@@ -139,14 +268,13 @@ export class EditingProductComponent {
       quantity: formGroup.get('quantity')!.value,
       productId: this.productId,
     };
-    this.productAvailableSizeService.addProductAvailableSize(addedProductAvailableSizesDTO).subscribe({
-      next: (response) => {
-        console.log('Product available size added successfully:', response);
-      },
-      error: (error) => {
-        console.error('Error adding product available size:', error);
-      }
-    })
+    this.productAvailableSizeService
+      .addProductAvailableSize(addedProductAvailableSizesDTO)
+      .subscribe({
+        next: (response) => {
+          console.log('Product available size added successfully:', response);
+        },
+      });
   }
   editProductSize(productAvailableSizes: ProductAvailableSizes) {
     let updatedProductAvailableDTO: UpdatedProductAvailableDTO = {
@@ -160,9 +288,6 @@ export class EditingProductComponent {
         next: (response) => {
           console.log('Product available size updated successfully:', response);
         },
-        error: (error) => {
-          console.error('Error updating product available size:', error);
-        },
       });
   }
   deleteProductSize(productAvailableSize: ProductAvailableSizes) {
@@ -174,9 +299,6 @@ export class EditingProductComponent {
       .subscribe({
         next: (response) => {
           console.log('Product size deleted successfully:', response);
-        },
-        error: (error) => {
-          console.error('Error deleting product size:', error);
         },
       });
   }

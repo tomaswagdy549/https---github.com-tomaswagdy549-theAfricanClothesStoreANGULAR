@@ -181,6 +181,24 @@
           >
         </div>
       </ng-container>
+      <label for="price">Note :</label>
+      <input
+        type="text"
+        id="price"
+        formControlName="note"
+        placeholder="Enter product note"
+      />
+      <div
+        *ngIf="
+          productForm.controls['note'].invalid &&
+          productForm.controls['note'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="productForm.controls['note'].errors!['required']"
+          >note is required.</small
+        >
+      </div>
       <!-- Image Upload -->
       <label for="productImage">Product Image:</label>
       <input

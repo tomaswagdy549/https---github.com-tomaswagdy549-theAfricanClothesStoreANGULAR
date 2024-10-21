@@ -45,16 +45,18 @@ export function responseInterceptor(
   );
 }
 function checkRes(response: HttpErrorResponse) {
-  console.log(response);
   let message = '';
-  if (response.error.status == 422) {
-    Object.entries(response.error.errors).forEach((value) => {
-      let c = value[1] as string[];
-      c.forEach((err) => {
-        message += `${err} `;
+  console.log(response);
+  if (response.error != null) {
+    if (response.error.status == 422) {
+      Object.entries(response.error.errors).forEach((value) => {
+        let c = value[1] as string[];
+        c.forEach((err) => {
+          message += `${err} `;
+        });
       });
-    });
-    return message;
+      return message;
+    }
   }
   switch (response.status) {
     case 0:

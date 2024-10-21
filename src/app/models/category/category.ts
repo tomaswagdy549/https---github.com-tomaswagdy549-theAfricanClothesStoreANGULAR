@@ -6,7 +6,7 @@ export class Category {
     name!:string
     gender!:string
     collection!:string
-    subCategories!:SubCategory[]
+    subCategories:SubCategory[]=[]
     products!: Product[]
 }
 

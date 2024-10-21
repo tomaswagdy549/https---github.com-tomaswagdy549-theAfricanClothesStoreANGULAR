@@ -15,13 +15,13 @@ import { CategoryService } from '../../services/categoryService/category.service
 import { BrandsService } from '../../services/brandsService/brands.service';
 import { Category } from '../../models/category/category';
 import { Brand } from '../../models/brand/brand';
-import { ProductsService } from '../../services/productsService/products.service';
 import { AddedProductDTO } from '../../models/DTOs/requestDTO/addedProductDTO/added-product-dto';
 import { ProductAvailableSizeService } from '../../services/productAvailableService/product-available-size.service';
 import { AddedProductAvailableSizesDTO } from '../../models/DTOs/requestDTO/addedProductAvailableSizesDTO/added-product-available-sizes-dto';
 import { HandleResponse } from '../../handlingResponse/handle-response';
 import { ProductPhotoService } from '../../services/productPhotoService/product-photo.service';
 import { SubCategory } from '../../models/subCategory/sub-category';
+import { ProductsService } from '../../services/productsService/products.service';
 
 @Component({
   selector: 'app-adding-product',
@@ -39,8 +39,8 @@ export class AddingProductComponent {
     collection: new FormControl('', Validators.required),
     price: new FormControl('', [Validators.required, Validators.min(1)]),
     note: new FormControl(''),
-    subCategoryId: new FormControl(''),
-    salePrice: new FormControl(''),
+    subCategoryId: new FormControl(0),
+    salePrice: new FormControl(null),
     onSale: new FormControl(false, Validators.required),
     availableSize: new FormArray(
       [
@@ -72,8 +72,8 @@ export class AddingProductComponent {
   showSalePrice: boolean = false;
 
   constructor(
-    private productsService: ProductsService,
     private productAvailableSizeService: ProductAvailableSizeService,
+    private productsService: ProductsService,
     private productPhotoService: ProductPhotoService,
     private categoryService: CategoryService,
     private brandService: BrandsService
@@ -112,9 +112,10 @@ export class AddingProductComponent {
     );
     this.productForm.controls['categoryId'].valueChanges.subscribe(
       (categoryId) => {
-        this.productForm.controls['subCategoryId'].removeValidators(
-          Validators.required
-        );
+        this.productForm.controls['subCategoryId'].removeValidators([
+          Validators.required,
+        ]);
+        this.productForm.controls['subCategoryId'].setValue('');
         this.showSubCategories = false;
         for (let i = 0; i < this.categories.length; i++) {
           if (
@@ -122,9 +123,9 @@ export class AddingProductComponent {
             this.categories[i].subCategories.length > 0
           ) {
             this.displayedSubCategories = this.categories[i].subCategories;
-            this.productForm.controls['subCategoryId'].addValidators(
-              Validators.required
-            );
+            this.productForm.controls['subCategoryId'].addValidators([
+              Validators.required,
+            ]);
             this.showSubCategories = true;
             break;
           }
@@ -133,14 +134,15 @@ export class AddingProductComponent {
     );
     this.productForm.controls['onSale'].valueChanges.subscribe((onSale) => {
       if (onSale) {
-        this.productForm.controls['salePrice'].addValidators(
-          Validators.required
-        );
+        this.productForm.controls['salePrice'].addValidators([
+          Validators.required,
+        ]);
         this.showSalePrice = true;
       } else {
-        this.productForm.controls['salePrice'].removeValidators(
-          Validators.required
-        );
+        this.productForm.controls['salePrice'].removeValidators([
+          Validators.required,
+        ]);
+        this.productForm.controls['salePrice'].setValue(null);
         this.showSalePrice = false;
       }
     });
@@ -179,28 +181,38 @@ export class AddingProductComponent {
   // Form submission
   onSubmit(): void {
     if (this.productForm.valid) {
-      let addedProductDTO: AddedProductDTO = {
-        name: this.productForm.get('productName')!.value,
-        categoryId: this.productForm.get('categoryId')!.value,
-        brandId: this.productForm.get('brandId')!.value,
-        price: this.productForm.get('price')!.value,
-        imageOfProduct: this.selectedPhoto!,
-        note: this.productForm.get('note')!.value,
-        subCategoryId: this.productForm.get('subCategoryId')!.value,
-        salePrice: this.productForm.get('salePrice')!.value,
-        onSale: this.productForm.get('onSale')!.value,
-      };
-      let formData = new FormData();
-      formData.append('name', addedProductDTO.name);
-      formData.append('categoryId', addedProductDTO.categoryId.toString());
-      formData.append('brandId', addedProductDTO.brandId.toString());
-      formData.append('price', addedProductDTO.price.toString());
-      formData.append('imageOfProduct', addedProductDTO.imageOfProduct);
-      this.productsService.addProduct(formData).subscribe({
-        next: (response) => {
-          this.addProductAvailableSizes(response.entity.id);
-        },
-      });
+    let addedProductDTO: AddedProductDTO = {
+      name: this.productForm.get('productName')!.value,
+      categoryId: this.productForm.get('categoryId')!.value,
+      brandId: this.productForm.get('brandId')!.value,
+      price: this.productForm.get('price')!.value,
+      imageOfProduct: this.selectedPhoto!,
+      note: this.productForm.get('note')!.value,
+      subCategoryId: this.productForm.get('subCategoryId')!.value,
+      salePrice: this.productForm.get('salePrice')!.value,
+      onSale: this.productForm.get('onSale')!.value,
+    };
+    console.log(addedProductDTO);
+    let formData = new FormData();
+    formData.append('name', addedProductDTO.name);
+    formData.append('categoryId', addedProductDTO.categoryId.toString());
+    formData.append('brandId', addedProductDTO.brandId.toString());
+    formData.append('price', addedProductDTO.price.toString());
+    formData.append('imageOfProduct', addedProductDTO.imageOfProduct);
+    formData.append('note', addedProductDTO.note!);
+    formData.append('subCategoryId', addedProductDTO.subCategoryId!.toString());
+    formData.append(
+      'salePrice',
+      addedProductDTO.salePrice == null
+        ? ''
+        : addedProductDTO.salePrice.toString()
+    );
+    formData.append('onSale', addedProductDTO.onSale ? 'true' : 'false');
+    this.productsService.addProduct(formData).subscribe({
+      next: (response) => {
+        this.addProductAvailableSizes(response.entity.id);
+      },
+    });
     }
   }
   getFormGroup(index: number): FormGroup {
