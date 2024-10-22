@@ -18,6 +18,8 @@ import { EditCategoryComponent } from './components/edit-category/edit-category.
 import { EditBrandComponent } from './components/edit-brand/edit-brand.component';
 import { AddCategoryComponent } from './components/add-category/add-category.component';
 import { AddBrandComponent } from './components/add-brand/add-brand.component';
+import { AddSubCategoryComponent } from './components/add-sub-category/add-sub-category.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -44,6 +46,15 @@ export const routes: Routes = [
     path: 'shoppingcart',
     component: ShoppingcartComponent,
     canActivate: [isLoggedOutGuard],
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent,
+  },
+  {
+    path: 'editingSubCategory',
+    component: AddSubCategoryComponent,
+    canActivate: [isAdminGuard],
   },
   { path: 'order', component: OrderComponent, canActivate: [isLoggedOutGuard] },
   {

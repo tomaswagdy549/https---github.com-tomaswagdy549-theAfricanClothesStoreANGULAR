@@ -1,0 +1,142 @@
+<form>
+  <h2>Edit sub category</h2>
+  <div>
+    <ng-container *ngFor="let category of categories">
+      <ng-container *ngIf="category.subCategories.length > 0">
+        <div
+          *ngFor="let subCategory of category.subCategories"
+          class="d-flex align-items-center mb-3"
+        >
+          <input
+            [(ngModel)]="subCategory.name"
+            [ngModelOptions]="{ standalone: true }"
+            type="text"
+            placeholder="Enter sub category name"
+            class="form-control me-2"
+            style="width: 75%; margin-bottom: 0"
+          />
+          <select
+            [(ngModel)]="subCategory.categoryId"
+            [ngModelOptions]="{ standalone: true }"
+            type="text"
+            placeholder="Select category"
+            class="form-control me-2"
+            style="width: 75%; margin-bottom: 0"
+          >
+            <option value="">select category</option>
+            <option
+              *ngFor="let category of getCategories(category)"
+              [value]="category.id"
+            >
+              {{ category.name }}
+            </option>
+          </select>
+          <select
+            [(ngModel)]="category.gender"
+            [ngModelOptions]="{ standalone: true }"
+            class="form-control me-2"
+            style="width: 75%; margin-bottom: 0"
+            disabled
+          >
+            <option value="">select gender</option>
+            <option value="Male">Male</option>
+            <option value="Woman">Woman</option>
+            <option value="Both">Both</option>
+          </select>
+          <select
+            [(ngModel)]="category.collection"
+            [ngModelOptions]="{ standalone: true }"
+            class="form-control me-2"
+            style="width: 75%; margin-bottom: 0"
+            disabled
+          >
+            <option value="">select collection</option>
+            <option value="Summer">Summer</option>
+            <option value="Winter">Winter</option>
+            <option value="Both">Both</option>
+          </select>
+          <button
+            (click)="editSubCategory(subCategory)"
+            type="button"
+            class="btn btn-outline-primary"
+          >
+            Edit
+          </button>
+          <button
+            (click)="deleteSubCategory(subCategory.id)"
+            class="ms-2"
+            style="background-color: brown"
+            type="button"
+          >
+            Delete
+          </button>
+        </div>
+      </ng-container>
+    </ng-container>
+    <div *ngIf="showSubCategoryAdd" class="d-flex align-items-center mb-3">
+      <input
+        [(ngModel)]="addedSubCategoryDTO.name"
+        name="newBrand"
+        placeholder="Enter the sub category"
+        type="text"
+        class="form-control me-2"
+        style="width: 100%; margin-bottom: 0"
+      />
+      <select
+        [(ngModel)]="gender"
+        [ngModelOptions]="{ standalone: true }"
+        class="form-control me-2"
+        style="width: 75%; margin-bottom: 0"
+      >
+        <option value="">select gender</option>
+        <option value="Male">Male</option>
+        <option value="Woman">Woman</option>
+        <option value="Both">Both</option>
+      </select>
+      <select
+        [(ngModel)]="collection"
+        [ngModelOptions]="{ standalone: true }"
+        class="form-control me-2"
+        style="width: 75%; margin-bottom: 0"
+      >
+        <option value="">select collection</option>
+        <option value="Summer">Summer</option>
+        <option value="Winter">Winter</option>
+        <option value="Both">Both</option>
+      </select>
+      <select
+        [(ngModel)]="addedSubCategoryDTO.categoryId"
+        [ngModelOptions]="{ standalone: true }"
+        type="text"
+        placeholder="Enter brand name"
+        class="form-control me-2"
+        style="width: 75%; margin-bottom: 0"
+        [disabled]="gender==''||collection==''"
+      >
+        <option [value]="0" selected>select category</option>
+        <option *ngFor="let category of getFilteredCategories(gender,collection)" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+
+      <button
+        (click)="addSubCategory()"
+        type="button"
+        class="btn btn-outline-primary"
+        [disabled]="addedSubCategoryDTO.name==''||addedSubCategoryDTO.categoryId<=0"
+      >
+        Add
+      </button>
+    </div>
+    <button
+      (click)="showSubCategoryAdd = !showSubCategoryAdd"
+      style="width: 100%"
+      type="button"
+    >
+      <ng-container *ngIf="!showSubCategoryAdd"
+        >Add new sub category</ng-container
+      >
+      <ng-container *ngIf="showSubCategoryAdd">cancel</ng-container>
+    </button>
+  </div>
+</form>

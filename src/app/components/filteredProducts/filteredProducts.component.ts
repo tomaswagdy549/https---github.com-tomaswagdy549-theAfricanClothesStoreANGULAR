@@ -33,8 +33,9 @@ export class filteredProductsComponent {
   selectedProductId: number = 1;
   constructor(
     private productService: ProductsService,
-    private accountService:AccountService,
-    private activatedRoute: ActivatedRoute
+    private accountService: AccountService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
     this.activatedRoute.paramMap.subscribe((param) => {
       this.searchFilterQuery = param.get('searchQuery')!;
@@ -44,6 +45,9 @@ export class filteredProductsComponent {
             `&pageNumber=${this.currentPage}&pageSize=${this.pageSize}`
         )
         .subscribe((response) => {
+          if (response == null) {
+            this.router.navigateByUrl('/not-found');
+          }
           this.products = response.entities;
           this.currentPage = response.currentPage;
           this.selectedProductId = this.products[0].id;
@@ -73,7 +77,7 @@ export class filteredProductsComponent {
         },
       });
   }
-  isAdmin():boolean{
-    return this.accountService.isAdmin()
+  isAdmin(): boolean {
+    return this.accountService.isAdmin();
   }
 }

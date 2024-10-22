@@ -14,38 +14,38 @@ import { GetAllSubCategoriesDTO } from '../../models/DTOs/responseDTO/getAllSubC
 })
 export class SubCategoryService {
   constructor(private http: HttpClient) {}
-  getAllCategories(
+  getAllSubCategories(
     pageSize: number,
     pageNumber: number
   ): Observable<GetAllSubCategoriesDTO> {
     return this.http.get<GetAllSubCategoriesDTO>(
-      `${enviroment.baseUrl}/api/category?pageNumber=${pageNumber}&pageSize=${pageSize}`
+      `${enviroment.baseUrl}/api/subCategory?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
-  getCategoryById(categoryId: number): Observable<SubCategory> {
+  getSubCategoryById(subCategoryId: number): Observable<SubCategory> {
     return this.http.get<SubCategory>(
-      `${enviroment.baseUrl}/api/category/${categoryId}`
+      `${enviroment.baseUrl}/api/category/${subCategoryId}`
     );
   }
-  addCategory(
-    categoryName: AddedSubCategoryDTO
+  addSubCategory(
+    AddedSubCategoryDTO: AddedSubCategoryDTO
   ): Observable<GenericResponse<SubCategory>> {
     return this.http.post<GenericResponse<SubCategory>>(
-      `${enviroment.baseUrl}/api/category`,
-      categoryName
+      `${enviroment.baseUrl}/api/subCategory`,
+      AddedSubCategoryDTO
     );
   }
-  editCategory(
-    UpdatedCategoryDTO: UpdatedSubCategoryDTO
+  editSubCategory(
+    UpdatedSubCategoryDTO: UpdatedSubCategoryDTO
   ): Observable<GenericResponse<SubCategory>> {
     return this.http.put<GenericResponse<SubCategory>>(
-      `${enviroment.baseUrl}/api/category`,
-      UpdatedCategoryDTO
+      `${enviroment.baseUrl}/api/subCategory`,
+      UpdatedSubCategoryDTO
     );
   }
-  deleteCategory(categoryId: number): Observable<BaseResponse> {
+  deleteSubCategory(subCategoryId: number): Observable<BaseResponse> {
     return this.http.delete<BaseResponse>(
-      `${enviroment.baseUrl}/api/category?categoryId=${categoryId}`
+      `${enviroment.baseUrl}/api/subCategory?subCategoryId=${subCategoryId}`
     );
   }
 }
