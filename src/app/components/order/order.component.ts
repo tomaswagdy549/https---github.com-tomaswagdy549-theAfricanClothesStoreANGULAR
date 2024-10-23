@@ -20,7 +20,10 @@ export class OrderComponent {
   getTotalPrice() {
     let total = 0;
     this.cartItems.forEach((cartItem) => {
-      total += cartItem.product.price * cartItem.quantity;
+      total +=
+        (cartItem.product.onSale
+          ? cartItem.product.salePrice!
+          : cartItem.product.price) * cartItem.quantity;
     });
     return total;
   }
@@ -28,7 +31,7 @@ export class OrderComponent {
   cartItems: CartItem[] = [];
   constructor(
     private router: Router,
-    private cartItemService:CartItemService,
+    private cartItemService: CartItemService,
     private accountService: AccountService,
     private orderService: OrderService
   ) {
@@ -53,7 +56,7 @@ export class OrderComponent {
       this.orderService.addOrder(this.addedOrderDTO).subscribe({
         next: (data) => {
           HandleResponse.handleSuccess(data.message);
-          this.cartItemService.cartDeleted.next(true)
+          this.cartItemService.cartDeleted.next(true);
         },
         error: (error) => {
           HandleResponse.handleError(error.message);

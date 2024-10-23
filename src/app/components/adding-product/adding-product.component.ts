@@ -179,40 +179,47 @@ export class AddingProductComponent {
   }
 
   // Form submission
-  onSubmit(): void {
+  async onSubmit() {
     if (this.productForm.valid) {
-    let addedProductDTO: AddedProductDTO = {
-      name: this.productForm.get('productName')!.value,
-      categoryId: this.productForm.get('categoryId')!.value,
-      brandId: this.productForm.get('brandId')!.value,
-      price: this.productForm.get('price')!.value,
-      imageOfProduct: this.selectedPhoto!,
-      note: this.productForm.get('note')!.value,
-      subCategoryId: this.productForm.get('subCategoryId')!.value,
-      salePrice: this.productForm.get('salePrice')!.value,
-      onSale: this.productForm.get('onSale')!.value,
-    };
-    console.log(addedProductDTO);
-    let formData = new FormData();
-    formData.append('name', addedProductDTO.name);
-    formData.append('categoryId', addedProductDTO.categoryId.toString());
-    formData.append('brandId', addedProductDTO.brandId.toString());
-    formData.append('price', addedProductDTO.price.toString());
-    formData.append('imageOfProduct', addedProductDTO.imageOfProduct);
-    formData.append('note', addedProductDTO.note!);
-    formData.append('subCategoryId', addedProductDTO.subCategoryId!.toString());
-    formData.append(
-      'salePrice',
-      addedProductDTO.salePrice == null
-        ? ''
-        : addedProductDTO.salePrice.toString()
-    );
-    formData.append('onSale', addedProductDTO.onSale ? 'true' : 'false');
-    this.productsService.addProduct(formData).subscribe({
-      next: (response) => {
-        this.addProductAvailableSizes(response.entity.id);
-      },
-    });
+      const confirmed = await HandleResponse.operationConfirmed(
+        'Are you sure you want to add this product ?'
+      );
+      if (confirmed) {
+        let addedProductDTO: AddedProductDTO = {
+          name: this.productForm.get('productName')!.value,
+          categoryId: this.productForm.get('categoryId')!.value,
+          brandId: this.productForm.get('brandId')!.value,
+          price: this.productForm.get('price')!.value,
+          imageOfProduct: this.selectedPhoto!,
+          note: this.productForm.get('note')!.value,
+          subCategoryId: this.productForm.get('subCategoryId')!.value,
+          salePrice: this.productForm.get('salePrice')!.value,
+          onSale: this.productForm.get('onSale')!.value,
+        };
+        let formData = new FormData();
+        formData.append('name', addedProductDTO.name);
+        formData.append('categoryId', addedProductDTO.categoryId.toString());
+        formData.append('brandId', addedProductDTO.brandId.toString());
+        formData.append('price', addedProductDTO.price.toString());
+        formData.append('imageOfProduct', addedProductDTO.imageOfProduct);
+        formData.append('note', addedProductDTO.note!);
+        formData.append(
+          'subCategoryId',
+          addedProductDTO.subCategoryId!.toString()
+        );
+        formData.append(
+          'salePrice',
+          addedProductDTO.salePrice == null
+            ? ''
+            : addedProductDTO.salePrice.toString()
+        );
+        formData.append('onSale', addedProductDTO.onSale ? 'true' : 'false');
+        this.productsService.addProduct(formData).subscribe({
+          next: (response) => {
+            this.addProductAvailableSizes(response.entity.id);
+          },
+        });
+      }
     }
   }
   getFormGroup(index: number): FormGroup {

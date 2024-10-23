@@ -35,9 +35,10 @@ export class AccountService {
     HandleResponse.handleSuccess('succesfully logged out');
   }
   logUser() {
-    const token = localStorage.getItem('token');
-    const decoded = jwtDecode(token!);
-    this.userData = decoded;
+    // const token = localStorage.getItem('token');
+    // const decoded = jwtDecode(token!);
+    // this.userData = decoded;
+    this.decodeToken();
     this.isLogged.next(true);
   }
   getCartId() {
@@ -66,6 +67,13 @@ export class AccountService {
     }
     return false;
   }
+  checkIfTokenExpired() {
+    if(Date.now()>this.userData['exp']*1000){
+      return true
+    }
+    return false
+  }
+
   private decodeToken() {
     const token = localStorage.getItem('token');
     const decoded = jwtDecode(token!);

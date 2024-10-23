@@ -37,9 +37,7 @@
                 <div class="row">
                   <!-- Image Column -->
                   <div class="col-md-6">
-                    <a
-                      (click)="routeToShoppingCart(cartItem)"
-                    >
+                    <a (click)="routeToShoppingCart(cartItem)">
                       <img
                         [src]="cartItem.product.mainPhotoUrl"
                         alt="Product Image"
@@ -51,14 +49,18 @@
 
                   <!-- Info Column -->
                   <div class="col-md-6">
-                    <br>
+                    <br />
                     <h6>{{ cartItem.product.name }}</h6>
                     <p>Size: {{ cartItem.size }}</p>
                     <p>quantity: {{ cartItem.quantity }}</p>
                     <p style="color: red">
-                      <strong
+                      <strong *ngIf="!cartItem.product.onSale"
                         >total price :
                         {{ cartItem.quantity * cartItem.product.price }}</strong
+                      >
+                      <strong *ngIf="cartItem.product.onSale"
+                        >total price :
+                        {{ cartItem.quantity * cartItem.product.salePrice! }} instead of <span style="text-decoration: line-through">{{ cartItem.quantity * cartItem.product.price }}</span></strong
                       >
                     </p>
                     <button

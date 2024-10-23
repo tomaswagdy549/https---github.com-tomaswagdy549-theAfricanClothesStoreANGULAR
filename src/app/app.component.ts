@@ -6,8 +6,8 @@ import { HeaderComponent } from './components/header/header.component';
 import { LoadingSpinnerComponent } from './components/loadingSpinner/loading-spinner/loading-spinner.component';
 import { enviroment } from './enviroment/enviroment';
 import { AccountService } from './services/accountService/account.service';
-import { OrderComponent } from "./components/order/order.component";
-import { NotFoundComponent } from "./components/not-found/not-found.component";
+import { OrderComponent } from './components/order/order.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,16 +18,19 @@ import { NotFoundComponent } from "./components/not-found/not-found.component";
     HeaderComponent,
     LoadingSpinnerComponent,
     OrderComponent,
-    NotFoundComponent
-],
+    NotFoundComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent  {
+export class AppComponent {
   title = 'ecommerce';
-  constructor(private accountService:AccountService) {
-    if(localStorage.getItem("token")!=null){
-      this.accountService.logUser()
+  constructor(private accountService: AccountService) {
+    if (localStorage.getItem('token') != null) {
+      this.accountService.logUser();
+      if (this.accountService.checkIfTokenExpired()) {
+        this.accountService.logOut();
+      }
     }
   }
 

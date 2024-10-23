@@ -1,38 +1,3 @@
-<!-- <div class="container mt-4">
-  <h2 class="text-center mb-4">Order Details</h2>
-
-  <div class="card mb-3">
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-striped">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Product Name</th>
-              <th scope="col">Size</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">unit Price</th>
-              <th scope="col">Total Price</th>
-            </tr>
-          </thead>
-          <tbody *ngFor="let cartItem of cartItems; let i = index">
-            <tr>
-              <td>{{ cartItem.product.name }}</td>
-              <td>{{ cartItem.size }}</td>
-              <td>{{ cartItem.quantity }}</td>
-              <td>{{ cartItem.product.price }}</td>
-              <td>{{ cartItem.product.price * cartItem.quantity }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div
-      class="card-header bg-primary text-white d-flex justify-content-between align-items-center"
-    >
-      <span>Total Price: {{ getTotalPrice() }}</span>
-    </div>
-  </div>
-</div> -->
 <div class="container mt-4">
   <h2 class="text-center mb-4">Order Details</h2>
 
@@ -51,6 +16,7 @@
             </tr>
           </thead>
           <tbody *ngFor="let cartItem of cartItems; let i = index">
+            @let price = cartItem.product.onSale?cartItem.product.salePrice:cartItem.product.price;
             <tr>
               <td>
                 <img
@@ -63,8 +29,8 @@
               <td>{{ cartItem.product.name }}</td>
               <td>{{ cartItem.size }}</td>
               <td>{{ cartItem.quantity }}</td>
-              <td>{{ cartItem.product.price }}</td>
-              <td>{{ cartItem.product.price * cartItem.quantity }}</td>
+              <td>{{ price }}</td>
+              <td>{{ price! * cartItem.quantity }}</td>
             </tr>
           </tbody>
         </table>

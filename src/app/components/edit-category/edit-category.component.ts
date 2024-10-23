@@ -26,7 +26,6 @@ export class EditCategoryComponent {
     this.categoryService.getAllCategories(50, 1).subscribe({
       next: (response) => {
         this.categories = response.categories;
-        console.log(this.categories)
       },
       error: (error) => {
         console.error(error);

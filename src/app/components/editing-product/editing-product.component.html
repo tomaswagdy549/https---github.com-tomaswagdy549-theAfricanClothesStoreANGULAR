@@ -191,6 +191,7 @@
             style="width: 75%; margin-bottom: 0"
           />
           <button
+            [disabled]="availableSize.quantity<1"
             (click)="editProductSize(availableSize)"
             type="button"
             class="btn btn-outline-primary"

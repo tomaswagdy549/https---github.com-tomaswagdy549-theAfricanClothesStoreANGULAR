@@ -16,26 +16,29 @@
           class="form-control me-2"
           style="width: 100%; margin-bottom: 0"
         />
-        <input
+        <select
           [(ngModel)]="category.collection"
           [ngModelOptions]="{ standalone: true }"
-          name="collection"
-          type="text"
-          id="productName"
-          placeholder="Edit category collection"
           class="form-control me-2"
-          style="width: 100%; margin-bottom: 0"
-        />
-        <input
+          style="width: 75%; margin-bottom: 0"
+        >
+          <option value="">select collection</option>
+          <option value="Summer">Summer</option>
+          <option value="Winter">Winter</option>
+          <option value="Both">Both</option>
+        </select>
+        <select
           [(ngModel)]="category.gender"
           [ngModelOptions]="{ standalone: true }"
-          name="gender"
-          type="text"
-          id="productName"
-          placeholder="Edit category gender"
           class="form-control me-2"
-          style="width: 100%; margin-bottom: 0"
-        />
+          style="width: 75%; margin-bottom: 0"
+        >
+          <option value="">select gender</option>
+          <option value="Male">Male</option>
+          <option value="Woman">Woman</option>
+          <option value="Both">Both</option>
+        </select>
+
         <button
           [disabled]="category.name == ''"
           (click)="editCategory(category)"

@@ -261,46 +261,72 @@ export class EditingProductComponent {
       })
     );
   }
-  addNewSize(index: number) {
-    let formGroup = this.productAvailableSizesForm.at(index);
-    let addedProductAvailableSizesDTO: AddedProductAvailableSizesDTO = {
-      availabeSize: formGroup.get('size')!.value,
-      quantity: formGroup.get('quantity')!.value,
-      productId: this.productId,
-    };
-    this.productAvailableSizeService
-      .addProductAvailableSize(addedProductAvailableSizesDTO)
-      .subscribe({
-        next: (response) => {
-          console.log('Product available size added successfully:', response);
-        },
-      });
+  async addNewSize(index: number) {
+    const confirmed = await HandleResponse.operationConfirmed(
+      'Are you sure you want to add this size ?'
+    );
+    if (confirmed) {
+      let formGroup = this.productAvailableSizesForm.at(index);
+      let addedProductAvailableSizesDTO: AddedProductAvailableSizesDTO = {
+        availabeSize: formGroup.get('size')!.value,
+        quantity: formGroup.get('quantity')!.value,
+        productId: this.productId,
+      };
+      this.productAvailableSizeService
+        .addProductAvailableSize(addedProductAvailableSizesDTO)
+        .subscribe({
+          next: (response) => {
+            this.productAvailableSize.push(response.entity);
+          },
+        });
+    }
   }
-  editProductSize(productAvailableSizes: ProductAvailableSizes) {
-    let updatedProductAvailableDTO: UpdatedProductAvailableDTO = {
-      productId: productAvailableSizes.productId,
-      availabeSize: productAvailableSizes.availabeSize,
-      quantity: productAvailableSizes.quantity,
-    };
-    this.productAvailableSizeService
-      .editProductAvailableSize(updatedProductAvailableDTO)
-      .subscribe({
-        next: (response) => {
-          console.log('Product available size updated successfully:', response);
-        },
-      });
+  async editProductSize(productAvailableSizes: ProductAvailableSizes) {
+    const confirmed = await HandleResponse.operationConfirmed(
+      'Are you sure you want to edit this size ?'
+    );
+    if (confirmed) {
+      let updatedProductAvailableDTO: UpdatedProductAvailableDTO = {
+        productId: productAvailableSizes.productId,
+        availabeSize: productAvailableSizes.availabeSize,
+        quantity: productAvailableSizes.quantity,
+      };
+      this.productAvailableSizeService
+        .editProductAvailableSize(updatedProductAvailableDTO)
+        .subscribe({
+          next: (response) => {
+            console.log(
+              'Product available size updated successfully:',
+              response
+            );
+          },
+        });
+    }
   }
-  deleteProductSize(productAvailableSize: ProductAvailableSizes) {
-    this.productAvailableSizeService
+  async deleteProductSize(productAvailableSize: ProductAvailableSizes) {
+    const confirmed = await HandleResponse.operationConfirmed(
+      'Are you sure you want to delete this size ?'
+    );
+    if (confirmed) {
+      this.productAvailableSizeService
       .deleteProductAvailableSize(
         productAvailableSize.productId,
         productAvailableSize.availabeSize
       )
       .subscribe({
         next: (response) => {
-          console.log('Product size deleted successfully:', response);
+          this.productAvailableSize.map((size, index) => {
+            if (
+              size.availabeSize == productAvailableSize.availabeSize &&
+              size.productId == productAvailableSize.productId
+            ) {
+              this.productAvailableSize.splice(index, 1);
+            }
+          });
         },
       });
+
+    }
   }
   getArray(): any {
     return this.productAvailableSizesForm.controls;
