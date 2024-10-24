@@ -20,6 +20,7 @@ import { AddCategoryComponent } from './components/add-category/add-category.com
 import { AddBrandComponent } from './components/add-brand/add-brand.component';
 import { AddSubCategoryComponent } from './components/add-sub-category/add-sub-category.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { NewOneComponent } from './components/new-one/new-one.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -51,6 +52,11 @@ export const routes: Routes = [
     path: 'not-found',
     component: NotFoundComponent,
   },
+  {
+    path: 'new-component',
+    component: NewOneComponent,
+  },
+
   {
     path: 'editingSubCategory',
     component: AddSubCategoryComponent,

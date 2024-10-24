@@ -1,0 +1,285 @@
+<form [formGroup]="clientForm" (ngSubmit)="onSubmit()" novalidate class="m-5">
+  <h1>Fill this form to purchase the order</h1>
+  <!-- First Mobile Number and Second Mobile Number -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <label for="firstMobileNumber" class="form-label"
+        >First Mobile Number</label
+      >
+      <input
+        id="firstMobileNumber"
+        formControlName="firstMobileNumber"
+        type="text"
+        class="form-control"
+        placeholder="Enter first mobile number"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['firstMobileNumber'].invalid &&
+          clientForm.controls['firstMobileNumber'].touched
+        "
+        class="text-danger"
+      >
+        <small
+          *ngIf="clientForm.controls['firstMobileNumber'].errors!['required']"
+          >First mobile number is required.</small
+        >
+        <small
+          *ngIf="clientForm.controls['firstMobileNumber'].errors!['pattern']"
+          >Invalid mobile number format.</small
+        >
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="secondMobileNumber" class="form-label"
+        >Second Mobile Number (optional)</label
+      >
+      <input
+        id="secondMobileNumber"
+        formControlName="secondMobileNumber"
+        type="text"
+        class="form-control"
+        placeholder="Enter second mobile number"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['secondMobileNumber'].invalid &&
+          clientForm.controls['secondMobileNumber'].touched
+        "
+        class="text-danger"
+      >
+        <small
+          *ngIf="clientForm.controls['secondMobileNumber'].errors!['pattern']"
+          >Invalid mobile number format.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Country and First Name -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input
+        id="firstName"
+        formControlName="firstName"
+        type="text"
+        class="form-control"
+        placeholder="Enter your first name"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['firstName'].invalid &&
+          clientForm.controls['firstName'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['firstName'].errors!['required']"
+          >First name is required.</small
+        >
+        <small *ngIf="clientForm.controls['firstName'].errors!['minlength']"
+          >First name must be at least 2 characters.</small
+        >
+        <small *ngIf="clientForm.controls['firstName'].errors!['maxlength']"
+          >First name can't exceed 50 characters.</small
+        >
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input
+        id="lastName"
+        formControlName="lastName"
+        type="text"
+        class="form-control"
+        placeholder="Enter your last name"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['lastName'].invalid &&
+          clientForm.controls['lastName'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['lastName'].errors!['required']"
+          >Last name is required.</small
+        >
+        <small *ngIf="clientForm.controls['lastName'].errors!['minlength']"
+          >Last name must be at least 2 characters.</small
+        >
+        <small *ngIf="clientForm.controls['lastName'].errors!['maxlength']"
+          >Last name can't exceed 50 characters.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Last Name and Address -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <label for="country" class="form-label">Country</label>
+      <input
+        id="country"
+        formControlName="country"
+        type="text"
+        class="form-control"
+        placeholder="Enter your country"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['country'].invalid &&
+          clientForm.controls['country'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['country'].errors!['required']"
+          >Country is required.</small
+        >
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="city" class="form-label">City</label>
+      <input
+        id="city"
+        formControlName="city"
+        type="text"
+        class="form-control"
+        placeholder="Enter your city"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['city'].invalid &&
+          clientForm.controls['city'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['city'].errors!['required']"
+          >City is required.</small
+        >
+        <small *ngIf="clientForm.controls['city'].errors!['minlength']"
+          >City must be at least 2 characters.</small
+        >
+        <small *ngIf="clientForm.controls['city'].errors!['maxlength']"
+          >City can't exceed 50 characters.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Apartment and City -->
+
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <label for="appartment" class="form-label">Apartment (optional)</label>
+      <input
+        id="appartment"
+        formControlName="appartment"
+        type="text"
+        class="form-control"
+        placeholder="Enter apartment number"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['appartment'].invalid &&
+          clientForm.controls['appartment'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['appartment'].errors!['maxlength']"
+          >Apartment number can't exceed 10 characters.</small
+        >
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <label for="address" class="form-label">Address</label>
+      <input
+        id="address"
+        formControlName="address"
+        type="text"
+        class="form-control"
+        placeholder="Enter your address"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['address'].invalid &&
+          clientForm.controls['address'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['address'].errors!['required']"
+          >Address is required.</small
+        >
+        <small *ngIf="clientForm.controls['address'].errors!['minlength']"
+          >Address must be at least 5 characters.</small
+        >
+        <small *ngIf="clientForm.controls['address'].errors!['maxlength']"
+          >Address can't exceed 100 characters.</small
+        >
+      </div>
+    </div>
+  
+  </div>
+
+  <!-- Governorate and Postal Code -->
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <label for="governorate" class="form-label">Governorate</label>
+      <input
+        id="governorate"
+        formControlName="governorate"
+        type="text"
+        class="form-control"
+        placeholder="Enter your governorate"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['governorate'].invalid &&
+          clientForm.controls['governorate'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['governorate'].errors!['required']"
+          >Governorate is required.</small
+        >
+        <small *ngIf="clientForm.controls['governorate'].errors!['minlength']"
+          >Governorate must be at least 2 characters.</small
+        >
+        <small *ngIf="clientForm.controls['governorate'].errors!['maxlength']"
+          >Governorate can't exceed 50 characters.</small
+        >
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="postalCode" class="form-label">Postal Code</label>
+      <input
+        id="postalCode"
+        formControlName="postalCode"
+        type="text"
+        class="form-control"
+        placeholder="Enter postal code"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['postalCode'].invalid &&
+          clientForm.controls['postalCode'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['postalCode'].errors!['required']"
+          >Postal code is required.</small
+        >
+        <small *ngIf="clientForm.controls['postalCode'].errors!['pattern']"
+          >Postal code must be 5-10 digits.</small
+        >
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit Button -->
+  <button type="submit" class="btn btn-primary" [disabled]="clientForm.invalid">
+    Submit
+  </button>
+</form>

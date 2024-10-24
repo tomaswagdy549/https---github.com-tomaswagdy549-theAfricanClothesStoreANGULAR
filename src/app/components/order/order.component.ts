@@ -5,9 +5,7 @@ import { CartItem } from '../../models/cartItem/cart-item';
 import { AddedOrderDTO } from '../../models/DTOs/requestDTO/addedOrderDTO/added-order-dto';
 import { AddedOrderDetails } from '../../models/DTOs/requestDTO/addedOrderDTO/addedOrderDTO/added-order-details';
 import { AccountService } from '../../services/accountService/account.service';
-import { OrderService } from '../../services/orderService/order.service';
 import { HandleResponse } from '../../handlingResponse/handle-response';
-import { CartItemService } from '../../services/cartItemService/cart-item.service';
 
 @Component({
   selector: 'app-order',
@@ -31,9 +29,7 @@ export class OrderComponent {
   cartItems: CartItem[] = [];
   constructor(
     private router: Router,
-    private cartItemService: CartItemService,
     private accountService: AccountService,
-    private orderService: OrderService
   ) {
     this.cartItems = this.router.getCurrentNavigation()!.extras.state![
       'cartItems'
@@ -53,15 +49,16 @@ export class OrderComponent {
       'sure you want to purschase the order ?'
     );
     if (confirmed) {
-      this.orderService.addOrder(this.addedOrderDTO).subscribe({
-        next: (data) => {
-          HandleResponse.handleSuccess(data.message);
-          this.cartItemService.cartDeleted.next(true);
-        },
-        error: (error) => {
-          HandleResponse.handleError(error.message);
-        },
-      });
+      // this.orderService.addOrder(this.addedOrderDTO).subscribe({
+      //   next: (data) => {
+      //     HandleResponse.handleSuccess(data.message);
+      //     this.cartItemService.cartDeleted.next(true);
+      //   },
+      //   error: (error) => {
+      //     HandleResponse.handleError(error.message);
+      //   },
+      // });
+      this.router.navigateByUrl('/new-component',{state:{addedOrderDTO:this.addedOrderDTO}})
     }
   }
 }
