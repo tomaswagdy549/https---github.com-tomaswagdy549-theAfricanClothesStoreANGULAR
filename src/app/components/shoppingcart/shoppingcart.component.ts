@@ -56,7 +56,7 @@ export class ShoppingcartComponent {
   }
   editCartItem() {
     let updatedCartItem: CartItem = {
-      cartId: this.cartItem.cartId,
+      gmail: this.cartItem.gmail,
       productId: this.cartItem.productId,
       quantity: this.quantity,
       size: this.cartItem.size,

@@ -72,6 +72,8 @@ function checkRes(response: HttpErrorResponse) {
       message = 'too many requests , try again later please';
       return message;
       break;
+      default:
+        message = 'something went wrong , try again please';
+        return message;
   }
-  return response.error.message;
 }

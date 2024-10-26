@@ -23,7 +23,7 @@
           (ngSubmit)="onSubmit()"
           class="container mt-5"
         >
-          <div class="row">
+          <!-- <div class="row">
             <div class="col-md-6 mb-3">
               <label for="email" class="form-label">Email</label>
               <input
@@ -67,17 +67,20 @@
                 >
               </div>
             </div>
-          </div>
+          </div> -->
 
           <div class="row">
             <div class="col-md-12 text-center">
-              <button
+              <!-- <button
                 type="submit"
                 class="btn btn-outline-success"
+                id="google-login"
                 [disabled]="loginForm.invalid"
               >
                 Login</button
-              ><br />
+              > -->
+              <asl-google-signin-button type="standard">login</asl-google-signin-button>
+              <br />
               {{ message }}
             </div>
           </div>

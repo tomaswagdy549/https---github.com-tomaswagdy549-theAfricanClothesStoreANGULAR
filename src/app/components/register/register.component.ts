@@ -85,8 +85,7 @@ export class RegisterComponent {
   }
   login() {
     let loggedUserDto = {
-      email: this.registerForm.get('email')?.value!,
-      password: this.registerForm.get('password')?.value!,
+      gmail: this.registerForm.get('email')?.value!,
     };
     this.accountService.login(loggedUserDto).subscribe({
       next: (response) => {

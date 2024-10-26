@@ -1,5 +1,5 @@
 export class CartItemCompositeKey {
-  cartId: string = '';
+  gmail: string = '';
   productId: number = 0;
   size: string = '';
 }

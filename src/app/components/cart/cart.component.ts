@@ -31,7 +31,7 @@ export class CartComponent implements OnChanges {
     this.cartItemService.cartItemEdited.subscribe((value) => {
       this.cartItems.map((item) => {
         if (
-          item.cartId == value.cartId &&
+          item.gmail == value.gmail &&
           item.productId == value.productId &&
           item.size == value.size
         ) {

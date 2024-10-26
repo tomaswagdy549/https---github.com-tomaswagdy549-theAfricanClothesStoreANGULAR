@@ -43,7 +43,7 @@ export class AccountService {
   }
   getCartId() {
     if (this.userData != null) {
-      return this.userData['cartId'] as string;
+      return this.userData['Gmail'] as string;
     }
     return null;
   }
@@ -58,7 +58,7 @@ export class AccountService {
   isAdmin() {
     if (this.userData != null) {
       let role = this.userData[
-        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        'Role'
       ] as string;
       role = role.toLowerCase();
       if (role == 'admin') {
