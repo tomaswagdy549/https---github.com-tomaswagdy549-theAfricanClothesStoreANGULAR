@@ -51,10 +51,12 @@ export const routes: Routes = [
   {
     path: 'not-found',
     component: NotFoundComponent,
+    canActivate: [isLoggedOutGuard]
   },
   {
     path: 'new-component',
     component: NewOneComponent,
+    canActivate: [isLoggedOutGuard]
   },
 
   {

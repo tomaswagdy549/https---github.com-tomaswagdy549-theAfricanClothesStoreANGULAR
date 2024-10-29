@@ -126,6 +126,7 @@
         class="form-control"
         placeholder="Enter your country"
       />
+
       <div
         *ngIf="
           clientForm.controls['country'].invalid &&
@@ -138,16 +139,58 @@
         >
       </div>
     </div>
-
     <div class="col-md-6 mb-3">
-      <label for="city" class="form-label">City</label>
-      <input
-        id="city"
-        formControlName="city"
+      <label for="governorate" class="form-label">Governorate</label>
+      <!-- <input
+        id="governorate"
+        formControlName="governorate"
         type="text"
         class="form-control"
-        placeholder="Enter your city"
-      />
+        placeholder="Enter your governorate"
+      /> -->
+      <select
+        formControlName="governorate"
+        class="form-select"
+        aria-label="Default select example"
+      >
+        <option selected>Select governorate</option>
+        <option *ngFor="let city of governorates">
+          {{ city.governorate_name_ar }}
+        </option>
+      </select>
+
+      <div
+        *ngIf="
+          clientForm.controls['governorate'].invalid &&
+          clientForm.controls['governorate'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['governorate'].errors!['required']"
+          >Governorate is required.</small
+        >
+        <small *ngIf="clientForm.controls['governorate'].errors!['minlength']"
+          >Governorate must be at least 2 characters.</small
+        >
+        <small *ngIf="clientForm.controls['governorate'].errors!['maxlength']"
+          >Governorate can't exceed 50 characters.</small
+        >
+      </div>
+    </div>
+  </div>
+  <div class="row mb-4">
+    <div class="col-md-6 mb-3">
+      <label for="city" class="form-label">City</label>
+      <select
+        formControlName="city"
+        class="form-select"
+        aria-label="Default select example"
+      >
+        <option selected>Select governorate to apply the city</option>
+        <option *ngFor="let city of filteredCities">
+          {{ city.city_name_ar }}
+        </option>
+      </select>
       <div
         *ngIf="
           clientForm.controls['city'].invalid &&
@@ -163,6 +206,31 @@
         >
         <small *ngIf="clientForm.controls['city'].errors!['maxlength']"
           >City can't exceed 50 characters.</small
+        >
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <label for="postalCode" class="form-label">Postal Code</label>
+      <input
+        id="postalCode"
+        formControlName="postalCode"
+        type="text"
+        class="form-control"
+        placeholder="Enter postal code"
+      />
+      <div
+        *ngIf="
+          clientForm.controls['postalCode'].invalid &&
+          clientForm.controls['postalCode'].touched
+        "
+        class="text-danger"
+      >
+        <small *ngIf="clientForm.controls['postalCode'].errors!['required']"
+          >Postal code is required.</small
+        >
+        <small *ngIf="clientForm.controls['postalCode'].errors!['pattern']"
+          >Postal code must be 5-10 digits.</small
         >
       </div>
     </div>
@@ -219,64 +287,14 @@
         >
       </div>
     </div>
-  
   </div>
-
+  <div class="text-danger" *ngIf="clientForm.controls['city'].value != 'أسيوط'">
+    <small
+      >your order will increase by 85 L.E if you are outside assiut city</small
+    >
+  </div>
+  <br />
   <!-- Governorate and Postal Code -->
-  <div class="row mb-4">
-    <div class="col-md-6 mb-3">
-      <label for="governorate" class="form-label">Governorate</label>
-      <input
-        id="governorate"
-        formControlName="governorate"
-        type="text"
-        class="form-control"
-        placeholder="Enter your governorate"
-      />
-      <div
-        *ngIf="
-          clientForm.controls['governorate'].invalid &&
-          clientForm.controls['governorate'].touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="clientForm.controls['governorate'].errors!['required']"
-          >Governorate is required.</small
-        >
-        <small *ngIf="clientForm.controls['governorate'].errors!['minlength']"
-          >Governorate must be at least 2 characters.</small
-        >
-        <small *ngIf="clientForm.controls['governorate'].errors!['maxlength']"
-          >Governorate can't exceed 50 characters.</small
-        >
-      </div>
-    </div>
-
-    <div class="col-md-6 mb-3">
-      <label for="postalCode" class="form-label">Postal Code</label>
-      <input
-        id="postalCode"
-        formControlName="postalCode"
-        type="text"
-        class="form-control"
-        placeholder="Enter postal code"
-      />
-      <div
-        *ngIf="
-          clientForm.controls['postalCode'].invalid &&
-          clientForm.controls['postalCode'].touched
-        "
-        class="text-danger"
-      >
-        <small *ngIf="clientForm.controls['postalCode'].errors!['required']"
-          >Postal code is required.</small
-        >
-        <small *ngIf="clientForm.controls['postalCode'].errors!['pattern']"
-          >Postal code must be 5-10 digits.</small
-        >
-      </div>
-    </div>
-  </div>
 
   <!-- Submit Button -->
   <button type="submit" class="btn btn-primary" [disabled]="clientForm.invalid">

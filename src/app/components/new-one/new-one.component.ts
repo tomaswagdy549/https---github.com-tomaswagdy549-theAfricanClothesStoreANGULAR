@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { AddedOrderDTO } from '../../models/DTOs/requestDTO/addedOrderDTO/added-order-dto';
 import { HandleResponse } from '../../handlingResponse/handle-response';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
+import { GovernoratesAndCities } from '../../models/citiesAndGovernorates/governorates-and-cities';
 
 @Component({
   selector: 'app-new-one',
@@ -21,7 +22,32 @@ import { CartItemService } from '../../services/cartItemService/cart-item.servic
   styleUrl: './new-one.component.css',
 })
 export class NewOneComponent {
+  // getFilteredCities(): {
+  //   id: string;
+  //   governorate_id: string;
+  //   city_name_ar: string;
+  //   city_name_en: string;
+  // }[] {
+  //   let cities: {
+  //     id: string;
+  //     governorate_id: string;
+  //     city_name_ar: string;
+  //     city_name_en: string;
+  //   }[] = [];
+  //   this.cities.map((value) => {
+  //     if (value.city_name_ar == this.clientForm.controls['city'].value) {
+  //       cities.push(value);
+  //     }
+  //   });
+  //   return cities;
+  // }
   addedOrderDTO: AddedOrderDTO;
+  filteredCities: {
+    id: string;
+    governorate_id: string;
+    city_name_ar: string;
+    city_name_en: string;
+  }[] = [];
   onSubmit() {
     let clientForm: ClientForm = {
       firstMobileNumber: this.clientForm.value.firstMobileNumber,
@@ -35,24 +61,40 @@ export class NewOneComponent {
       governorate: this.clientForm.value.governorate,
       postalCode: this.clientForm.value.postalCode,
     };
-    this.addedOrderDTO.clientForm=clientForm
-      this.orderService.addOrder(this.addedOrderDTO).subscribe({
-        next: (data) => {
-          HandleResponse.handleSuccess(data.message);
-          this.cartItemService.cartDeleted.next(true);
-        },
-        error: (error) => {
-          HandleResponse.handleError(error.message);
-        },
-      });
-    }
+    this.addedOrderDTO.clientForm = clientForm;
+    this.orderService.addOrder(this.addedOrderDTO).subscribe({
+      next: (data) => {
+        HandleResponse.handleSuccess(data.message);
+        this.cartItemService.cartDeleted.next(true);
+        this.addedOrderDTO.addedOrderDetailsDTO = [];
+      },
+      error: (error) => {
+        HandleResponse.handleError(error.message);
+      },
+    });
+  }
   clientForm!: FormGroup;
 
-  constructor(private fb: FormBuilder,private router :Router,private cartItemService:CartItemService,private orderService:OrderService) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private cartItemService: CartItemService,
+    private orderService: OrderService
+  ) {
     this.addedOrderDTO = this.router.getCurrentNavigation()!.extras.state![
       'addedOrderDTO'
     ] as AddedOrderDTO;
-    this.createForm()
+    this.createForm();
+    this.clientForm.controls['governorate'].valueChanges.subscribe(
+      (gorvernorate) => {
+        let id = this.governorates.find(
+          (value) => value.governorate_name_ar == gorvernorate
+        );
+        this.filteredCities = this.cities.filter(
+          (city) => city.governorate_id === id?.id
+        );
+      }
+    );
   }
 
   createForm() {
@@ -126,4 +168,6 @@ export class NewOneComponent {
       ],
     });
   }
+  cities = GovernoratesAndCities.cities;
+  governorates = GovernoratesAndCities.governorates;
 }

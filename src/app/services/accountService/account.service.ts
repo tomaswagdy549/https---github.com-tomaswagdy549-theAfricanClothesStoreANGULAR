@@ -50,7 +50,7 @@ export class AccountService {
   getUserId() {
     if (this.userData != null) {
       return this.userData[
-        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        'Gmail'
       ] as string;
     }
     return null;

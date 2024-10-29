@@ -34,7 +34,7 @@ export class OrderComponent {
     this.cartItems = this.router.getCurrentNavigation()!.extras.state![
       'cartItems'
     ] as CartItem[];
-    this.addedOrderDTO.applicationUserId = this.accountService.getUserId()!;
+    this.addedOrderDTO.gmail = this.accountService.getUserId()!;
     this.cartItems.forEach((item) => {
       let addedOrderDetails: AddedOrderDetails = {
         productId: item.productId,
@@ -49,15 +49,6 @@ export class OrderComponent {
       'sure you want to purschase the order ?'
     );
     if (confirmed) {
-      // this.orderService.addOrder(this.addedOrderDTO).subscribe({
-      //   next: (data) => {
-      //     HandleResponse.handleSuccess(data.message);
-      //     this.cartItemService.cartDeleted.next(true);
-      //   },
-      //   error: (error) => {
-      //     HandleResponse.handleError(error.message);
-      //   },
-      // });
       this.router.navigateByUrl('/new-component',{state:{addedOrderDTO:this.addedOrderDTO}})
     }
   }
