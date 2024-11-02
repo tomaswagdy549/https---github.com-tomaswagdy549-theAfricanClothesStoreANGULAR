@@ -1,3 +1,13 @@
+<div>
+  @defer (when discountPhotoUrl!='') {
+  <img
+    class="d-block w-100"
+    [src]="discountPhotoUrl"
+    style="height: 500px"
+    alt="First slide"
+  />
+  }
+</div>
 <div
   id="carouselExampleControls"
   class="carousel slide carousel-fade"
@@ -68,12 +78,12 @@
     <!-- Second Image -->
     <div class="col-md-3 mb-4 text-center">
       <a [routerLink]="['/shoes']">
-      <img
-        src="assets/images/manshose.jpg"
-        style="border-radius: 50%; width: 250px; height: 250px"
-        class="img-fluid"
-        alt="Image 2"
-      />
+        <img
+          src="assets/images/manshose.jpg"
+          style="border-radius: 50%; width: 250px; height: 250px"
+          class="img-fluid"
+          alt="Image 2"
+        />
       </a>
       <p style="padding-top: 10px">Shoes Men</p>
     </div>
@@ -81,12 +91,12 @@
     <!-- Third Image -->
     <div class="col-md-3 mb-4 text-center">
       <a [routerLink]="['/clothes']">
-      <img
-        src="assets/images/clothing men.jpg"
-        style="border-radius: 50%; width: 250px; height: 250px"
-        class="img-fluid"
-        alt="Image 3"
-      />
+        <img
+          src="assets/images/clothing men.jpg"
+          style="border-radius: 50%; width: 250px; height: 250px"
+          class="img-fluid"
+          alt="Image 3"
+        />
       </a>
       <p style="padding-top: 10px">Clothes Men</p>
     </div>
@@ -94,15 +104,13 @@
     <!-- Fourth Image -->
     <div class="col-md-3 mb-4 text-center">
       <a [routerLink]="['/women']">
-
-     
-      <img
-        src="assets/images/Bags&Accessors.jpg"
-        style="border-radius: 50%; width: 250px; height: 250px"
-        class="img-fluid"
-        alt="Image 4"
-      />
-    </a>
+        <img
+          src="assets/images/Bags&Accessors.jpg"
+          style="border-radius: 50%; width: 250px; height: 250px"
+          class="img-fluid"
+          alt="Image 4"
+        />
+      </a>
       <p style="padding-top: 10px">Bags & Accessors</p>
     </div>
   </div>

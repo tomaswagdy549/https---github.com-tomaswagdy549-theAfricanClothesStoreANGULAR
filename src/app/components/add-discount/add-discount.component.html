@@ -1,0 +1,131 @@
+<div class="container mt-5">
+  <h3>Add discount categories</h3>
+  <form>
+    <!-- Select Input 1 -->
+    <ng-container [formGroup]="discountForm">
+      <div class="form-group">
+        <label for="dateTimeInput" class="form-label"
+          >Select Date and Time</label
+        >
+        <input
+          formControlName="discountExpirationDate"
+          type="datetime-local"
+          class="form-control"
+          id="dateTimeInput"
+        />
+      </div>
+      <div class="form-group">
+        <label for="numberInput" class="form-label"
+          >Enter the discount percentage %</label
+        >
+        <input
+          formControlName="discountPercentage"
+          type="number"
+          class="form-control"
+          id="numberInput"
+          max="99"
+        />
+        <div
+          *ngIf="
+            discountForm.controls['discountPercentage'].invalid &&
+            discountForm.controls['discountPercentage'].touched
+          "
+          class="text-danger"
+        >
+          Discount percentage must be between 1 and 99
+        </div>
+      </div>
+    </ng-container>
+    <br />
+    <div class="form-group">
+      <label for="discountImage"
+        >Select photo for the discount occasion</label
+      >
+      <br />
+      <input
+        (change)="onPhotoSelected($event)"
+        name="discountImage"
+        class="form-input"
+        type="file"
+      />
+    </div>
+    <br>
+    <ng-container [formGroup]="form">
+      <div class="form-group">
+        <label for="gender" class="form-label">Select gender</label>
+        <select class="form-control" id="gender" formControlName="gender">
+          <option value="" disabled>Select gender</option>
+          <option *ngFor="let gender of gender" [value]="gender">
+            {{ gender }}
+          </option>
+        </select>
+      </div>
+      <!-- Select Input 2 -->
+      <div class="form-group">
+        <label for="collection" class="form-label">Select collection</label>
+        <select
+          class="form-control"
+          id="collection"
+          formControlName="collection"
+        >
+          <option value="" disabled>Select collection</option>
+          <option *ngFor="let collection of collection" [value]="collection">
+            {{ collection }}
+          </option>
+        </select>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="filteredCategories.length">
+      <label>Categories</label>
+      <!-- Checkbox Group 1 -->
+      <div class="form-group">
+        <div
+          class="form-check form-check-inline"
+          *ngFor="let category of filteredCategories"
+        >
+          <input
+            (change)="check($event, category)"
+            class="form-check-input"
+            type="checkbox"
+          />
+          <label class="form-check-label"
+            >{{ category.gender }} {{ category.collection }}
+            {{ category.name }}</label
+          >
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Checkbox Group 2 -->
+    <ng-container *ngIf="choosedCategories.length">
+      <label>Choosed categories</label>
+      <div class="form-group">
+        <div
+          class="form-check form-check-inline"
+          *ngFor="let category of choosedCategories"
+        >
+          <input
+            (change)="check($event, category)"
+            class="form-check-input"
+            type="checkbox"
+            checked
+          />
+          <label class="form-check-label"
+            >{{ category.gender }} {{ category.collection }}
+            {{ category.name }}</label
+          >
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="choosedCategories.length == 0" class="text-danger">
+      select the gender and collection to choose the categories
+    </div>
+    <br />
+    <!-- Submit Button -->
+    <button type="button" (click)="onSubmit()" class="btn btn-primary">
+      Submit
+    </button>
+  </form>
+  <br />
+</div>
