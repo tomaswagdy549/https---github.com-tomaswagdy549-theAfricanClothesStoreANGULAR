@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -7,21 +7,29 @@ import {
   ReactiveFormsModule,
   Validators,
   FormsModule,
+  ValidationErrors,
 } from '@angular/forms';
 import { CategoryService } from '../../services/categoryService/category.service';
 import { Category } from '../../models/category/category';
 import { DiscountService } from '../../services/discountService/discount.service';
-import { ProductPhotoService } from '../../services/productPhotoService/product-photo.service';
 import { HandleResponse } from '../../handlingResponse/handle-response';
 import { AddedDiscountDTO } from '../../models/DTOs/requestDTO/addedDiscountDTO/added-discount-dto';
+import { SubCategory } from '../../models/subCategory/sub-category';
+import { CategoryDirectory } from '../../models/DTOs/requestDTO/addedDiscountDTO/categoryDirectory/category-directory';
 @Component({
   selector: 'app-add-discount',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule],
   templateUrl: './add-discount.component.html',
   styleUrl: './add-discount.component.css',
 })
 export class AddDiscountComponent {
+  checkIfExsist(category: Category) {
+    let result = this.choosedCategories.some(
+      (value) => value.id == category.id
+    );
+    return result;
+  }
   form: FormGroup;
   discountForm = new FormGroup({
     discountPercentage: new FormControl<number | null>(null, [
@@ -31,24 +39,33 @@ export class AddDiscountComponent {
     ]),
     discountExpirationDate: new FormControl<string | null>(null, [
       Validators.required,
+      this.futureDateValidator
     ]),
     discountImage: new FormControl<File | null>(null),
   });
+  futureDateValidator(control: FormControl): ValidationErrors | null {
+    const selectedDate = new Date(control.value as string);
+    const now = new Date();
+
+    // Check if selected date is in the past
+    return selectedDate > now ? null : { futureDate: true };
+  }
   // Options for select inputs
-  discountImage:File|null=null
+  discountImage: File | null = null;
   gender = ['Woman', 'Men', 'Both'];
 
   collection = ['Summer', 'Winter', 'Both'];
-
+  categoryIds: CategoryDirectory[] = [];
   // Checkboxes for each group
   categories: Category[] = [];
-
   filteredCategories: Category[] = [];
+  subCategories: SubCategory[] = [];
   choosedCategories: Category[] = [];
+  choosedSubCategories: SubCategory[] = [];
   constructor(
     private fb: FormBuilder,
     private categoryService: CategoryService,
-    private discountService: DiscountService,
+    private discountService: DiscountService
   ) {
     this.form = this.fb.group({
       gender: new FormControl('', [Validators.required]),
@@ -57,6 +74,15 @@ export class AddDiscountComponent {
     this.categoryService.getAllCategories(500, 1).subscribe({
       next: (data) => {
         this.categories = data.categories;
+        this.categories.forEach((category) => {
+          if (category.subCategories.length > 0) {
+            category.subCategories.map((subcategory) => {
+              subcategory.category = category;
+            });
+            this.subCategories.push(...category.subCategories);
+          }
+        });
+        console.log(this.subCategories);
       },
       error: (error) => {
         console.error('Error:', error);
@@ -82,18 +108,47 @@ export class AddDiscountComponent {
       );
     });
   }
-  check($event: Event, category: Category) {
+  changeCategory($event: Event, category: Category) {
     const isChecked = ($event.target as HTMLInputElement).checked;
     if (isChecked) {
       this.choosedCategories.push(category);
+      this.categoryIds.push({
+        categoryId: category.id,
+        subCategoryId: null,
+      });
     } else if (!isChecked) {
-      const index = this.choosedCategories.indexOf(category);
-      if (index != -1) {
-        this.choosedCategories.splice(index, 1);
+      const categoryIndex = this.choosedCategories.indexOf(category);
+      if (categoryIndex != -1) {
+        this.choosedCategories.splice(categoryIndex, 1);
+        this.categoryIds.map((ctegoryId)=>{
+          if(ctegoryId.categoryId == category.id && ctegoryId.subCategoryId==null){
+            this.categoryIds.splice(this.categoryIds.indexOf(ctegoryId),1);
+          }
+        }) 
       }
     }
   }
-  ngOnInit(): void {}
+  changeSubCategory($event: Event, subCategory: SubCategory) {
+    const isChecked = ($event.target as HTMLInputElement).checked;
+    if (isChecked) {
+      this.choosedSubCategories.push(subCategory);
+      this.categoryIds.push({
+        categoryId: subCategory.category.id,
+        subCategoryId: subCategory.id,
+      });
+    } else if (!isChecked) {
+      const index = this.choosedSubCategories.indexOf(subCategory);
+      if (index != -1) {
+        this.choosedSubCategories.splice(index, 1);
+        this.categoryIds.map((ctegoryId)=>{
+          if(ctegoryId.categoryId == subCategory.category.id && ctegoryId.subCategoryId==subCategory.id){
+            this.categoryIds.splice(this.categoryIds.indexOf(ctegoryId),1);
+          }
+        }) 
+
+      }
+    }
+  }
 
   onSubmit() {
     let string = this.discountForm.controls['discountExpirationDate']
@@ -103,19 +158,15 @@ export class AddDiscountComponent {
     const diffInHours = Math.ceil(
       Math.abs(dateObject.getTime() - currentDate.getTime()) / (1000 * 60 * 60)
     );
-    let categoryIds: number[] = [];
-    this.choosedCategories.filter((category,index) => {
-      categoryIds.push(category.id);
-    });
+    console.log(diffInHours);
     let addedDiscountDTO: AddedDiscountDTO = {
       discountDurationInHours: diffInHours,
       discountPercentage:
         this.discountForm.controls['discountPercentage'].value! * 0.01,
-      categoryIds: categoryIds,
-      
+      categoryIds: this.categoryIds,
     };
     this.discountService.addDiscount(addedDiscountDTO).subscribe({
-        next: (response) => {
+      next: (response) => {
         this.addDiscountImage();
       },
     });

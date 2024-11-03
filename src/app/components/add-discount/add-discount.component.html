@@ -13,6 +13,17 @@
           class="form-control"
           id="dateTimeInput"
         />
+        <div
+          *ngIf="
+            discountForm.controls['discountExpirationDate']?.hasError(
+              'futureDate'
+            )
+          "
+        >
+          <small class="text-danger"
+            >Expiration date must be in the future.</small
+          >
+        </div>
       </div>
       <div class="form-group">
         <label for="numberInput" class="form-label"
@@ -38,9 +49,7 @@
     </ng-container>
     <br />
     <div class="form-group">
-      <label for="discountImage"
-        >Select photo for the discount occasion</label
-      >
+      <label for="discountImage">Select photo for the discount occasion</label>
       <br />
       <input
         (change)="onPhotoSelected($event)"
@@ -49,7 +58,7 @@
         type="file"
       />
     </div>
-    <br>
+    <br />
     <ng-container [formGroup]="form">
       <div class="form-group">
         <label for="gender" class="form-label">Select gender</label>
@@ -84,17 +93,34 @@
           *ngFor="let category of filteredCategories"
         >
           <input
-            (change)="check($event, category)"
+            [checked]="checkIfExsist(category)"
+            (change)="changeCategory($event, category)"
             class="form-check-input"
             type="checkbox"
           />
           <label class="form-check-label"
-            >{{ category.gender }} {{ category.collection }}
-            {{ category.name }}</label
+            >{{ category.gender }} {{ category.name }}</label
           >
         </div>
       </div>
     </ng-container>
+    <div class="form-group">
+      <br />
+      <div
+        class="form-check form-check-inline"
+        *ngFor="let subCategory of subCategories"
+      >
+        <input
+          (change)="changeSubCategory($event, subCategory)"
+          class="form-check-input"
+          type="checkbox"
+        />
+
+        <label class="form-check-label"
+          >{{ subCategory.category.gender }} {{ subCategory.name }}</label
+        >
+      </div>
+    </div>
 
     <!-- Checkbox Group 2 -->
     <ng-container *ngIf="choosedCategories.length">
@@ -105,7 +131,7 @@
           *ngFor="let category of choosedCategories"
         >
           <input
-            (change)="check($event, category)"
+            (change)="changeCategory($event, category)"
             class="form-check-input"
             type="checkbox"
             checked
@@ -117,13 +143,40 @@
         </div>
       </div>
     </ng-container>
+    <ng-container *ngIf="choosedSubCategories.length">
+      <label>Choosed sub categories</label>
+      <div class="form-group">
+        <div
+          class="form-check form-check-inline"
+          *ngFor="let subCategory of choosedSubCategories"
+        >
+          <input
+            (change)="changeCategory($event, subCategory.category)"
+            class="form-check-input"
+            type="checkbox"
+            checked
+          />
+          <label class="form-check-label"
+            >{{ subCategory.category.gender }} {{ subCategory.name }}</label
+          >
+        </div>
+      </div>
+    </ng-container>
 
     <div *ngIf="choosedCategories.length == 0" class="text-danger">
       select the gender and collection to choose the categories
     </div>
     <br />
     <!-- Submit Button -->
-    <button type="button" (click)="onSubmit()" class="btn btn-primary">
+    <button
+      [disabled]="
+        discountForm.invalid ||
+        (choosedCategories.length == 0 && choosedSubCategories.length == 0)
+      "
+      type="button"
+      (click)="onSubmit()"
+      class="btn btn-primary"
+    >
       Submit
     </button>
   </form>

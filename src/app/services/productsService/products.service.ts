@@ -6,6 +6,7 @@ import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsD
 import { Product } from '../../models/product/product';
 import { UpdatedProductDTO } from '../../models/DTOs/requestDTO/updatedProductDTO/updated-product-dto';
 import { GenericResponse } from '../../models/DTOs/responseDTO/genericResponse/generic-response';
+import { BaseResponse } from '../../models/DTOs/responseDTO/baseResponse/base-response';
 
 @Injectable({
   providedIn: 'root',
@@ -40,6 +41,11 @@ export class ProductsService {
   filterProducts(querySearch: string): Observable<GetAllProductsDTO> {
     return this.http.get<GetAllProductsDTO>(
       `${enviroment.baseUrl}/api/products/filterProduct?${querySearch}`
+    );
+  }
+  deleteProduct(productId: number): Observable<BaseResponse> {
+    return this.http.delete<BaseResponse>(
+      `${enviroment.baseUrl}/api/products?Id=${productId}`,
     );
   }
 }

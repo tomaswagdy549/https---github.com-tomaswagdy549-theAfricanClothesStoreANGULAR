@@ -92,5 +92,11 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
   userIsLogged(): boolean {
     return this.accountService.isLogged.getValue();
   }
+  getTime(value: Date) {
+    const egyptDate = new Date(value).toLocaleString('en-EG', {
+      timeZone: 'Africa/Cairo',
+    });
+    return egyptDate
+  }
 
 }

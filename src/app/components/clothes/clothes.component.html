@@ -14,7 +14,7 @@
     <div class="row gx-lg-5">
       <div
         class="col-lg-4 col-md-6 col-12 mb-5"
-        *ngFor="let product of products"
+        *ngFor="let product of products;let i as index"
       >
         <div
           data-bs-target="#productInfoModal"
@@ -49,9 +49,15 @@
               <a
                 *ngIf="checkIfAuthorized()"
                 [href]="'editingproduct/' + product.id"
-                class="btn btn-secondary"
+                class="btn btn-secondary btn-sm"
                 >Edit product</a
               >
+              <a
+              *ngIf="checkIfAuthorized()"
+              (click)="deleteProduct(product.id)"
+              class="btn btn-secondary btn-sm"
+              >Delete product</a
+            >
             </div>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { ProductDetailsComponent } from '../product-details/product-details.comp
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '../../services/productsService/products.service';
 import { AccountService } from '../../services/accountService/account.service';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-men',
@@ -21,8 +22,21 @@ import { AccountService } from '../../services/accountService/account.service';
   styleUrl: './filteredProducts.component.css',
 })
 export class filteredProductsComponent {
-  checkIfAuthorized(): any {
-    throw new Error('Method not implemented.');
+  async deleteProduct(productId: number) {
+    const confirmed = await HandleResponse.operationConfirmed(
+      'Are you sure you want to Delete this product ?'
+    );
+    if (confirmed) {
+      this.productService.deleteProduct(productId).subscribe({
+        next: (response) => {
+          this.products.map((product) => {
+            if (product.id === productId) {
+              this.products.splice(this.products.indexOf(product), 1);
+            }
+          });
+        },
+      });
+    }
   }
   currentPage: number = 1;
   searchFilterQuery: string = '';

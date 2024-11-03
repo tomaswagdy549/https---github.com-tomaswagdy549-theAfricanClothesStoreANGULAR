@@ -1,5 +1,7 @@
+import { CategoryDirectory } from "./categoryDirectory/category-directory"
+
 export class AddedDiscountDTO {
     discountPercentage:number=0
-    categoryIds:number[]=[]
+    categoryIds:CategoryDirectory[]=[]
     discountDurationInHours:number=0
 }
