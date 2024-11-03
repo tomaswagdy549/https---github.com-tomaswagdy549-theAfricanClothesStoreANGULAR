@@ -50,6 +50,9 @@ export class EditingProductComponent {
     subCategoryId: new FormControl<number | null>(null),
     salePrice: new FormControl<number>(0),
     onSale: new FormControl<boolean>(false, Validators.required),
+    discountExpirationDate: new FormControl<Date | null>(
+      null
+    ),
   });
   productAvailableSizesForm: FormArray<FormGroup>;
   productImage: string | null = null;
@@ -64,6 +67,7 @@ export class EditingProductComponent {
   showSalePrice: boolean = false;
   showCategory: boolean = false;
   showSubCategory: boolean = false;
+  date!: Date;
   constructor(
     private route: ActivatedRoute,
     private productAvailableSizeService: ProductAvailableSizeService,
@@ -78,6 +82,7 @@ export class EditingProductComponent {
     this.productService.getProduct(this.productId).subscribe({
       next: (product) => {
         this.assignProductForm(product);
+        console.log(product);
         if (product.subCategory != null) {
           this.showSubCategory = true;
         }
@@ -113,7 +118,12 @@ export class EditingProductComponent {
     this.productForm.controls['note'].setValue(product.note);
     this.productForm.controls['salePrice'].setValue(product.salePrice);
     this.productForm.controls['subCategoryId'].setValue(product.subCategoryId);
-    this.productForm.controls['onSale'].setValue(product.onSale);
+    this.productForm.controls['onSale'].setValue(
+      product.currentPrice != product.price
+    );
+    this.productForm.controls['discountExpirationDate'].setValue(
+      product.discountExpirationDate
+    );
     this.productForm.controls['collection'].setValue(
       product.category.collection
     );
@@ -230,6 +240,9 @@ export class EditingProductComponent {
         'Are you sure you want to Edit this product ?'
       );
       if (confirmed) {
+        this.getHoursDiff(
+          this.productForm.controls['discountExpirationDate'].value
+        );
         let updatedProductDTO: UpdatedProductDTO = {
           Id: this.productId,
           price: this.productForm.controls['price'].value!,
@@ -240,8 +253,10 @@ export class EditingProductComponent {
           onSale: this.productForm.controls['onSale'].value!,
           salePrice: this.productForm.controls['salePrice'].value,
           note: this.productForm.controls['note'].value,
+          discountDurationInHours: this.getHoursDiff(
+            this.productForm.controls['discountExpirationDate'].value
+          ),
         };
-        console.log(this.productForm);
         this.productService.updateProduct(updatedProductDTO).subscribe({
           next: (response) => {
             console.log('Product updated successfully:', response);
@@ -253,6 +268,19 @@ export class EditingProductComponent {
       }
     }
   }
+  getHoursDiff(value: Date | null): number | null {
+    if (value != null) {
+      let specific = value.toString();
+      const currentDate = new Date();
+      const specificDate = new Date(specific);
+      const diffInHours = Math.ceil(
+        Math.abs(specificDate.getTime() - currentDate.getTime()) /
+          (1000 * 60 * 60)
+      );
+      return diffInHours;
+    }
+    return null;
+  }
   NewSize() {
     this.productAvailableSizesForm.push(
       new FormGroup({
@@ -260,6 +288,12 @@ export class EditingProductComponent {
         quantity: new FormControl(0, Validators.required),
       })
     );
+  }
+  getTime(value: Date) {
+    const egyptDate = new Date(value).toLocaleString('en-EG', {
+      timeZone: 'Africa/Cairo',
+    });
+    return egyptDate
   }
   async addNewSize(index: number) {
     const confirmed = await HandleResponse.operationConfirmed(
@@ -309,23 +343,22 @@ export class EditingProductComponent {
     );
     if (confirmed) {
       this.productAvailableSizeService
-      .deleteProductAvailableSize(
-        productAvailableSize.productId,
-        productAvailableSize.availabeSize
-      )
-      .subscribe({
-        next: (response) => {
-          this.productAvailableSize.map((size, index) => {
-            if (
-              size.availabeSize == productAvailableSize.availabeSize &&
-              size.productId == productAvailableSize.productId
-            ) {
-              this.productAvailableSize.splice(index, 1);
-            }
-          });
-        },
-      });
-
+        .deleteProductAvailableSize(
+          productAvailableSize.productId,
+          productAvailableSize.availabeSize
+        )
+        .subscribe({
+          next: (response) => {
+            this.productAvailableSize.map((size, index) => {
+              if (
+                size.availabeSize == productAvailableSize.availabeSize &&
+                size.productId == productAvailableSize.productId
+              ) {
+                this.productAvailableSize.splice(index, 1);
+              }
+            });
+          },
+        });
     }
   }
   getArray(): any {

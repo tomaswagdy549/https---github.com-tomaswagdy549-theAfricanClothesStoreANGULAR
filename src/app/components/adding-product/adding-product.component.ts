@@ -41,6 +41,7 @@ export class AddingProductComponent {
     note: new FormControl(''),
     subCategoryId: new FormControl(0),
     salePrice: new FormControl(null),
+    discountExpirationDate: new FormControl<Date | null>(null),
     onSale: new FormControl(false, Validators.required),
     availableSize: new FormArray(
       [
@@ -195,6 +196,9 @@ export class AddingProductComponent {
           subCategoryId: this.productForm.get('subCategoryId')!.value,
           salePrice: this.productForm.get('salePrice')!.value,
           onSale: this.productForm.get('onSale')!.value,
+          discountDurationInHours: this.getHoursDiff(
+            this.productForm.get('discountExpirationDate')!.value
+          ),
         };
         let formData = new FormData();
         formData.append('name', addedProductDTO.name);
@@ -214,6 +218,12 @@ export class AddingProductComponent {
             : addedProductDTO.salePrice.toString()
         );
         formData.append('onSale', addedProductDTO.onSale ? 'true' : 'false');
+        if (addedProductDTO.discountDurationInHours != null) {
+          formData.append(
+            'discountDurationInHours',
+            addedProductDTO.discountDurationInHours.toString()
+          );
+        }
         this.productsService.addProduct(formData).subscribe({
           next: (response) => {
             this.addProductAvailableSizes(response.entity.id);
@@ -221,6 +231,19 @@ export class AddingProductComponent {
         });
       }
     }
+  }
+  getHoursDiff(value: Date | null): number | null {
+    if (value != null) {
+      let specific = value.toString();
+      const currentDate = new Date();
+      const specificDate = new Date(specific);
+      const diffInHours = Math.ceil(
+        Math.abs(specificDate.getTime() - currentDate.getTime()) /
+          (1000 * 60 * 60)
+      );
+      return diffInHours;
+    }
+    return null;
   }
   getFormGroup(index: number): FormGroup {
     let formArray: FormArray = this.getArray() as FormArray;

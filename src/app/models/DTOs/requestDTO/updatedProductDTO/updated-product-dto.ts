@@ -8,4 +8,5 @@ export class UpdatedProductDTO {
     onSale:boolean= false
     salePrice:number|null = null
     note: string|null=null
+    discountDurationInHours!:number|null
 }

@@ -28,13 +28,13 @@
           />
           <div class="card-body">
             <p class="card-text">{{ product.name }}</p>
-            @defer (when !product.onSale) {
+            @defer (when product.currentPrice == product.price) {
             <p class="card-text" style="color: red">
-              Price: LE {{ product.price }}
+              Price: LE {{ product.currentPrice }}
             </p>
-            } @defer (when product.onSale) {
+            } @defer (when product.currentPrice != product.price) {
             <p class="card-text" style="color: red">
-              Price: {{ product.salePrice }} LE instead of
+              Price: {{ product.currentPrice }} LE instead of
               <span style="text-decoration: line-through">{{
                 product.price
               }}</span>

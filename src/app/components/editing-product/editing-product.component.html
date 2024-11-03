@@ -144,6 +144,21 @@
             >sale price is required.</small
           >
         </div>
+        <ng-container
+          *ngIf="productForm.controls['discountExpirationDate'].value != null"
+          ><label
+            >Discount expiration date :
+            {{ getTime(productForm.controls["discountExpirationDate"].value) }}</label
+          ></ng-container
+        >
+
+        <label>edit below the date</label>
+        <input
+          formControlName="discountExpirationDate"
+          type="datetime-local"
+          class="form-control"
+          id="dateTimeInput"
+        />
       </ng-container>
       <label for="price">Notices:</label>
       <input
@@ -191,7 +206,7 @@
             style="width: 75%; margin-bottom: 0"
           />
           <button
-            [disabled]="availableSize.quantity<1"
+            [disabled]="availableSize.quantity < 1"
             (click)="editProductSize(availableSize)"
             type="button"
             class="btn btn-outline-primary"

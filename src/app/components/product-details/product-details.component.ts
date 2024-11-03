@@ -64,6 +64,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     this.productsService.getProduct(this.productId).subscribe({
       next: (product) => {
         this.product = product;
+        console.log(product)
         this.selectedSize = this.product.productAvailableSizes[0].availabeSize;
         this.quantity = this.product.productAvailableSizes[0].quantity;
       },

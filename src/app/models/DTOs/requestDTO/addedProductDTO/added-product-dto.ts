@@ -8,4 +8,5 @@ export class AddedProductDTO {
     salePrice:number|null=null
     onSale:boolean=false
     imageOfProduct!:File
+    discountDurationInHours!:number|null
 }

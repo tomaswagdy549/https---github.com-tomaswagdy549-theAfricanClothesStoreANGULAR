@@ -22,4 +22,6 @@ export class Product {
   id!: number;
   mainPhotoUrl!: string;
   gender!: string;
+  discountExpirationDate!:Date
+  currentPrice!:number
 }
