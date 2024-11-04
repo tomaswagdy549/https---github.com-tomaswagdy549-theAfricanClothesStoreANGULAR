@@ -32,7 +32,7 @@ export class AccountService {
     this.userData = null;
     localStorage.removeItem('token');
     this.router.navigateByUrl('/');
-    HandleResponse.handleSuccess('succesfully logged out');
+    HandleResponse.handleSuccess('logged out');
   }
   logUser() {
     // const token = localStorage.getItem('token');

@@ -82,7 +82,6 @@ export class EditingProductComponent {
     this.productService.getProduct(this.productId).subscribe({
       next: (product) => {
         this.assignProductForm(product);
-        console.log(product);
         if (product.subCategory != null) {
           this.showSubCategory = true;
         }
@@ -259,7 +258,6 @@ export class EditingProductComponent {
         };
         this.productService.updateProduct(updatedProductDTO).subscribe({
           next: (response) => {
-            console.log('Product updated successfully:', response);
           },
           error: (error) => {
             console.error('Error updating product:', error);

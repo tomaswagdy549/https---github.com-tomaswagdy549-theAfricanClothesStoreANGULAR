@@ -3,6 +3,7 @@ import {
   ComponentRef,
   ViewContainerRef,
   ViewChild,
+  OnInit,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { LoginComponent } from '../login/login.component';
@@ -11,7 +12,6 @@ import { CommonModule } from '@angular/common';
 import { CartComponent } from '../cart/cart.component';
 import { CategoryService } from '../../services/categoryService/category.service';
 import { Category } from '../../models/category/category';
-import { SubCategory } from '../../models/subCategory/sub-category';
 
 @Component({
   selector: 'app-navbar',
@@ -20,9 +20,10 @@ import { SubCategory } from '../../models/subCategory/sub-category';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   menCategories: Category[] = [];
   womenCategories: Category[] = [];
+  accessories: Category[]=[];
   @ViewChild('cart', { read: ViewContainerRef }) cartEntry: ViewContainerRef;
   @ViewChild('login', { read: ViewContainerRef }) loginEntry: ViewContainerRef;
   cartComponent!: ComponentRef<CartComponent>;
@@ -62,6 +63,8 @@ export class NavbarComponent {
             this.menCategories.push(category);
           } else if (category.gender == 'Woman') {
             this.womenCategories.push(category);
+          } else if (category.gender == 'Both'){
+            this.accessories.push(category)
           }
         });
       },
@@ -70,6 +73,8 @@ export class NavbarComponent {
       },
     });
   }
+
+  ngOnInit(): void {}
   ifUserIsAdmin(): boolean {
     return this.accountService.isAdmin();
   }
@@ -77,10 +82,10 @@ export class NavbarComponent {
     this.accountService.logOut();
   }
   goToOnSaleProducts(categories: Category[]) {
-    let querySearch=''
-    categories.map((category)=>{
-      querySearch += `categoryIds=${category.id}&`
-    })
+    let querySearch = '';
+    categories.map((category) => {
+      querySearch += `categoryIds=${category.id}&`;
+    });
     this.router.navigateByUrl(`/filteredProducts/${querySearch}onSale=true`);
   }
   private createCartComponent() {

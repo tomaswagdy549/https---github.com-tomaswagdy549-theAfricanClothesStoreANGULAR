@@ -28,6 +28,7 @@
           />
           <div class="card-body">
             <p class="card-text">{{ product.name }}</p>
+            
             @defer (when product.currentPrice == product.price) {
             <p class="card-text" style="color: red">
               Price: LE {{ product.currentPrice }}
@@ -60,34 +61,6 @@
     </div>
     <div>
       <div>
-        <!-- <nav aria-label="Page navigation example">
-          <ul style="cursor: pointer" class="pagination">
-            <li *ngIf="currentPage != 1" class="page-item">
-              <a class="page-link" (click)="moveToPage(currentPage - 1)"
-                >Previous</a
-              >
-            </li>
-            <li
-              *ngFor="let Page of totalPages; let index; as: i"
-              class="page-item"
-            >
-              <a
-                [ngClass]="{ active: currentPage == Page }"
-                class="page-link"
-                (click)="moveToPage(index)"
-                >{{ Page }}</a
-              >
-            </li>
-            <li
-              *ngIf="currentPage != totalPages.length && totalPages.length > 0"
-              class="page-item"
-            >
-              <a class="page-link" (click)="moveToPage(currentPage + 1)"
-                >next</a
-              >
-            </li>
-          </ul>
-        </nav> -->
         <nav
           aria-label="Page navigation example"
           class="d-flex justify-content-center"
@@ -98,7 +71,7 @@
                 >Previous</a
               >
             </li>
-            @defer (when totalPages.length<=5) {
+            <!-- @defer (when totalPages.length<=5) {
             <li
               *ngFor="let Page of totalPages.splice(0, 5); let index; as: i"
               class="page-item"
@@ -124,7 +97,7 @@
               >
             </li>
 
-            }
+            } -->
             <li *ngIf="currentPage != totalPages.length" class="page-item">
               <a class="page-link" (click)="moveToPage(currentPage + 1)"
                 >next</a
@@ -137,4 +110,4 @@
   </div>
 </section>
 <app-product-filter></app-product-filter>
-<app-product-details [productId]="selectedProductId"></app-product-details>
+<app-product-details [productId]="selectedProductId"></app-product-details> 

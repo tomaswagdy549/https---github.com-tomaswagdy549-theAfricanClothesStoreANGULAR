@@ -11,15 +11,6 @@ import { DiscountService } from '../../services/discountService/discount.service
 })
 export class HeaderComponent {
   isShow: boolean = false;
-  constructor(private discountService:DiscountService){
-    this.discountService.getDiscountImage().subscribe({
-      next: (data) => {
-        if(data.length!=0){
-          this.discountPhotoUrl = data.imageUrl
-        }
-      }
-    })
-  }
   discountPhotoUrl:string=''
   topPosToStartShowing = 100; // Scroll position to start showing the button
 

@@ -44,7 +44,7 @@ export class filteredProductsComponent {
   pageSize: number = 6;
   products: Product[] = [];
   sentProduct!: Product;
-  selectedProductId: number = 1;
+  selectedProductId!: number;
   constructor(
     private productService: ProductsService,
     private accountService: AccountService,

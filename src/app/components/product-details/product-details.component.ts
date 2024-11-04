@@ -8,14 +8,13 @@ import {
 } from '@angular/core';
 import { Product } from '../../models/product/product';
 import { ProductPhoto } from '../../models/productPhoto/product-photo';
-import { SignalRService } from '../../services/signalRService/signal-r.service';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
 import { AccountService } from '../../services/accountService/account.service';
 import { AddedCartItemDTO } from '../../models/DTOs/requestDTO/addedCartItemDTO/added-cart-item-dto';
 import { ProductsService } from '../../services/productsService/products.service';
 import { FormsModule } from '@angular/forms';
-import { LoginComponent } from "../login/login.component";
-
+import { LoginComponent } from '../login/login.component';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-product-details',
   standalone: true,
@@ -24,54 +23,38 @@ import { LoginComponent } from "../login/login.component";
   styleUrl: './product-details.component.css',
 })
 export class ProductDetailsComponent implements OnChanges, OnDestroy {
-  @Input() productId: number = 1;
+  @Input() productId!: number;
   product!: Product;
-  selectedSize: string = ''
+  selectedSize: string = '';
   quantity: number = 0;
   requiredQuantity: number = 0;
   productPhotos: ProductPhoto[] = [];
   constructor(
     private productsService: ProductsService,
-    private signalRService: SignalRService,
     private cartItemService: CartItemService,
     private accountService: AccountService
-  ) {
-    this.signalRService.startConnection().then(() => {
-      this.signalRService.addReceiveMessageListener(() => {});
-      this.signalRService.joinGroup(`product${this.productId}`);
-    });
-  }
-  ngOnDestroy(): void {
-    this.signalRService.leaveGroup(`product${this.productId}`).then(() => {
-      this.signalRService.disconnect();
-    });
-  }
+  ) {}
+  ngOnDestroy(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['productId'].currentValue != undefined) {
       if (
         changes['productId'].currentValue != changes['productId'].previousValue
       ) {
-        this.signalRService
-          .leaveGroup(`product${changes['productId'].previousValue}`)
-          .then(() => {});
-        this.signalRService
-          .joinGroup(`product${changes['productId'].currentValue}`)
-          .then(() => {});
+        this.productsService.getProduct(this.productId).subscribe({
+          next: (product) => {
+            this.product = product;
+            this.selectedSize =
+              this.product.productAvailableSizes[0].availabeSize;
+            this.quantity = this.product.productAvailableSizes[0].quantity;
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
       }
     } else {
       this.productId = 1;
     }
-    this.productsService.getProduct(this.productId).subscribe({
-      next: (product) => {
-        this.product = product;
-        console.log(product)
-        this.selectedSize = this.product.productAvailableSizes[0].availabeSize;
-        this.quantity = this.product.productAvailableSizes[0].quantity;
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
   }
   addToCart(productId: number) {
     let cartItem: AddedCartItemDTO = {
@@ -82,7 +65,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     };
     this.cartItemService.addToCart(cartItem).subscribe({
       next: (response) => {
-        this.cartItemService.cartItemAdded.next(response.entity)
+        this.cartItemService.cartItemAdded.next(response.entity);
       },
       error: (err) => {
         console.log(err);
@@ -93,10 +76,8 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
     return this.accountService.isLogged.getValue();
   }
   getTime(value: Date) {
-    const egyptDate = new Date(value).toLocaleString('en-EG', {
-      timeZone: 'Africa/Cairo',
-    });
-    return egyptDate
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(value, 'EEE MMM dd yyyy HH:mm \'GMT\'ZZZ', 'Africa/Cairo');
+    return formattedDate;
   }
-
 }

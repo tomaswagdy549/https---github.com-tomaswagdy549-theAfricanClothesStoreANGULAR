@@ -125,6 +125,7 @@
               </ul>
             </li>
           </ul>
+          
         </li>
 
         <!-- <li class="nav-item">
@@ -138,6 +139,50 @@
             >add-brand</a
           >
         </li> -->
+        <li class="dropdown" style="cursor: pointer">
+          <a
+            class="nav-link dropdown-toggle"
+            id="dropdownMenuLink"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Accessories
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li>
+              <a
+                (click)="goToOnSaleProducts(accessories)"
+                class="dropdown-item"
+                >On sale</a
+              >
+            </li>
+            <li *ngFor="let accessory of accessories">
+              <a
+                class="dropdown-item"
+                [routerLink]="
+                  '/filteredProducts/categoryIds=' + accessory.id
+                "
+                >{{ accessory.name }}</a
+              >
+              <ul
+                style="list-style-type: circle"
+                *ngIf="accessory.subCategories.length"
+                aria-labelledby="navbarDropdown"
+              >
+                <li *ngFor="let subCategory of accessory.subCategories">
+                  <a
+                    [routerLink]="
+                      '/filteredProducts/subCategoryId=' + subCategory.id
+                    "
+                    style="padding-left: 0"
+                    class="dropdown-item"
+                    >{{ subCategory.name }}</a
+                  >
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
 
         <li *ngIf="ifUserIsAdmin()" class="dropdown" style="cursor: pointer">
           <a
@@ -228,5 +273,3 @@
 </nav>
 <ng-container #cart></ng-container>
 <ng-container #login></ng-container>
-<!--                  
--->

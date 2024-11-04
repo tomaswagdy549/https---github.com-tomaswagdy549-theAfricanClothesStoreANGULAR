@@ -12,10 +12,8 @@
     </div>
     <!-- Page Features-->
     <div class="row gx-lg-5">
-      <div
-        class="col-lg-4 col-md-6 col-12 mb-5"
-        *ngFor="let product of products;let i as index"
-      >
+      @for (product of products; track $index) {
+      <div class="col-lg-4 col-md-6 col-12 mb-5">
         <div
           data-bs-target="#productInfoModal"
           data-bs-toggle="modal"
@@ -33,17 +31,16 @@
           <div style="cursor: pointer" class="card-body">
             <p class="card-text">{{ product.name }}</p>
             @defer (when product.currentPrice == product.price) {
-              <p class="card-text" style="color: red">
-                Price: LE {{ product.currentPrice }}
-              </p>  
-            }
-            @defer (when product.currentPrice != product.price) {
-              <p class="card-text" style="color: red">
-                Price: {{ product.currentPrice }} LE instead of
-                <span style="text-decoration: line-through">{{
-                  product.price
-                }}</span>
-              </p>  
+            <p class="card-text" style="color: red">
+              Price: LE {{ product.currentPrice }}
+            </p>
+            } @defer (when product.currentPrice != product.price) {
+            <p class="card-text" style="color: red">
+              Price: {{ product.currentPrice }} LE instead of
+              <span style="text-decoration: line-through">{{
+                product.price
+              }}</span>
+            </p>
             }
             <div class="d-flex justify-content-between">
               <a
@@ -53,15 +50,17 @@
                 >Edit product</a
               >
               <a
-              *ngIf="checkIfAuthorized()"
-              (click)="deleteProduct(product.id)"
-              class="btn btn-secondary btn-sm"
-              >Delete product</a
-            >
+                *ngIf="checkIfAuthorized()"
+                (click)="deleteProduct(product.id)"
+                class="btn btn-secondary btn-sm"
+                >Delete product</a
+              >
             </div>
           </div>
         </div>
       </div>
+
+      }
     </div>
     <nav
       aria-label="Page navigation example"
@@ -73,7 +72,7 @@
             >Previous</a
           >
         </li>
-        @defer (when totalPages.length<=5) {
+        <!-- @defer (when totalPages.length<=5) {
         <li
           *ngFor="let Page of totalPages.splice(0, 5); let index; as: i"
           class="page-item"
@@ -96,7 +95,7 @@
           >
         </li>
 
-        }
+        } -->
         <li *ngIf="currentPage != totalPages.length" class="page-item">
           <a class="page-link" (click)="moveToPage(pageSize, currentPage + 1)"
             >next</a
@@ -109,4 +108,6 @@
 <app-product-filter
   (productsFiltered)="showFilteredProducts($event)"
 ></app-product-filter>
+@defer (when sentProduct!=undefined) {
 <app-product-details [productId]="sentProduct.id"></app-product-details>
+}

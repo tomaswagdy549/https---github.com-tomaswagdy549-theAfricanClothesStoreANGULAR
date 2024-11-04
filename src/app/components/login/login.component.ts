@@ -13,11 +13,21 @@ import { Router } from '@angular/router';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { finalize } from 'rxjs';
 import { HandleResponse } from '../../handlingResponse/handle-response';
-import { GoogleSigninButtonModule, SocialAuthService } from '@abacritt/angularx-social-login';
+import {
+  GoogleSigninButtonModule,
+  SocialAuthService,
+} from '@abacritt/angularx-social-login';
+import { jwtDecode } from 'jwt-decode';
+declare var google: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RegisterComponent, CommonModule, ReactiveFormsModule,GoogleSigninButtonModule],
+  imports: [
+    RegisterComponent,
+    CommonModule,
+    ReactiveFormsModule,
+    GoogleSigninButtonModule,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -28,38 +38,38 @@ export class LoginComponent implements OnInit {
     private accountService: AccountService,
     private globalDateService: GlobalDataService,
     private router: Router,
-    private socialAuthService:SocialAuthService
+    private socialAuthService: SocialAuthService
   ) {}
   ngOnInit(): void {
-    this.socialAuthService.authState.subscribe({
-      next: (user) => {
-        console.log(user);
-        this.login(user)
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    })
-  }
-  loginForm = new FormGroup({
-    email: new FormControl<string>('', [Validators.required, Validators.email]),
-    password: new FormControl<string>('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-  });
-  get f() {
-    return this.loginForm.controls;
+    // this.socialAuthService.authState.subscribe({
+    //   next: (user) => {
+    //     this.login(user);
+    //   },
+    //   error: (error) => {
+    //     console.error(error);
+    //   },
+    // });
+    (window as any).onGoogleScriptLoad = () => {
+      google.accounts.id.initialize({
+        client_id: '1062250462039-jlt2o9537l28ktva9pbs6sj157qks1fa.apps.googleusercontent.com',
+        callback: (resp: any) => {
+          let token = jwtDecode(resp.credential) as any;
+          this.login(token['email']);
+        },
+      });
+      google.accounts.id.renderButton(document.getElementById('google-btn'),{
+        theme: 'filled-blue',
+        size:'large'
+      })
+    };
+    
   }
 
   onSubmit(): void {
-    // if (this.loginForm.valid) {
-    //   this.login();
-    // }
   }
-  login(user:any) {
+  login(gmail: string) {
     this.loggedUserDto = {
-      gmail: user.email
+      gmail: gmail,
     };
     this.globalDateService.apiCallSubject.next(true);
     this.accountService
@@ -79,9 +89,5 @@ export class LoginComponent implements OnInit {
         },
         error: (error) => (this.message = error.error['message']),
       });
-  }
-  goToRegister(): void {
-    document.getElementById('btn-close')?.click();
-    this.router.navigateByUrl('/register');
   }
 }

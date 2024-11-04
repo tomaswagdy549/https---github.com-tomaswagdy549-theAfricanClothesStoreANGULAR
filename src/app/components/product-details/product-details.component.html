@@ -1,3 +1,4 @@
+@defer (when product!=undefined) {
 <div
   class="modal fade"
   id="productInfoModal"
@@ -61,14 +62,20 @@
           <li class="list-group-item">
             <strong>Name:</strong> {{ product.name }}
           </li>
-          <li *ngIf="product.currentPrice==product.price" class="list-group-item">
+          <li
+            *ngIf="product.currentPrice == product.price"
+            class="list-group-item"
+          >
             <strong>Price:</strong> ${{ product.currentPrice }}
           </li>
-          <li *ngIf="product.currentPrice!=product.price" class="list-group-item">
+          <li
+            *ngIf="product.currentPrice != product.price"
+            class="list-group-item"
+          >
             <strong>Price:</strong> ${{ product.currentPrice }} instead of
-            <span style="text-decoration: line-through">{{
-              product.price
-            }} </span><span>until {{getTime(product.discountExpirationDate)}}</span>
+            <span style="text-decoration: line-through"
+              >{{ product.price }} </span
+            ><span>until {{ getTime(product.discountExpirationDate) }}</span>
           </li>
           <li class="list-group-item d-flex align-items-center">
             <strong class="me-2">Available Sizes </strong>
@@ -185,4 +192,4 @@
 </div>
 @defer (when !userIsLogged()) {
 <app-login></app-login>
-}
+} }

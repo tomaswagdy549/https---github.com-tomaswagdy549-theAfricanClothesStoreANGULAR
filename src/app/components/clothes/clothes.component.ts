@@ -13,6 +13,7 @@ import { ProductDetailsComponent } from '../product-details/product-details.comp
 import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
 import { AccountService } from '../../services/accountService/account.service';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clothes',
@@ -38,6 +39,9 @@ export class ClothesComponent {
             if (product.id === productId) {
               this.products.splice(this.products.indexOf(product), 1);
             }
+            if (this.products.length == 0) {
+              this.router.navigateByUrl('not-found');
+            }
           });
         },
       });
@@ -58,7 +62,8 @@ export class ClothesComponent {
   constructor(
     private productsService: ProductsService,
     private accountService: AccountService,
-    private resolver: ViewContainerRef
+    private resolver: ViewContainerRef,
+    private router: Router
   ) {
     this.productDetailsEntry = this.resolver;
     this.moveToPage(this.pageSize, 1);
