@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,6 +21,7 @@ import { ProductsService } from '../../services/productsService/products.service
 import { Product } from '../../models/product/product';
 import { GetAllProductsDTO } from '../../models/DTOs/responseDTO/getAllProductsDTO/get-all-products-dto';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-filter',
@@ -23,6 +31,11 @@ import { HandleResponse } from '../../handlingResponse/handle-response';
   styleUrl: './product-filter.component.css',
 })
 export class ProductFilterComponent {
+  sortByPrice(ascending: boolean) {
+    document.getElementById('filter-button')?.click()
+    this.router.navigateByUrl(`sortedProducts/${this.searchQuery}&ascending=${ascending}`)
+  }
+  @Input() searchQuery!: string;
   brands: Brand[] = [];
   categories: Category[] = [];
   filteredProducts: Product[] = [];
@@ -36,11 +49,15 @@ export class ProductFilterComponent {
     name: new FormControl<string | null>(null),
     gender: new FormControl<string | null>(null),
   });
-  @Output() productsFiltered = new EventEmitter<{querySearch:string,GetAllProductsDTO:GetAllProductsDTO}>();
+  @Output() productsFiltered = new EventEmitter<{
+    querySearch: string;
+    GetAllProductsDTO: GetAllProductsDTO;
+  }>();
   constructor(
     private brandsService: BrandsService,
     private CategoryService: CategoryService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private router : Router
   ) {
     this.getAllBrands(10, 1);
     this.getAllCategories(10, 1);
@@ -66,6 +83,33 @@ export class ProductFilterComponent {
     });
   }
   filterProducts() {
+    let pageNumber = 1;
+    let pageSize = 6;
+    let queries = this.getSearchQuery();
+    let pagingQuery = [
+      queries,
+      `&pageNumber= ${pageNumber}`,
+      `&pageSize= ${pageSize}`,
+    ]
+      .filter((query) => query)
+      .join('');
+    let totalQuery = `${pagingQuery}`;
+    this.productsService.filterProducts(totalQuery).subscribe({
+      next: (response) => {
+        if (response != null) {
+          this.productsFiltered.emit({
+            querySearch: queries,
+            GetAllProductsDTO: response,
+          });
+        } else {
+          HandleResponse.handleError(
+            'there are no product like you search , try again later'
+          );
+        }
+      },
+    });
+  }
+  getSearchQuery(): string {
     let brandIdsQuery =
       this.filterForm.value['brandIds'] != 0
         ? `brandIds=${this.filterForm.value['brandIds']}`
@@ -99,8 +143,6 @@ export class ProductFilterComponent {
       this.filterForm.value['maxPrice'] != null
         ? `maxPrice=${this.filterForm.value['maxPrice']}`
         : ``;
-    let pageNumber = 1;
-    let pageSize = 6;
     // Combine all the queries, filtering out any empty strings
     let queries = [
       brandIdsQuery,
@@ -111,23 +153,9 @@ export class ProductFilterComponent {
       minPriceQuery,
       maxPriceQuery,
       nameQuery,
-      // `pageNumber= ${pageNumber}`,
-      // `pageSize= ${pageSize}`,
     ]
       .filter((query) => query) // remove empty queries
       .join('&');
-    let pagingQuery = [queries,`&pageNumber= ${pageNumber}`,`&pageSize= ${pageSize}`].filter((query)=>query).join('');
-    let totalQuery = `${pagingQuery}`;
-    this.productsService.filterProducts(totalQuery).subscribe({
-      next: (response) => {
-        if (response != null) {
-          this.productsFiltered.emit({querySearch:queries,GetAllProductsDTO:response});
-        } else {
-          HandleResponse.handleError(
-            'there are no product like you search , try again later'
-          );
-        }
-      },
-    });
+    return queries;
   }
 }

@@ -223,7 +223,12 @@
 
       <!-- Submit Button -->
       <button
-        [disabled]="productForm.invalid || selectedPhoto == null"
+        [disabled]="
+          productForm.invalid ||
+          selectedPhoto == null ||
+          getArray().length == 0 ||
+          selectedPhotos?.length == 0
+        "
         type="submit"
       >
         Adding Product

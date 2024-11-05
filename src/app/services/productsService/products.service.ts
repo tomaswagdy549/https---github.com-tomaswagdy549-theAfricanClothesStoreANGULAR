@@ -27,6 +27,13 @@ export class ProductsService {
       `${enviroment.baseUrl}/api/products?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
+  sortProducts(
+    querySearch: string,
+  ): Observable<GetAllProductsDTO> {
+    return this.http.get<GetAllProductsDTO>(
+      `${enviroment.baseUrl}/api/products/sortProduct?${querySearch}`
+    );
+  }
   getProduct(id: number): Observable<Product> {
     return this.http.get<Product>(
       `${enviroment.baseUrl}/api/products/Id/${id}`
@@ -49,3 +56,4 @@ export class ProductsService {
     );
   }
 }
+//http://localhost:41180/api/products/sortProduct?ascending=false&pageNumber=2&pageSize=12

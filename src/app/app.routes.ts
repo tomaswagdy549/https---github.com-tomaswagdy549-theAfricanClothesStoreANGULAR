@@ -22,6 +22,7 @@ import { AddSubCategoryComponent } from './components/add-sub-category/add-sub-c
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NewOneComponent } from './components/new-one/new-one.component';
 import { AddDiscountComponent } from './components/add-discount/add-discount.component';
+import { SortedProductsComponent } from './components/sorted-products/sorted-products.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -33,6 +34,10 @@ export const routes: Routes = [
   {
     path: 'filteredProducts/:searchQuery',
     component: filteredProductsComponent,
+  },
+  {
+    path: 'sortedProducts/:searchQuery',
+    component: SortedProductsComponent,
   },
   {
     path: 'register',

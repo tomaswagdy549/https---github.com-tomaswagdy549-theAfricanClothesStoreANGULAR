@@ -1,0 +1,76 @@
+<section class="pt-4">
+    <div class="container px-lg-5">
+      <div class="row gx-lg-5">
+        <div
+          class="col-lg-4 col-md-6 col-12 mb-5"
+          *ngFor="let product of products"
+          data-bs-target="#productInfoModal"
+          data-bs-toggle="modal"
+          (click)="selectedProductId = product.id"
+          style="cursor: pointer"
+        >
+          <div class="card h-100 mx-auto" style="width: 18rem">
+            <img
+              [src]="product.mainPhotoUrl"
+              class="card-img-top"
+              alt="Card image"
+              style="height: 300px"
+            />
+            <div class="card-body">
+              <p class="card-text">{{ product.name }}</p>
+              
+              @defer (when product.currentPrice == product.price) {
+              <p class="card-text" style="color: red">
+                Price: LE {{ product.currentPrice }}
+              </p>
+              } @defer (when product.currentPrice != product.price) {
+              <p class="card-text" style="color: red">
+                Price: {{ product.currentPrice }} LE instead of
+                <span style="text-decoration: line-through">{{
+                  product.price
+                }}</span>
+              </p>
+              }
+              <div class="d-flex justify-content-between">
+                <a
+                  *ngIf="isAdmin()"
+                  class="btn btn-secondary btn-sm"
+                  [href]="'editingproduct/' + product.id"
+                  >Edit product</a
+                >
+                <a
+                  *ngIf="isAdmin()"
+                  (click)="deleteProduct(product.id)"
+                  class="btn btn-secondary btn-sm"
+                  >Delete product</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <nav
+            aria-label="Page navigation example"
+            class="d-flex justify-content-center"
+          >
+            <ul style="cursor: pointer" class="pagination pagination-sm">
+              <li *ngIf="currentPage != 1" class="page-item">
+                <a class="page-link" (click)="moveToPage(currentPage - 1)"
+                  >Previous</a
+                >
+              </li>
+              <li *ngIf="currentPage != totalPages.length" class="page-item">
+                <a class="page-link" (click)="moveToPage(currentPage + 1)"
+                  >next</a
+                >
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <app-product-details [productId]="selectedProductId"></app-product-details> 
+  

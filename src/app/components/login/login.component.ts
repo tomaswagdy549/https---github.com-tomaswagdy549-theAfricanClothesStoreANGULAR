@@ -41,14 +41,14 @@ export class LoginComponent implements OnInit {
     private socialAuthService: SocialAuthService
   ) {}
   ngOnInit(): void {
-    // this.socialAuthService.authState.subscribe({
-    //   next: (user) => {
-    //     this.login(user);
-    //   },
-    //   error: (error) => {
-    //     console.error(error);
-    //   },
-    // });
+    this.socialAuthService.authState.subscribe({
+      next: (user) => {
+        this.login(user.email);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
     (window as any).onGoogleScriptLoad = () => {
       google.accounts.id.initialize({
         client_id: '1062250462039-jlt2o9537l28ktva9pbs6sj157qks1fa.apps.googleusercontent.com',

@@ -4,6 +4,7 @@
       <div class="modal-header">
         <h5 class="modal-title">Product Filter</h5>
         <button
+          id="filter-button"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"
@@ -15,6 +16,26 @@
           <h2 class="my-4">Product Filter</h2>
           <form [formGroup]="filterForm">
             <div class="row mb-3">
+              <div class="row mb-3">
+                <div class="col">
+                  <button
+                  (click)="sortByPrice(true)"
+                    type="button"
+                    class="btn btn-outline-dark w-100"
+                  >
+                    Sort by Price: Low to High
+                  </button>
+                </div>
+                <div class="col">
+                  <button
+                  (click)="sortByPrice(false)"
+                    type="button"
+                    class="btn btn-outline-dark w-100"
+                  >
+                    Sort by Price: High to Low
+                  </button>
+                </div>
+              </div>
               <div class="col">
                 <label for="brandIds" class="form-label">Brand</label>
                 <select
