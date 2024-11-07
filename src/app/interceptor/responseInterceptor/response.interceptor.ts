@@ -8,43 +8,48 @@ import { inject } from '@angular/core';
 import { GlobalDataService } from '../../services/globalService/global-data.service';
 import { catchError, tap, throwError } from 'rxjs';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { BaseResponse } from '../../models/DTOs/responseDTO/baseResponse/base-response';
+import { Router } from '@angular/router';
 export function responseInterceptor(
   req: HttpRequest<unknown>,
   next: HttpHandlerFn
 ) {
   const globalDataService = inject(GlobalDataService);
+  const router = inject(Router)
   globalDataService.apiCallSubject.next(true);
   return next(req).pipe(
     tap((event) => {
       if (event instanceof HttpResponse) {
+        let baseResponse= event.body as BaseResponse
         if (req.method != 'GET' && !req.url.includes('user')) {
-          let operation: string = '';
-          switch (req.method) {
-            case 'POST':
-              operation = 'Added';
-              break;
-            case 'PUT':
-              operation = 'Updated';
-              break;
-            case 'DELETE':
-              operation = 'Deleted';
-              break;
-          }
-          HandleResponse.handleSuccess(`${operation} succesfully`);
+          // let operation: string = '';
+          // switch (req.method) {
+          //   case 'POST':
+          //     operation = 'Added';
+          //     break;
+          //   case 'PUT':
+          //     operation = 'Updated';
+          //     break;
+          //   case 'DELETE':
+          //     operation = 'Deleted';
+          //     break;
+          // }
+          // HandleResponse.handleSuccess(`${operation} succesfully`);
+          HandleResponse.handleSuccess(baseResponse.message);
         }
         globalDataService.apiCallSubject.next(false);
       }
     }),
     catchError((error: HttpErrorResponse) => {
       return throwError(() => {
-        let message = checkRes(error);
+        let message = checkRes(error,router);
         HandleResponse.handleError(message);
         globalDataService.apiCallSubject.next(false);
       });
     })
   );
 }
-function checkRes(response: HttpErrorResponse) {
+function checkRes(response: HttpErrorResponse,router:Router) {
   let message = '';
   console.log(response);
   if (response.error != null) {
@@ -60,6 +65,7 @@ function checkRes(response: HttpErrorResponse) {
   }
   switch (response.status) {
     case 0:
+      router.navigateByUrl('not-found')
       message = 'you are out of connection , check your internet connection';
       return message;
       break;
@@ -73,7 +79,11 @@ function checkRes(response: HttpErrorResponse) {
       return message;
       break;
     default:
-      message = response.error.message;
+      if (response.error != null) {
+        message = response.error.message;
+      } else {
+        message = response.message;
+      }
       return message;
   }
 }

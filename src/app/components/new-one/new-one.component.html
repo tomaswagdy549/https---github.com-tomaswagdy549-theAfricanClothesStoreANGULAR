@@ -1,4 +1,4 @@
-<form [formGroup]="clientForm" (ngSubmit)="onSubmit()" novalidate class="m-5">
+<form [formGroup]="clientForm" novalidate class="m-5">
   <h1>Fill this form to purchase the order</h1>
   <!-- First Mobile Number and Second Mobile Number -->
   <div class="row mb-4">
@@ -287,6 +287,26 @@
         >
       </div>
     </div>
+    <div class="col-md-6 mb-3">
+      <label class="form-label">Enter the coupon here to apply discount</label>
+      <input
+        #couponNumber
+        id="address"
+        type="text"
+        class="form-control"
+        placeholder="Enter Coupon"
+      />
+      <div class="text-danger">
+        <small
+          >You can apply any coupon for only one time</small
+        >
+      </div> 
+      <br>
+      <button (click)="applyCoupon(couponNumber.value)" class="btn btn-primary">
+        Apply coupon
+      </button>
+    
+    </div>
   </div>
   <div class="text-danger" *ngIf="clientForm.controls['city'].value != 'أسيوط'">
     <small
@@ -297,7 +317,7 @@
   <!-- Governorate and Postal Code -->
 
   <!-- Submit Button -->
-  <button type="submit" class="btn btn-primary" [disabled]="clientForm.invalid">
+  <button type="button" (click)="onSubmit()" class="btn btn-primary" [disabled]="clientForm.invalid">
     Submit
   </button>
 </form>

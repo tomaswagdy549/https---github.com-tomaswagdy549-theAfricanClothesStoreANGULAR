@@ -61,11 +61,12 @@ export class filteredProductsComponent {
         .subscribe((response) => {
           if (response == null) {
             this.router.navigateByUrl('/not-found');
+          } else {
+            this.products = response.entities;
+            this.currentPage = response.currentPage;
+            this.selectedProductId = this.products[0].id;
+            this.getPages(response.totalPages);
           }
-          this.products = response.entities;
-          this.currentPage = response.currentPage;
-          this.selectedProductId = this.products[0].id;
-          this.getPages(response.totalPages);
         });
     });
   }

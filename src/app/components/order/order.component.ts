@@ -18,38 +18,26 @@ export class OrderComponent {
   getTotalPrice() {
     let total = 0;
     this.cartItems.forEach((cartItem) => {
-      total +=
-        (cartItem.product.onSale
-          ? cartItem.product.salePrice!
-          : cartItem.product.price) * cartItem.quantity;
+      total += cartItem.product.currentPrice * cartItem.quantity;
     });
     return total;
   }
   addedOrderDTO: AddedOrderDTO = new AddedOrderDTO();
   cartItems: CartItem[] = [];
-  constructor(
-    private router: Router,
-    private accountService: AccountService,
-  ) {
+  constructor(private router: Router) {
     this.cartItems = this.router.getCurrentNavigation()!.extras.state![
       'cartItems'
     ] as CartItem[];
-    this.addedOrderDTO.gmail = this.accountService.getUserId()!;
-    this.cartItems.forEach((item) => {
-      let addedOrderDetails: AddedOrderDetails = {
-        productId: item.productId,
-        quantity: item.quantity,
-        size: item.size,
-      };
-      this.addedOrderDTO.addedOrderDetailsDTO.push(addedOrderDetails);
-    });
   }
   async addOrder() {
     const confirmed = await HandleResponse.operationConfirmed(
       'sure you want to purschase the order ?'
     );
     if (confirmed) {
-      this.router.navigateByUrl('/new-component',{state:{addedOrderDTO:this.addedOrderDTO}})
+      this.router.navigateByUrl('/new-component', {
+        // state: { addedOrderDTO: this.addedOrderDTO, cartItems: this.cartItems },
+        state: { cartItems: this.cartItems },
+      });
     }
   }
 }

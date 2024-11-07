@@ -41,7 +41,6 @@ export class AddDiscountComponent {
       Validators.required,
       this.futureDateValidator
     ]),
-    discountImage: new FormControl<File | null>(null),
   });
   futureDateValidator(control: FormControl): ValidationErrors | null {
     const selectedDate = new Date(control.value as string);
@@ -82,7 +81,6 @@ export class AddDiscountComponent {
             this.subCategories.push(...category.subCategories);
           }
         });
-        console.log(this.subCategories);
       },
       error: (error) => {
         console.error('Error:', error);
@@ -158,7 +156,6 @@ export class AddDiscountComponent {
     const diffInHours = Math.ceil(
       Math.abs(dateObject.getTime() - currentDate.getTime()) / (1000 * 60 * 60)
     );
-    console.log(diffInHours);
     let addedDiscountDTO: AddedDiscountDTO = {
       discountDurationInHours: diffInHours,
       discountPercentage:

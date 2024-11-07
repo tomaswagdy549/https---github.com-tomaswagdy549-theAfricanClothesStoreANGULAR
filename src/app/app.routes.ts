@@ -23,6 +23,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { NewOneComponent } from './components/new-one/new-one.component';
 import { AddDiscountComponent } from './components/add-discount/add-discount.component';
 import { SortedProductsComponent } from './components/sorted-products/sorted-products.component';
+import { AddCouponComponent } from './components/add-coupon/add-coupon.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -72,6 +73,17 @@ export const routes: Routes = [
   {
     path: 'editingSubCategory',
     component: AddSubCategoryComponent,
+    canActivate: [isAdminGuard],
+  },
+  
+  {
+    path: 'confirmOrder/:orderDetails',
+    component: AddCouponComponent,
+    canActivate: [isAdminGuard],
+  },
+  {
+    path: 'add-coupon',
+    component: AddCouponComponent,
     canActivate: [isAdminGuard],
   },
   { path: 'order', component: OrderComponent, canActivate: [isLoggedOutGuard] },

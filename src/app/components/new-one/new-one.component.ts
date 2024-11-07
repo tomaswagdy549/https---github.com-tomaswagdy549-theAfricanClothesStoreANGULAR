@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
+  FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -13,41 +14,55 @@ import { AddedOrderDTO } from '../../models/DTOs/requestDTO/addedOrderDTO/added-
 import { HandleResponse } from '../../handlingResponse/handle-response';
 import { CartItemService } from '../../services/cartItemService/cart-item.service';
 import { GovernoratesAndCities } from '../../models/citiesAndGovernorates/governorates-and-cities';
+import { AppliedCouponDTO } from '../../models/DTOs/requestDTO/appliedCouponDTO/applied-coupon-dto';
+import { CartItem } from '../../models/cartItem/cart-item';
+import { AccountService } from '../../services/accountService/account.service';
+import { CouponService } from '../../services/couponService/coupon.service';
+import { Product } from '../../models/product/product';
+import { AddedOrderDetails } from '../../models/DTOs/requestDTO/addedOrderDTO/addedOrderDTO/added-order-details';
 
 @Component({
   selector: 'app-new-one',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './new-one.component.html',
   styleUrl: './new-one.component.css',
 })
 export class NewOneComponent {
-  // getFilteredCities(): {
-  //   id: string;
-  //   governorate_id: string;
-  //   city_name_ar: string;
-  //   city_name_en: string;
-  // }[] {
-  //   let cities: {
-  //     id: string;
-  //     governorate_id: string;
-  //     city_name_ar: string;
-  //     city_name_en: string;
-  //   }[] = [];
-  //   this.cities.map((value) => {
-  //     if (value.city_name_ar == this.clientForm.controls['city'].value) {
-  //       cities.push(value);
-  //     }
-  //   });
-  //   return cities;
-  // }
-  addedOrderDTO: AddedOrderDTO;
+  cartItems: CartItem[] = [];
   filteredCities: {
     id: string;
     governorate_id: string;
     city_name_ar: string;
     city_name_en: string;
   }[] = [];
+  clientForm!: FormGroup;
+  cities = GovernoratesAndCities.cities;
+  governorates = GovernoratesAndCities.governorates;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private cartItemService: CartItemService,
+    private couponService: CouponService,
+    private orderService: OrderService,
+    private accountService: AccountService
+  ) {
+    this.cartItems = this.router.getCurrentNavigation()!.extras.state![
+      'cartItems'
+    ] as CartItem[];
+    this.createForm();
+    this.clientForm.controls['governorate'].valueChanges.subscribe(
+      (gorvernorate) => {
+        let id = this.governorates.find(
+          (value) => value.governorate_name_ar == gorvernorate
+        );
+        this.filteredCities = this.cities.filter(
+          (city) => city.governorate_id === id?.id
+        );
+      }
+    );
+  }
   onSubmit() {
     let clientForm: ClientForm = {
       firstMobileNumber: this.clientForm.value.firstMobileNumber,
@@ -61,42 +76,33 @@ export class NewOneComponent {
       governorate: this.clientForm.value.governorate,
       postalCode: this.clientForm.value.postalCode,
     };
-    this.addedOrderDTO.clientForm = clientForm;
-    this.orderService.addOrder(this.addedOrderDTO).subscribe({
+    // addedOrderDTO.coupon = this.clientForm.controls['coupon'].value
+    // addedOrderDTO.clientForm = clientForm;
+    let addedOrderDetailsDTO : AddedOrderDetails[]=[]
+    this.cartItems.forEach((cartItem)=>{
+      let addedOrderDetailDTO : AddedOrderDetails = {
+        productId: cartItem.productId,
+        quantity: cartItem.quantity,
+        size : cartItem.size
+      }
+      addedOrderDetailsDTO.push(addedOrderDetailDTO)
+    })
+    let addedOrderDTO : AddedOrderDTO = {
+      clientForm: clientForm,
+      coupon: this.clientForm.controls['coupon'].value,
+      gmail: this.accountService.getUserId()!,
+      addedOrderDetailsDTO: addedOrderDetailsDTO,
+    }
+    this.orderService.addOrder(addedOrderDTO).subscribe({
       next: (data) => {
-        HandleResponse.handleSuccess(data.message);
         this.cartItemService.cartDeleted.next(true);
-        this.addedOrderDTO.addedOrderDetailsDTO = [];
+        addedOrderDTO.addedOrderDetailsDTO = [];
       },
       error: (error) => {
         HandleResponse.handleError(error.message);
       },
     });
   }
-  clientForm!: FormGroup;
-
-  constructor(
-    private fb: FormBuilder,
-    private router: Router,
-    private cartItemService: CartItemService,
-    private orderService: OrderService
-  ) {
-    this.addedOrderDTO = this.router.getCurrentNavigation()!.extras.state![
-      'addedOrderDTO'
-    ] as AddedOrderDTO;
-    this.createForm();
-    this.clientForm.controls['governorate'].valueChanges.subscribe(
-      (gorvernorate) => {
-        let id = this.governorates.find(
-          (value) => value.governorate_name_ar == gorvernorate
-        );
-        this.filteredCities = this.cities.filter(
-          (city) => city.governorate_id === id?.id
-        );
-      }
-    );
-  }
-
   createForm() {
     this.clientForm = this.fb.group({
       firstMobileNumber: [
@@ -166,8 +172,23 @@ export class NewOneComponent {
           Validators.pattern('^[0-9]{5,10}$'), // Assuming postal code can be 5-10 digits
         ],
       ],
+      coupon: [],
     });
   }
-  cities = GovernoratesAndCities.cities;
-  governorates = GovernoratesAndCities.governorates;
+  applyCoupon(serialNumber:string) {
+    if (this.accountService.getUserId() != null) {
+      let appliedCouponDTO: AppliedCouponDTO = {
+        cartItems: this.cartItems,
+        serialNumber: serialNumber,
+        userGmail: this.accountService.getUserId()!,
+      };
+      this.couponService.applyCoupon(appliedCouponDTO).subscribe({
+        next: (res) => {
+          this.clientForm.controls['coupon'].setValue(res.entity);
+        },
+      });
+    } else {
+      HandleResponse.handleError('invalid user');
+    }
+  }
 }

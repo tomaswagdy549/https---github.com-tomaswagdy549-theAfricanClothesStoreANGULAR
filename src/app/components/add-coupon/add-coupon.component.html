@@ -1,0 +1,95 @@
+<div class="container mt-5">
+  <h3>Add Coupon</h3>
+  <form>
+    <!-- Select Input 1 -->
+    <ng-container [formGroup]="couponForm">
+      <div class="form-group">
+        <label class="form-label">Select Coupon expiration date</label>
+        <input
+          formControlName="discountExpirationDate"
+          type="datetime-local"
+          class="form-control"
+          id="dateTimeInput"
+        />
+        <div
+          *ngIf="
+            couponForm.controls['discountExpirationDate']?.hasError(
+              'futureDate'
+            )
+          "
+        >
+          <small class="text-danger"
+            >Expiration date must be in the future.</small
+          >
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Enter the discount percentage %</label>
+        <input
+          formControlName="discountPercentage"
+          type="number"
+          class="form-control"
+          id="numberInput"
+          max="99"
+        />
+        <div
+          *ngIf="
+            couponForm.controls['discountPercentage'].invalid &&
+            couponForm.controls['discountPercentage'].touched
+          "
+          class="text-danger"
+        >
+          Discount percentage must be between 1 and 99
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Enter the coupon serial number</label>
+        <input
+          formControlName="serialNumber"
+          type="text"
+          class="form-control"
+          id="numberInput"
+        />
+        <div
+          *ngIf="
+            couponForm.controls['serialNumber'].invalid &&
+            couponForm.controls['serialNumber'].touched
+          "
+          class="text-danger"
+        >
+          Serial number is required
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label"
+          >What is the minimum price of the total order</label
+        >
+        <input
+          formControlName="minimumTotalOrder"
+          type="number"
+          class="form-control"
+          id="numberInput"
+          min="1"
+        />
+        <div
+          *ngIf="
+            couponForm.controls['minimumTotalOrder'].invalid &&
+            couponForm.controls['minimumTotalOrder'].touched
+          "
+          class="text-danger"
+        >
+          minimum order total price required
+        </div>
+      </div>
+      <br />
+    </ng-container>
+    <button
+      [disabled]="couponForm.invalid"
+      (click)="addCoupon()"
+      class="btn btn-primary"
+    >
+      Apply the coupon
+    </button>
+  </form>
+  <br />
+</div>
