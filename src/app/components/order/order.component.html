@@ -16,7 +16,6 @@
             </tr>
           </thead>
           <tbody *ngFor="let cartItem of cartItems; let i = index">
-            @let price = cartItem.product.onSale?cartItem.product.salePrice:cartItem.product.price;
             <tr>
               <td>
                 <img
@@ -29,8 +28,8 @@
               <td>{{ cartItem.product.name }}</td>
               <td>{{ cartItem.size }}</td>
               <td>{{ cartItem.quantity }}</td>
-              <td>{{ price }}</td>
-              <td>{{ price! * cartItem.quantity }}</td>
+              <td>{{ cartItem.product.currentPrice }}</td>
+              <td>{{ cartItem.product.currentPrice * cartItem.quantity }}</td>
             </tr>
           </tbody>
         </table>

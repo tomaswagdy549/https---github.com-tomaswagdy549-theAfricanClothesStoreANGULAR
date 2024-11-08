@@ -18,7 +18,6 @@ import { AppliedCouponDTO } from '../../models/DTOs/requestDTO/appliedCouponDTO/
 import { CartItem } from '../../models/cartItem/cart-item';
 import { AccountService } from '../../services/accountService/account.service';
 import { CouponService } from '../../services/couponService/coupon.service';
-import { Product } from '../../models/product/product';
 import { AddedOrderDetails } from '../../models/DTOs/requestDTO/addedOrderDTO/addedOrderDTO/added-order-details';
 
 @Component({
@@ -76,31 +75,28 @@ export class NewOneComponent {
       governorate: this.clientForm.value.governorate,
       postalCode: this.clientForm.value.postalCode,
     };
-    // addedOrderDTO.coupon = this.clientForm.controls['coupon'].value
-    // addedOrderDTO.clientForm = clientForm;
-    let addedOrderDetailsDTO : AddedOrderDetails[]=[]
-    this.cartItems.forEach((cartItem)=>{
-      let addedOrderDetailDTO : AddedOrderDetails = {
+    let addedOrderDetailsDTO: AddedOrderDetails[] = [];
+    this.cartItems.forEach((cartItem) => {
+      let addedOrderDetailDTO: AddedOrderDetails = {
         productId: cartItem.productId,
         quantity: cartItem.quantity,
-        size : cartItem.size
-      }
-      addedOrderDetailsDTO.push(addedOrderDetailDTO)
-    })
-    let addedOrderDTO : AddedOrderDTO = {
+        size: cartItem.size,
+      };
+      addedOrderDetailsDTO.push(addedOrderDetailDTO);
+    });
+    let addedOrderDTO: AddedOrderDTO = {
       clientForm: clientForm,
       coupon: this.clientForm.controls['coupon'].value,
       gmail: this.accountService.getUserId()!,
       addedOrderDetailsDTO: addedOrderDetailsDTO,
-    }
+    };
     this.orderService.addOrder(addedOrderDTO).subscribe({
       next: (data) => {
         this.cartItemService.cartDeleted.next(true);
-        addedOrderDTO.addedOrderDetailsDTO = [];
+        this.cartItems = [];
+        this.router.navigate(['/']);
       },
-      error: (error) => {
-        HandleResponse.handleError(error.message);
-      },
+      error: (error) => {},
     });
   }
   createForm() {
@@ -172,10 +168,10 @@ export class NewOneComponent {
           Validators.pattern('^[0-9]{5,10}$'), // Assuming postal code can be 5-10 digits
         ],
       ],
-      coupon: [],
+      coupon: [null],
     });
   }
-  applyCoupon(serialNumber:string) {
+  applyCoupon(serialNumber: string) {
     if (this.accountService.getUserId() != null) {
       let appliedCouponDTO: AppliedCouponDTO = {
         cartItems: this.cartItems,
@@ -190,5 +186,9 @@ export class NewOneComponent {
     } else {
       HandleResponse.handleError('invalid user');
     }
+  }
+  disableCoupon() {
+    this.clientForm.controls['coupon'].setValue(null);
+    HandleResponse.handleSuccess('coupon disabled');
   }
 }

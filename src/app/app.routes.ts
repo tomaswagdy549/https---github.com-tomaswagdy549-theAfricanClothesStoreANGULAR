@@ -24,6 +24,7 @@ import { NewOneComponent } from './components/new-one/new-one.component';
 import { AddDiscountComponent } from './components/add-discount/add-discount.component';
 import { SortedProductsComponent } from './components/sorted-products/sorted-products.component';
 import { AddCouponComponent } from './components/add-coupon/add-coupon.component';
+import { ConfirmOrderComponent } from './components/confirm-order/confirm-order.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [isLoggedGuard] },
@@ -78,7 +79,7 @@ export const routes: Routes = [
   
   {
     path: 'confirmOrder/:orderDetails',
-    component: AddCouponComponent,
+    component: ConfirmOrderComponent,
     canActivate: [isAdminGuard],
   },
   {

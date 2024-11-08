@@ -297,27 +297,36 @@
         placeholder="Enter Coupon"
       />
       <div class="text-danger">
-        <small
-          >You can apply any coupon for only one time</small
-        >
-      </div> 
-      <br>
-      <button (click)="applyCoupon(couponNumber.value)" class="btn btn-primary">
+        <small>You can apply any coupon for only one time</small>
+      </div>
+      <br />
+      <button (click)="applyCoupon(couponNumber.value)" class="btn btn-primary m">
         Apply coupon
       </button>
-    
+      <button
+        (click)="disableCoupon()"
+        class="btn btn-danger m-2"
+      >
+        Disable coupon
+      </button>
     </div>
   </div>
   <div class="text-danger" *ngIf="clientForm.controls['city'].value != 'أسيوط'">
     <small
-      >Your Order Will Charge Shipping Fees Around 85 L.E To 100 L.E If You Are Outside Asyut City</small
+      >Your Order Will Charge Shipping Fees Around 85 L.E To 100 L.E If You Are
+      Outside Asyut City</small
     >
   </div>
   <br />
   <!-- Governorate and Postal Code -->
 
   <!-- Submit Button -->
-  <button type="button" (click)="onSubmit()" class="btn btn-primary" [disabled]="clientForm.invalid">
+  <button
+    type="button"
+    (click)="onSubmit()"
+    class="btn btn-primary"
+    [disabled]="clientForm.invalid"
+  >
     Submit
   </button>
 </form>
