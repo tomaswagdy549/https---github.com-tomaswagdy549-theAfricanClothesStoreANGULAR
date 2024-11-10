@@ -17,7 +17,7 @@ export class HandleResponse {
       text: message,
     });
   }
-  public static async operationConfirmed(message: string) : Promise<boolean>{
+  public static async operationConfirmed(message: string,yes:string="Yes",no:string="Cancel") : Promise<boolean>{
     const result = await Swal.fire({
       title: message,
       text: "You won't be able to revert this!",
@@ -25,7 +25,8 @@ export class HandleResponse {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
+      confirmButtonText: yes,
+      cancelButtonText:no
     })
     return result.isConfirmed as boolean;
   }

@@ -1,14 +1,73 @@
-<div>
-  @defer (when discountPhotoUrl!='') {
-  <img
-    class="d-block w-100"
-    [src]="discountPhotoUrl"
-    style="height: 500px"
-    alt="First slide"
-  />
-  }
-</div>
 <div
+  id="carouselExampleControls"
+  class="carousel slide carousel-fade"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-inner">
+    <div *ngFor="let media of mainPageMedias" class="carousel-item active">
+      <ng-container *ngIf="accountService.isAdmin()">
+        <img
+          (click)="handleMedia(media.id)"
+          class="d-block w-100"
+          [src]="media.mediaUrl"
+          style="height: 500px; cursor: pointer"
+          alt="First slide"
+        />
+      </ng-container>
+      <ng-container *ngIf="!accountService.isAdmin()">
+        <img
+          class="d-block w-100"
+          [src]="media.mediaUrl"
+          style="height: 500px; cursor: pointer"
+          alt="First slide"
+        />
+      </ng-container>
+      <input
+        (change)="editMedia($event, media.id)"
+        type="file"
+        [id]="'MediaInput' + media.id"
+        style="visibility: hidden"
+      />
+    </div>
+
+    <ng-container *ngIf="accountService.isAdmin()">
+      <div class="carousel-item">
+        <img
+          (click)="input.click()"
+          src="assets/images/rtaImage.jpg"
+          class="d-block w-100"
+          style="height: 500px; cursor: pointer"
+          alt="First slide"
+        />
+      </div>
+      <input
+        #input
+        (change)="addMedia($event)"
+        type="file"
+        style="visibility: hidden"
+      />
+    </ng-container>
+  </div>
+  <a
+    class="carousel-control-prev"
+    href="#carouselExampleControls"
+    role="button"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </a>
+  <a
+    class="carousel-control-next"
+    href="#carouselExampleControls"
+    role="button"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </a>
+</div>
+<!-- <div
   id="carouselExampleControls"
   class="carousel slide carousel-fade"
   data-bs-ride="carousel"
@@ -57,7 +116,7 @@
     <span class="carousel-control-next-icon" aria-hidden="true"></span>
     <span class="visually-hidden">Next</span>
   </a>
-</div>
+</div> -->
 <!-- --------- -->
 
 <div class="container my-5">
