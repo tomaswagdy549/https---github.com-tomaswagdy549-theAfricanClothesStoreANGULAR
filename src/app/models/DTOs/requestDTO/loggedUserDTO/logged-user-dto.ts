@@ -1,3 +1,7 @@
 export class LoggedUserDTO {
-  gmail!: string;
+  id!:string
+  email!:string
+  firstName!:string
+  lastName!:string
+  name!:string
 }

@@ -87,7 +87,7 @@ export class NewOneComponent {
     let addedOrderDTO: AddedOrderDTO = {
       clientForm: clientForm,
       coupon: this.clientForm.controls['coupon'].value,
-      gmail: this.accountService.getUserId()!,
+      applicationUserId: this.accountService.getCartId()!,
       addedOrderDetailsDTO: addedOrderDetailsDTO,
     };
     this.orderService.addOrder(addedOrderDTO).subscribe({
@@ -176,7 +176,7 @@ export class NewOneComponent {
       let appliedCouponDTO: AppliedCouponDTO = {
         cartItems: this.cartItems,
         serialNumber: serialNumber,
-        userGmail: this.accountService.getUserId()!,
+        applicationUserId: this.accountService.getCartId()!,
       };
       this.couponService.applyCoupon(appliedCouponDTO).subscribe({
         next: (res) => {

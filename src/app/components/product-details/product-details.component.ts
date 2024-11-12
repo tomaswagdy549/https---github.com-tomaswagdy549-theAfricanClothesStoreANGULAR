@@ -58,7 +58,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
   }
   addToCart(productId: number) {
     let cartItem: AddedCartItemDTO = {
-      gmail: this.accountService.getCartId()!,
+      applicationUserId: this.accountService.getCartId()!,
       productId: productId,
       size: this.selectedSize,
       quantity: this.requiredQuantity,

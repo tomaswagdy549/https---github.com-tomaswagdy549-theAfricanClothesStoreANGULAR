@@ -77,8 +77,9 @@
               >{{ product.price }} </span
             ><span>until {{ getTime(product.discountExpirationDate) }}</span>
           </li>
-          <li class="list-group-item d-flex align-items-center">
+          <li class="list-group-item align-items-center">
             <strong class="me-2">Available Sizes </strong>
+            <br>
             <ul class="list-group list-group-horizontal">
               <li
                 [ngClass]="{ active: selectedSize == size.availabeSize }"

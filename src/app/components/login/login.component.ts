@@ -16,18 +16,14 @@ import { HandleResponse } from '../../handlingResponse/handle-response';
 import {
   GoogleSigninButtonModule,
   SocialAuthService,
+  SocialUser,
 } from '@abacritt/angularx-social-login';
 import { jwtDecode } from 'jwt-decode';
 declare var google: any;
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    RegisterComponent,
-    CommonModule,
-    ReactiveFormsModule,
-    GoogleSigninButtonModule,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, GoogleSigninButtonModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -43,7 +39,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.socialAuthService.authState.subscribe({
       next: (user) => {
-        this.login(user.email);
+        console.log(user);
+        this.login(user);
       },
       error: (error) => {
         console.error(error);
@@ -51,25 +48,28 @@ export class LoginComponent implements OnInit {
     });
     (window as any).onGoogleScriptLoad = () => {
       google.accounts.id.initialize({
-        client_id: '1062250462039-jlt2o9537l28ktva9pbs6sj157qks1fa.apps.googleusercontent.com',
+        client_id:
+          '1062250462039-jlt2o9537l28ktva9pbs6sj157qks1fa.apps.googleusercontent.com',
         callback: (resp: any) => {
           let token = jwtDecode(resp.credential) as any;
           this.login(token['email']);
         },
       });
-      google.accounts.id.renderButton(document.getElementById('google-btn'),{
+      google.accounts.id.renderButton(document.getElementById('google-btn'), {
         theme: 'filled-blue',
-        size:'large'
-      })
+        size: 'large',
+      });
     };
-    
   }
 
-  onSubmit(): void {
-  }
-  login(gmail: string) {
+  onSubmit(): void {}
+  login(user: SocialUser) {
     this.loggedUserDto = {
-      gmail: gmail,
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      name: user.name,
     };
     this.globalDateService.apiCallSubject.next(true);
     this.accountService

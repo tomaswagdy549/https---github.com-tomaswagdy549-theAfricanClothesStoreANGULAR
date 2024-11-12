@@ -43,14 +43,14 @@ export class AccountService {
   }
   getCartId() {
     if (this.userData != null) {
-      return this.userData['Gmail'] as string;
+      return this.userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] as string;
     }
     return null;
   }
   getUserId() {
     if (this.userData != null) {
       return this.userData[
-        'Gmail'
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
       ] as string;
     }
     return null;
@@ -58,7 +58,7 @@ export class AccountService {
   isAdmin() {
     if (this.userData != null) {
       let role = this.userData[
-        'Role'
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
       ] as string;
       role = role.toLowerCase();
       if (role == 'admin') {
@@ -68,10 +68,10 @@ export class AccountService {
     return false;
   }
   checkIfTokenExpired() {
-    if(Date.now()>this.userData['exp']*1000){
-      return true
+    if (Date.now() > this.userData['exp'] * 1000) {
+      return true;
     }
-    return false
+    return false;
   }
 
   private decodeToken() {

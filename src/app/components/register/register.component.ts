@@ -16,7 +16,7 @@ import { HandleResponse } from '../../handlingResponse/handle-response';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, LoginComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -87,15 +87,15 @@ export class RegisterComponent {
     let loggedUserDto = {
       gmail: this.registerForm.get('email')?.value!,
     };
-    this.accountService.login(loggedUserDto).subscribe({
-      next: (response) => {
-        localStorage.setItem('token', response['token']);
-        this.accountService.logUser();
-        this.router.navigateByUrl('/');
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    // this.accountService.login(loggedUserDto).subscribe({
+    //   next: (response) => {
+    //     localStorage.setItem('token', response['token']);
+    //     this.accountService.logUser();
+    //     this.router.navigateByUrl('/');
+    //   },
+    //   error: (error) => {
+    //     console.error(error);
+    //   },
+    // });
   }
 }

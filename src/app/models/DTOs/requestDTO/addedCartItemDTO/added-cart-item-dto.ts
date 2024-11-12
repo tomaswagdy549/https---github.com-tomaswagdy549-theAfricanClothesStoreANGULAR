@@ -1,5 +1,5 @@
 export class AddedCartItemDTO {
-    gmail!:string
+    applicationUserId!:string
     size!:string
     productId!:number
     quantity!:number
