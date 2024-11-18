@@ -5,6 +5,8 @@ import { MainPageMedia } from '../../models/mainPageMedia/main-page-media';
 import { CommonModule } from '@angular/common';
 import { HandleResponse } from '../../handlingResponse/handle-response';
 import { AccountService } from '../../services/accountService/account.service';
+import { CategoryService } from '../../services/categoryService/category.service';
+import { Category } from '../../models/category/category';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -74,11 +76,35 @@ export class HeaderComponent {
       });
     }
   }
+  menQuerySearch: string = '';
+  womenQuerySearch: string = '';
+  menShoesQuerySearch: string = '';
+  womenShoesQuerySearch: string = '';
   mainPageMedias: MainPageMedia[] = [];
   constructor(
+    private categoryService: CategoryService,
     private MainPageMediaService: MainPageMediaService,
     public accountService: AccountService
   ) {
+    this.categoryService.getAllCategories(50, 1).subscribe({
+      next: (response) => {
+        response.categories.map((category) => {
+          switch (category.gender) {
+            case 'Men':
+              this.menQuerySearch += `categoryIds=${category.id}&`;
+              if(category.name=="Shoes"){
+                this.menShoesQuerySearch += `categoryIds=${category.id}&`
+              }
+              break;
+            case 'Woman':
+              this.womenQuerySearch += `categoryIds=${category.id}&`;
+              if(category.name=="Shoes"){
+                this.womenShoesQuerySearch += `categoryIds=${category.id}&`
+              }
+          }
+        });
+      },
+    });
     this.MainPageMediaService.getAll().subscribe({
       next: (data) => {
         this.mainPageMedias = data.entity;

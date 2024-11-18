@@ -4,7 +4,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LoadingSpinnerComponent } from './components/loadingSpinner/loading-spinner/loading-spinner.component';
-import { enviroment } from './enviroment/enviroment';
 import { AccountService } from './services/accountService/account.service';
 import { OrderComponent } from './components/order/order.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -17,8 +16,6 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     FooterComponent,
     HeaderComponent,
     LoadingSpinnerComponent,
-    OrderComponent,
-    NotFoundComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

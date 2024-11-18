@@ -56,11 +56,11 @@
                     <p style="color: red">
                       <strong *ngIf="!cartItem.product.onSale"
                         >total price :
-                        {{ cartItem.quantity * cartItem.product.price }}</strong
+                        {{ cartItem.quantity * cartItem.product.currentPrice }}</strong
                       >
                       <strong *ngIf="cartItem.product.onSale"
                         >total price :
-                        {{ cartItem.quantity * cartItem.product.salePrice! }} instead of <span style="text-decoration: line-through">{{ cartItem.quantity * cartItem.product.price }}</span></strong
+                        {{ cartItem.quantity * cartItem.product.currentPrice! }} instead of <span style="text-decoration: line-through">{{ cartItem.quantity * cartItem.product.price }}</span></strong
                       >
                     </p>
                     <button

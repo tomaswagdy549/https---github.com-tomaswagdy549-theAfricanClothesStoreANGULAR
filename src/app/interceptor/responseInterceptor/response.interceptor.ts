@@ -15,26 +15,13 @@ export function responseInterceptor(
   next: HttpHandlerFn
 ) {
   const globalDataService = inject(GlobalDataService);
-  const router = inject(Router)
+  const router = inject(Router);
   globalDataService.apiCallSubject.next(true);
   return next(req).pipe(
     tap((event) => {
       if (event instanceof HttpResponse) {
-        let baseResponse= event.body as BaseResponse
+        let baseResponse = event.body as BaseResponse;
         if (req.method != 'GET' && !req.url.includes('user')) {
-          // let operation: string = '';
-          // switch (req.method) {
-          //   case 'POST':
-          //     operation = 'Added';
-          //     break;
-          //   case 'PUT':
-          //     operation = 'Updated';
-          //     break;
-          //   case 'DELETE':
-          //     operation = 'Deleted';
-          //     break;
-          // }
-          // HandleResponse.handleSuccess(`${operation} succesfully`);
           HandleResponse.handleSuccess(baseResponse.message);
         }
         globalDataService.apiCallSubject.next(false);
@@ -42,14 +29,14 @@ export function responseInterceptor(
     }),
     catchError((error: HttpErrorResponse) => {
       return throwError(() => {
-        let message = checkRes(error,router);
+        let message = checkRes(error, router);
         HandleResponse.handleError(message);
         globalDataService.apiCallSubject.next(false);
       });
     })
   );
 }
-function checkRes(response: HttpErrorResponse,router:Router) {
+function checkRes(response: HttpErrorResponse, router: Router) {
   let message = '';
   console.log(response);
   if (response.error != null) {
@@ -65,7 +52,7 @@ function checkRes(response: HttpErrorResponse,router:Router) {
   }
   switch (response.status) {
     case 0:
-      router.navigateByUrl('not-found')
+      router.navigateByUrl('not-found');
       message = 'you are out of connection , check your internet connection';
       return message;
       break;

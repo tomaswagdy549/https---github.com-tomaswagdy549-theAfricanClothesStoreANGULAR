@@ -6,7 +6,6 @@ import { enviroment } from '../../enviroment/enviroment';
 import { HttpClient } from '@angular/common/http';
 import { AddedCouponDTO } from '../../models/DTOs/requestDTO/addedCouponDTO/added-coupon-dto';
 import { AppliedCouponDTO } from '../../models/DTOs/requestDTO/appliedCouponDTO/applied-coupon-dto';
-import { BaseResponse } from '../../models/DTOs/responseDTO/baseResponse/base-response';
 
 @Injectable({
   providedIn: 'root'

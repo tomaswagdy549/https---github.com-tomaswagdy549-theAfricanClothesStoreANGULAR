@@ -79,7 +79,7 @@
           </li>
           <li class="list-group-item align-items-center">
             <strong class="me-2">Available Sizes </strong>
-            <br>
+            <br />
             <ul class="list-group list-group-horizontal">
               <li
                 [ngClass]="{ active: selectedSize == size.availabeSize }"
@@ -120,20 +120,16 @@
             <strong>Brand:</strong>
             {{ product.brand == null ? "No Brand" : product.brand.name }}
           </li>
-          <li *ngIf="product.note != null" class="list-group-item">
+          <li
+            *ngIf="product.note != null && product.note != ''"
+            class="list-group-item"
+          >
             <strong>Note:</strong>
             {{ product.note }}
           </li>
         </ul>
       </div>
       <div class="modal-footer">
-        <!-- <button
-          type="button"
-          class="btn btn-outline-dark"
-          data-bs-dismiss="modal"
-        >
-          Close
-        </button> -->
         <div
           *ngIf="userIsLogged()"
           class="d-flex align-items-center justify-content-center"

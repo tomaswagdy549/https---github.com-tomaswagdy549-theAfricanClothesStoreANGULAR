@@ -39,8 +39,8 @@ export class ProductsService {
       `${enviroment.baseUrl}/api/products/Id/${id}`
     );
   }
-  updateProduct(updatedProductDTO: UpdatedProductDTO): Observable<any> {
-    return this.http.put<any>(
+  updateProduct(updatedProductDTO: UpdatedProductDTO): Observable<GenericResponse<Product>> {
+    return this.http.put<GenericResponse<Product>>(
       `${enviroment.baseUrl}/api/products`,
       updatedProductDTO
     );

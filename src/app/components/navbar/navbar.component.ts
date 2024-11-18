@@ -23,7 +23,7 @@ import { Category } from '../../models/category/category';
 export class NavbarComponent implements OnInit {
   menCategories: Category[] = [];
   womenCategories: Category[] = [];
-  accessories: Category[]=[];
+  accessories: Category[] = [];
   @ViewChild('cart', { read: ViewContainerRef }) cartEntry: ViewContainerRef;
   @ViewChild('login', { read: ViewContainerRef }) loginEntry: ViewContainerRef;
   cartComponent!: ComponentRef<CartComponent>;
@@ -63,8 +63,8 @@ export class NavbarComponent implements OnInit {
             this.menCategories.push(category);
           } else if (category.gender == 'Woman') {
             this.womenCategories.push(category);
-          } else if (category.gender == 'Both'){
-            this.accessories.push(category)
+          } else if (category.gender == 'Both') {
+            this.accessories.push(category);
           }
         });
       },
@@ -82,6 +82,7 @@ export class NavbarComponent implements OnInit {
     this.accountService.logOut();
   }
   goToOnSaleProducts(categories: Category[]) {
+    document.getElementById('navbar-toggler')?.click();
     let querySearch = '';
     categories.map((category) => {
       querySearch += `categoryIds=${category.id}&`;

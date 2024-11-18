@@ -121,22 +121,8 @@
 
 <div class="container my-5">
   <div class="row">
-    <!-- First Image -->
     <div class="col-md-3 mb-4 text-center">
-      <a [routerLink]="['/womenshoes']">
-        <img
-          src="assets/images/wemonshose.jpg"
-          style="border-radius: 50%; width: 250px; height: 250px"
-          class="img-fluid"
-          alt="Shoes Women"
-        />
-      </a>
-      <p style="padding-top: 10px">Shoes Women</p>
-    </div>
-
-    <!-- Second Image -->
-    <div class="col-md-3 mb-4 text-center">
-      <a [routerLink]="['/shoes']">
+      <a [routerLink]="['/filteredProducts/'+menShoesQuerySearch]">
         <img
           src="assets/images/manshose.jpg"
           style="border-radius: 50%; width: 250px; height: 250px"
@@ -144,12 +130,27 @@
           alt="Image 2"
         />
       </a>
-      <p style="padding-top: 10px">Shoes Men</p>
+      <p style="padding-top: 10px">MEN`S SHOES</p>
     </div>
+
+    <!-- First Image -->
+    <div class="col-md-3 mb-4 text-center">
+      <a [routerLink]="['/filteredProducts/'+womenShoesQuerySearch]">
+        <img
+          src="assets/images/wemonshose.jpg"
+          style="border-radius: 50%; width: 250px; height: 250px"
+          class="img-fluid"
+          alt="Shoes Women"
+        />
+      </a>
+      <p style="padding-top: 10px">WOMEN`S SHOES </p>
+    </div>
+
+    <!-- Second Image -->
 
     <!-- Third Image -->
     <div class="col-md-3 mb-4 text-center">
-      <a [routerLink]="['/clothes']">
+      <a [routerLink]="['/filteredProducts/'+menQuerySearch+'onSale=true']">
         <img
           src="assets/images/clothing men.jpg"
           style="border-radius: 50%; width: 250px; height: 250px"
@@ -157,12 +158,12 @@
           alt="Image 3"
         />
       </a>
-      <p style="padding-top: 10px">Clothes Men</p>
+      <p style="padding-top: 10px">MEN`S COLLECTION</p>
     </div>
 
     <!-- Fourth Image -->
     <div class="col-md-3 mb-4 text-center">
-      <a [routerLink]="['/women']">
+      <a [routerLink]="['/filteredProducts/'+womenQuerySearch+'onSale=true']">
         <img
           src="assets/images/Bags&Accessors.jpg"
           style="border-radius: 50%; width: 250px; height: 250px"
@@ -170,7 +171,7 @@
           alt="Image 4"
         />
       </a>
-      <p style="padding-top: 10px">Bags & Accessors</p>
+      <p style="padding-top: 10px">WOMEN`S COLLECTION</p>
     </div>
   </div>
 </div>

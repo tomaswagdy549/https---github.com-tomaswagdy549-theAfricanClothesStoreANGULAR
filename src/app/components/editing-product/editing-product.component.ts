@@ -1,9 +1,8 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
 import {
   FormArray,
-  FormBuilder,
   FormControl,
   FormGroup,
   FormsModule,
@@ -50,9 +49,7 @@ export class EditingProductComponent {
     subCategoryId: new FormControl<number | null>(null),
     salePrice: new FormControl<number>(0),
     onSale: new FormControl<boolean>(false, Validators.required),
-    discountExpirationDate: new FormControl<Date | null>(
-      null
-    ),
+    discountExpirationDate: new FormControl<Date | null>(null),
   });
   productAvailableSizesForm: FormArray<FormGroup>;
   productImage: string | null = null;
@@ -182,8 +179,6 @@ export class EditingProductComponent {
           }
         }
         this.showSubCategory = false;
-        // this.productForm.controls['categoryId'].clearValidators();
-        // this.productForm.controls['categoryId'].setValue(null);
       }
     );
   }
@@ -239,9 +234,6 @@ export class EditingProductComponent {
         'Are you sure you want to Edit this product ?'
       );
       if (confirmed) {
-        this.getHoursDiff(
-          this.productForm.controls['discountExpirationDate'].value
-        );
         let updatedProductDTO: UpdatedProductDTO = {
           Id: this.productId,
           price: this.productForm.controls['price'].value!,
@@ -256,25 +248,22 @@ export class EditingProductComponent {
             this.productForm.controls['discountExpirationDate'].value
           ),
         };
-        this.productService.updateProduct(updatedProductDTO).subscribe({
-          next: (response) => {
-          },
-          error: (error) => {
-            console.error('Error updating product:', error);
-          },
-        });
+        this.productService.updateProduct(updatedProductDTO).subscribe();
       }
     }
   }
   getHoursDiff(value: Date | null): number | null {
     if (value != null) {
       let specific = value.toString();
-      const currentDate = new Date();
+      let currentDate = new Date().toUTCString();
+      let c = new Date(currentDate)
+      console.log(c)
       const specificDate = new Date(specific);
-      const diffInHours = Math.ceil(
-        Math.abs(specificDate.getTime() - currentDate.getTime()) /
-          (1000 * 60 * 60)
-      );
+      const diffInHours =
+        Math.round(
+          Math.abs(specificDate.getTime() - c.getTime()) /
+            (1000 * 60 * 60)
+        );
       return diffInHours;
     }
     return null;
@@ -288,10 +277,13 @@ export class EditingProductComponent {
     );
   }
   getTime(value: Date) {
-    const egyptDate = new Date(value).toLocaleString('en-EG', {
-      timeZone: 'Africa/Cairo',
-    });
-    return egyptDate
+    const datePipe = new DatePipe('en-US');
+    const formattedDate = datePipe.transform(
+      value,
+      "EEE MMM dd yyyy HH:mm 'GMT'ZZZ",
+      'Africa/Cairo'
+    );
+    return formattedDate;
   }
   async addNewSize(index: number) {
     const confirmed = await HandleResponse.operationConfirmed(
@@ -325,14 +317,7 @@ export class EditingProductComponent {
       };
       this.productAvailableSizeService
         .editProductAvailableSize(updatedProductAvailableDTO)
-        .subscribe({
-          next: (response) => {
-            console.log(
-              'Product available size updated successfully:',
-              response
-            );
-          },
-        });
+        .subscribe();
     }
   }
   async deleteProductSize(productAvailableSize: ProductAvailableSizes) {

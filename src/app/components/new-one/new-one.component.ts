@@ -19,6 +19,7 @@ import { CartItem } from '../../models/cartItem/cart-item';
 import { AccountService } from '../../services/accountService/account.service';
 import { CouponService } from '../../services/couponService/coupon.service';
 import { AddedOrderDetails } from '../../models/DTOs/requestDTO/addedOrderDTO/addedOrderDTO/added-order-details';
+import { Coupon } from '../../models/coupon/coupon';
 
 @Component({
   selector: 'app-new-one',
@@ -38,7 +39,7 @@ export class NewOneComponent {
   clientForm!: FormGroup;
   cities = GovernoratesAndCities.cities;
   governorates = GovernoratesAndCities.governorates;
-
+  coupon: Coupon|null=null
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -86,10 +87,11 @@ export class NewOneComponent {
     });
     let addedOrderDTO: AddedOrderDTO = {
       clientForm: clientForm,
-      coupon: this.clientForm.controls['coupon'].value,
+      coupon: this.coupon,
       applicationUserId: this.accountService.getCartId()!,
       addedOrderDetailsDTO: addedOrderDetailsDTO,
     };
+    console.log(addedOrderDTO)
     this.orderService.addOrder(addedOrderDTO).subscribe({
       next: (data) => {
         this.cartItemService.cartDeleted.next(true);
@@ -180,7 +182,7 @@ export class NewOneComponent {
       };
       this.couponService.applyCoupon(appliedCouponDTO).subscribe({
         next: (res) => {
-          this.clientForm.controls['coupon'].setValue(res.entity);
+          this.coupon = res.entity
         },
       });
     } else {

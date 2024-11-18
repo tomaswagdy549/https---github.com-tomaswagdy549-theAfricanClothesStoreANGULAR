@@ -26,12 +26,12 @@
       </a>
 
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="/">Home</a>
+        <li data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse"  class="nav-item">
+          <a class="nav-link active" aria-current="page" routerLink="/">HOME</a>
         </li>
-        <li class="nav-item">
+        <li data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse"  class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="/clothes"
-            >Clothing</a
+            >COLLECTION</a
           >
         </li>
 
@@ -42,14 +42,14 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Men's
+            MEN
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <a
                 (click)="goToOnSaleProducts(menCategories)"
                 class="dropdown-item"
-                >On sale</a
+                >On Sale</a
               >
             </li>
             <ng-container *ngFor="let menCategory of menCategories">
@@ -88,15 +88,15 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Women
+            WOMEN
           </a>
 
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse"  class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <a
                 (click)="goToOnSaleProducts(womenCategories)"
                 class="dropdown-item"
-                >On sale</a
+                >On Sale</a
               >
             </li>
             <li *ngFor="let womenCategory of womenCategories">
@@ -128,17 +128,6 @@
           
         </li>
 
-        <!-- <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/addcategory"
-            >add-category</a
-          >
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/addbrand"
-            >add-brand</a
-          >
-        </li> -->
         <li class="dropdown" style="cursor: pointer">
           <a
             class="nav-link dropdown-toggle"
@@ -146,14 +135,14 @@
             data-bs-toggle="dropdown"
             aria-expanded="false"
           >
-            Accessories
+            ACCESSORIES
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <ul data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse"  class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li>
               <a
                 (click)="goToOnSaleProducts(accessories)"
                 class="dropdown-item"
-                >On sale</a
+                >On Sale</a
               >
             </li>
             <li *ngFor="let accessory of accessories">
@@ -193,7 +182,7 @@
           >
             Options
           </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <ul data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
             <li>
               <a class="dropdown-item" routerLink="/addingproduct"
                 >Add product</a
@@ -230,7 +219,7 @@
       </ul>
 
       <br />
-      <ul class="navbar-nav active">
+      <ul data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse"  class="navbar-nav active">
         <li class="nav-item me-3">
           <i
             *ngIf="!logged"

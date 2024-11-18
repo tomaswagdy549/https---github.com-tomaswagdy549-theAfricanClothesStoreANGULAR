@@ -43,7 +43,9 @@ export class AccountService {
   }
   getCartId() {
     if (this.userData != null) {
-      return this.userData['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] as string;
+      return this.userData[
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+      ] as string;
     }
     return null;
   }
@@ -68,7 +70,8 @@ export class AccountService {
     return false;
   }
   checkIfTokenExpired() {
-    if (Date.now() > this.userData['exp'] * 1000) {
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    if (new Date(currentTimestamp*1000) > new Date(this.userData['exp']*1000)) {
       return true;
     }
     return false;

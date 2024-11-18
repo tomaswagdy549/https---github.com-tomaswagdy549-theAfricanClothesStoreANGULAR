@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { CouponService } from '../../services/couponService/coupon.service';
 import { AddedCouponDTO } from '../../models/DTOs/requestDTO/addedCouponDTO/added-coupon-dto';
+import { HandleResponse } from '../../handlingResponse/handle-response';
 
 @Component({
   selector: 'app-add-coupon',
@@ -18,23 +19,32 @@ import { AddedCouponDTO } from '../../models/DTOs/requestDTO/addedCouponDTO/adde
   styleUrl: './add-coupon.component.css',
 })
 export class AddCouponComponent {
-  constructor(private couponService:CouponService){}
+  constructor(private couponService: CouponService) {}
   addCoupon() {
-    let string = this.couponForm.controls['discountExpirationDate']
-    .value?.toString();
-  const dateObject = new Date(string!);
-  const currentDate = new Date();
-  const diffInHours = Math.ceil(
-    Math.abs(dateObject.getTime() - currentDate.getTime()) / (1000 * 60 * 60)
-  );
+    let string =
+      this.couponForm.controls['discountExpirationDate'].value?.toString();
+    const dateObject = new Date(string!);
+    const currentDate = new Date();
+    const diffInHours = Math.ceil(
+      Math.abs(dateObject.getTime() - currentDate.getTime()) / (1000 * 60 * 60)
+    );
 
-    let addedCouponDTO : AddedCouponDTO = {
+    let addedCouponDTO: AddedCouponDTO = {
       serialNumber: this.couponForm.controls['serialNumber'].value!,
-      minimumTotalOrderPrice: this.couponForm.controls['minimumTotalOrder'].value!,
-      discountPercentage: this.couponForm.controls['discountPercentage'].value!*.01,
+      minimumTotalOrderPrice:
+        this.couponForm.controls['minimumTotalOrder'].value!,
+      discountPercentage:
+        this.couponForm.controls['discountPercentage'].value! * 0.01,
       durationOfCouponInHours: diffInHours,
-    }
-    this.couponService.addCoupon(addedCouponDTO).subscribe({})
+    };
+    this.couponService.addCoupon(addedCouponDTO).subscribe({
+      next: (response) => {
+        console.log(response);
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
   couponForm = new FormGroup({
     discountPercentage: new FormControl<number | null>(null, [

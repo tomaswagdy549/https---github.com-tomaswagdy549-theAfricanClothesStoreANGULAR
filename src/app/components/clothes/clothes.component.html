@@ -30,11 +30,11 @@
           />
           <div style="cursor: pointer" class="card-body">
             <p class="card-text">{{ product.name }}</p>
-            @defer (when product.currentPrice == product.price) {
+            @if (product.currentPrice == product.price) {
             <p class="card-text" style="color: red">
               Price: LE {{ product.currentPrice }}
             </p>
-            } @defer (when product.currentPrice != product.price) {
+            } @if (product.currentPrice != product.price) {
             <p class="card-text" style="color: red">
               Price: {{ product.currentPrice }} LE instead of
               <span style="text-decoration: line-through">{{
@@ -72,30 +72,6 @@
             >Previous</a
           >
         </li>
-        <!-- @defer (when totalPages.length<=5) {
-        <li
-          *ngFor="let Page of totalPages.splice(0, 5); let index; as: i"
-          class="page-item"
-        >
-          <a
-            [ngClass]="{ active: currentPage == Page }"
-            class="page-link"
-            (click)="moveToPage(pageSize, Page)"
-            >{{ Page }}</a
-          >
-        </li>
-
-        } @defer (when totalPages.length>5) {
-        <li *ngFor="let Page of totalPages; let index; as: i" class="page-item">
-          <a
-            [ngClass]="{ active: currentPage == Page }"
-            class="page-link"
-            (click)="moveToPage(pageSize, Page)"
-            >{{ Page }}</a
-          >
-        </li>
-
-        } -->
         <li *ngIf="currentPage != totalPages.length" class="page-item">
           <a class="page-link" (click)="moveToPage(pageSize, currentPage + 1)"
             >next</a

@@ -148,7 +148,9 @@
           *ngIf="productForm.controls['discountExpirationDate'].value != null"
           ><label
             >Discount expiration date :
-            {{ getTime(productForm.controls["discountExpirationDate"].value) }}</label
+            {{
+              getTime(productForm.controls["discountExpirationDate"].value)
+            }}</label
           ></ng-container
         >
 
@@ -158,6 +160,7 @@
           type="datetime-local"
           class="form-control"
           id="dateTimeInput"
+          [value]="null"
         />
       </ng-container>
       <label for="price">Notices:</label>
