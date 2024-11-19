@@ -85,6 +85,7 @@ export class LoginComponent implements OnInit {
           this.accountService.logUser();
           HandleResponse.handleSuccess('Logged succesfully');
           this.router.navigateByUrl('/clothes');
+          location.reload()
         },
         error: (error) => (this.message = error.error['message']),
       });
