@@ -15,7 +15,6 @@ export class isAdminGuard implements CanActivate {
     HandleResponse.handleError(
       'you are not authorized , login to process and retry'
     );
-
     return false;
   }
 }

@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RegisterComponent } from '../register/register.component';
 import {
-  FormControl,
-  FormGroup,
   ReactiveFormsModule,
-  Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AccountService } from '../../services/accountService/account.service';
@@ -18,8 +14,6 @@ import {
   SocialAuthService,
   SocialUser,
 } from '@abacritt/angularx-social-login';
-import { jwtDecode } from 'jwt-decode';
-declare var google: any;
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -41,24 +35,7 @@ export class LoginComponent implements OnInit {
       next: (user) => {
         this.login(user);
       },
-      error: (error) => {
-        console.error(error);
-      },
     });
-    // (window as any).onGoogleScriptLoad = () => {
-    //   google.accounts.id.initialize({
-    //     client_id:
-    //       '1062250462039-jlt2o9537l28ktva9pbs6sj157qks1fa.apps.googleusercontent.com',
-    //     callback: (resp: any) => {
-    //       let token = jwtDecode(resp.credential) as any;
-    //       this.login(token['email']);
-    //     },
-    //   });
-    //   google.accounts.id.renderButton(document.getElementById('google-btn'), {
-    //     theme: 'filled-blue',
-    //     size: 'large',
-    //   });
-    // };
   }
 
   onSubmit(): void {}
@@ -85,9 +62,8 @@ export class LoginComponent implements OnInit {
           this.accountService.logUser();
           HandleResponse.handleSuccess('Logged succesfully');
           this.router.navigateByUrl('/clothes');
-          location.reload()
+          location.reload();
         },
-        error: (error) => (this.message = error.error['message']),
       });
   }
 }

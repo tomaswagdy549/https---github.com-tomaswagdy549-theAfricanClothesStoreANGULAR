@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ProductPhotoService } from '../../services/productPhotoService/product-photo.service';
 import { ProductPhoto } from '../../models/productPhoto/product-photo';
 import { CommonModule } from '@angular/common';
+import { UpdatedCartItemDTO } from '../../models/DTOs/requestDTO/updatedCartItemDTO/updated-cart-item-dto';
 
 @Component({
   selector: 'app-shoppingcart',
@@ -55,12 +56,11 @@ export class ShoppingcartComponent {
     }
   }
   editCartItem() {
-    let updatedCartItem: CartItem = {
-      gmail: this.cartItem.gmail,
+    let updatedCartItem: UpdatedCartItemDTO = {
+      applicationUserId: this.cartItem.applicationUserId,
       productId: this.cartItem.productId,
       quantity: this.quantity,
       size: this.cartItem.size,
-      product: this.cartItem.product,
     };
     this.cartItemService.editCartItem(updatedCartItem).subscribe({
       next: (response) => {

@@ -10,7 +10,7 @@ import { CartItemService } from '../../services/cartItemService/cart-item.servic
 import { CartItem } from '../../models/cartItem/cart-item';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs';
+import { CartItemCompositeKey } from '../../models/DTOs/requestDTO/cartItemCompositeKey/cart-item-composite-key';
 
 @Component({
   selector: 'app-cart',
@@ -31,7 +31,7 @@ export class CartComponent implements OnChanges {
     this.cartItemService.cartItemEdited.subscribe((value) => {
       this.cartItems.map((item) => {
         if (
-          item.gmail == value.gmail &&
+          item.applicationUserId == value.applicationUserId &&
           item.productId == value.productId &&
           item.size == value.size
         ) {
@@ -52,6 +52,7 @@ export class CartComponent implements OnChanges {
         next: (data) => {
           if (data != null) {
             this.cartItems = data;
+            console.log(data)
             this.numberOfCartItems.emit(data.length);
           }
         },
@@ -60,7 +61,12 @@ export class CartComponent implements OnChanges {
     }
   }
   removeFromCart(CartItem: CartItem, index: number) {
-    this.cartItemService.removeFromCart(CartItem).subscribe({
+    let cartItemCompositeKey : CartItemCompositeKey = {
+      applicationUserId: CartItem.applicationUserId,
+      productId: CartItem.productId,
+      size:CartItem.size
+    }
+    this.cartItemService.removeFromCart(cartItemCompositeKey).subscribe({
       next: (data) => {
         this.cartItems.splice(index, 1);
         this.numberOfCartItems.emit(this.cartItems.length);

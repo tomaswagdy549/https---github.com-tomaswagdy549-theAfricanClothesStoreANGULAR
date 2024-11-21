@@ -7,6 +7,7 @@ import { CartItem } from '../../models/cartItem/cart-item';
 import { GenericResponse } from '../../models/DTOs/responseDTO/genericResponse/generic-response';
 import { BaseResponse } from '../../models/DTOs/responseDTO/baseResponse/base-response';
 import { CartItemCompositeKey } from '../../models/DTOs/requestDTO/cartItemCompositeKey/cart-item-composite-key';
+import { UpdatedCartItemDTO } from '../../models/DTOs/requestDTO/updatedCartItemDTO/updated-cart-item-dto';
 
 @Injectable({
   providedIn: 'root',
@@ -23,9 +24,12 @@ export class CartItemService {
       cartItem
     );
   }
-  removeFromCart(CartItemCompositeKey: CartItemCompositeKey): Observable<BaseResponse> {
+  removeFromCart(
+    CartItemCompositeKey: CartItemCompositeKey
+  ): Observable<BaseResponse> {
     return this.http.delete<BaseResponse>(
-      `${enviroment.baseUrl}/api/cartItems`,{body:CartItemCompositeKey}
+      `${enviroment.baseUrl}/api/cartItems`,
+      { body: CartItemCompositeKey }
     );
   }
   removeRangeFromCart(
@@ -40,10 +44,12 @@ export class CartItemService {
       `${enviroment.baseUrl}/api/cartItems/cartId/${cartId}`
     );
   }
-  editCartItem(cartItem: CartItem): Observable<GenericResponse<CartItem>> {
+  editCartItem(
+    UpdatedCartItemDTO: UpdatedCartItemDTO
+  ): Observable<GenericResponse<CartItem>> {
     return this.http.put<GenericResponse<CartItem>>(
       `${enviroment.baseUrl}/api/cartItems`,
-      cartItem
+      UpdatedCartItemDTO
     );
   }
 }

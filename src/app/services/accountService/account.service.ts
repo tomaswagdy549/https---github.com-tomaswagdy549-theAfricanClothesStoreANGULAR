@@ -7,6 +7,7 @@ import { LoggedUserDTO } from '../../models/DTOs/requestDTO/loggedUserDTO/logged
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 import { HandleResponse } from '../../handlingResponse/handle-response';
+import { SocialUser } from '@abacritt/angularx-social-login';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,6 @@ export class AccountService {
     HandleResponse.handleSuccess('logged out');
   }
   logUser() {
-    // const token = localStorage.getItem('token');
-    // const decoded = jwtDecode(token!);
-    // this.userData = decoded;
     this.decodeToken();
     this.isLogged.next(true);
   }
@@ -71,7 +69,9 @@ export class AccountService {
   }
   checkIfTokenExpired() {
     const currentTimestamp = Math.floor(Date.now() / 1000);
-    if (new Date(currentTimestamp*1000) > new Date(this.userData['exp']*1000)) {
+    if (
+      new Date(currentTimestamp * 1000) > new Date(this.userData['exp'] * 1000)
+    ) {
       return true;
     }
     return false;

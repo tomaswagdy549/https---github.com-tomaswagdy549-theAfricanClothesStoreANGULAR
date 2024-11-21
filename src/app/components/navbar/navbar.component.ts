@@ -16,11 +16,11 @@ import { Category } from '../../models/category/category';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterModule, LoginComponent, CommonModule, CartComponent],
+  imports: [RouterModule, CommonModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   menCategories: Category[] = [];
   womenCategories: Category[] = [];
   accessories: Category[] = [];
@@ -68,18 +68,15 @@ export class NavbarComponent implements OnInit {
           }
         });
       },
-      error: (error) => {
-        console.log(error);
-      },
     });
   }
 
-  ngOnInit(): void {}
   ifUserIsAdmin(): boolean {
     return this.accountService.isAdmin();
   }
   logOut() {
     this.accountService.logOut();
+    location.reload()
   }
   goToOnSaleProducts(categories: Category[]) {
     document.getElementById('navbar-toggler')?.click();

@@ -32,19 +32,19 @@
               <!-- First Card -->
               <div
                 *ngFor="let cartItem of cartItems; index as index"
+                style="cursor: pointer;"
+                (click)="routeToShoppingCart(cartItem)"
                 class="col-md-12 mb-3"
               >
                 <div class="row">
                   <!-- Image Column -->
                   <div class="col-md-6">
-                    <a (click)="routeToShoppingCart(cartItem)">
                       <img
                         [src]="cartItem.product.mainPhotoUrl"
                         alt="Product Image"
                         class="img-fluid"
                         style="width: 100%; height: 17.5rem; object-fit: cover"
                       />
-                    </a>
                   </div>
 
                   <!-- Info Column -->

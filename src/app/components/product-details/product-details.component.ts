@@ -46,6 +46,7 @@ export class ProductDetailsComponent implements OnChanges, OnDestroy {
             this.selectedSize =
               this.product.productAvailableSizes[0].availabeSize;
             this.quantity = this.product.productAvailableSizes[0].quantity;
+
           },
           error: (error) => {
             console.error(error);

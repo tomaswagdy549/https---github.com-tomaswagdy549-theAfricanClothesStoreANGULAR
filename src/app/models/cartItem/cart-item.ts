@@ -1,7 +1,7 @@
 import { Product } from "../product/product"
 
 export class CartItem {
-    gmail!:string
+    applicationUserId!:string
     size!:string
     productId!:number
     quantity!:number
